@@ -1,3 +1,5 @@
 /* Import MagNews2 template CSS */
 @import url('./main.css');
-@import url('./util.min.css');
+@import url('./util.css');
+
+/* Additional custom styles can be added here */

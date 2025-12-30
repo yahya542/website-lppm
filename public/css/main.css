@@ -397,10 +397,10 @@ a.left-topbar-item:hover {
 }
 
 .main-menu > li > a {
-  font-family: Roboto-Medium;
-  font-size: 16px;
+  font-family: sans-serif;
+  font-size: 14px;
   line-height: 1.5;
-  color: #222;
+  color: #ffff;
   
   position: relative;
   display: -webkit-box;
@@ -475,7 +475,7 @@ li.main-menu-active > a::before {
   }
 
   .main-menu > li > a::before {
-    left: -10px;
+    left: 0;
     width: calc(100% + 20px);
   }
 }
@@ -532,7 +532,7 @@ li.respon-sub-menu > .sub-menu .sub-menu {
   font-family: Roboto-Medium;
   font-size: 14px;
   line-height: 1.7857;
-  color: #222;
+  color: #fff;
 
   display: block;
   padding: 8px 30px; 
@@ -557,12 +557,13 @@ li.respon-sub-menu > .sub-menu .sub-menu {
 
 /*---------------------------------------------*/
 .main-menu > li:hover > a:after {
-  color: #17b978;
+  color: #ffff;
 }
 
 .main-menu > li:hover > a {
-  text-decoration: none;
-  color: #17b978;
+
+  color: #ffff;
+  background-color: orange;
 }
 
 .main-menu > li:hover > .sub-menu {
@@ -580,7 +581,7 @@ li.respon-sub-menu > .sub-menu .sub-menu {
 }
 
 .sub-menu > li:hover > a {
-  background-color: #17b978;
+  background-color: transparent;
   color: #fff;
   text-decoration: none;
 }
@@ -639,7 +640,7 @@ li.respon-sub-menu > .sub-menu .sub-menu {
 .sub-mega-menu .nav-pills .nav-link.active, 
 .sub-mega-menu .show>.nav-pills .nav-link {
   color: #fff;
-  background-color: #17b978;
+  background-color: #fff;
 }
 
 /*---------------------------------------------*/

@@ -41,31 +41,33 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 /*------------------------------------------------------------------
 [ 1 ]*/
+/*------------------------------------------------------------------
+[ 1 ]*/
 @font-face {
   font-family: Roboto-Regular;
-  src: url('../fonts/Roboto/Roboto-Regular.ttf'); 
+  src: url('../../fonts/Roboto/Roboto-Regular.ttf'); 
 }
 
 @font-face {
   font-family: Roboto-Medium;
-  src: url('../fonts/Roboto/Roboto-Medium.ttf'); 
+  src: url('../../fonts/Roboto/Roboto-Medium.ttf'); 
 }
 
 @font-face {
   font-family: Roboto-Bold;
-  src: url('../fonts/Roboto/Roboto-Bold.ttf'); 
+  src: url('../../fonts/Roboto/Roboto-Bold.ttf'); 
 }
 
 @font-face {
   font-family: Roboto-Black;
-  src: url('../fonts/Roboto/Roboto-Black.ttf'); 
+  src: url('../../fonts/Roboto/Roboto-Black.ttf'); 
 }
 
 /*------------------------------------------------------------------
 [ 2 ]*/
 @font-face {
   font-family: Lato-Regular;
-  src: url('../fonts/Lato/Lato-Regular.ttf'); 
+  src: url('../../fonts/Lato/Lato-Regular.ttf'); 
 }
 
 
@@ -400,7 +402,7 @@ a.left-topbar-item:hover {
   font-family: Roboto-Medium;
   font-size: 16px;
   line-height: 1.5;
-  color: #222;
+  color: #ffff;
   
   position: relative;
   display: -webkit-box;
@@ -418,27 +420,6 @@ a.left-topbar-item:hover {
   -webkit-transition: all 0.3s;
 }
 
-.main-menu > li > a::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: calc(100% + 36px);
-  height: 5px;
-  bottom: 0;
-  left: -18px;
-  background-color: #e6e6e6;
-  transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-
-  -webkit-transform: scaleX(0);
-  -moz-transform: scaleX(0);
-  -ms-transform: scaleX(0);
-  -o-transform: scaleX(0);
-  transform: scaleX(0);
-}
-
 .main-menu > li > a::after {
   content: "\f2f9";
   font-family: Material-Design-Iconic-Font;
@@ -453,20 +434,12 @@ a.left-topbar-item:hover {
   -moz-transition: all 0.3s;
 }
 
-li.main-menu-active > a::before {
-  -webkit-transform: scaleX(1);
-  -moz-transform: scaleX(1);
-  -ms-transform: scaleX(1);
-  -o-transform: scaleX(1);
-  transform: scaleX(1);
+li.main-menu-active > a {
+  /* Hapus animasi garis bawah */
 }
 
-.main-menu > li > a:hover:before {
-  -webkit-transform: scaleX(1);
-  -moz-transform: scaleX(1);
-  -ms-transform: scaleX(1);
-  -o-transform: scaleX(1);
-  transform: scaleX(1);
+.main-menu > li > a:hover {
+  /* Hapus animasi garis bawah */
 }
 
 @media (max-width: 1199px) {
@@ -474,10 +447,12 @@ li.main-menu-active > a::before {
     margin: 0 10px;
   }
 
+  /* Hapus bagian ini karena terkait dengan animasi garis bawah navbar
   .main-menu > li > a::before {
     left: -10px;
     width: calc(100% + 20px);
   }
+  */
 }
 
 /*---------------------------------------------*/
@@ -557,12 +532,12 @@ li.respon-sub-menu > .sub-menu .sub-menu {
 
 /*---------------------------------------------*/
 .main-menu > li:hover > a:after {
-  color: #17b978;
+  color: black;
 }
 
 .main-menu > li:hover > a {
   text-decoration: none;
-  color: #17b978;
+  color: black;
 }
 
 .main-menu > li:hover > .sub-menu {

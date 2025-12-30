@@ -4,10 +4,42 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
-window.axios = axios;
+// Using native fetch API instead of axios as per project specification
+window.fetch = fetch;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// CSRF token handling for fetch requests
+window.csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+// Enhanced fetch wrapper with CSRF support
+window.apiFetch = async (url, options = {}) => {
+    const headers = {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        ...options.headers
+    };
+    
+    if (window.csrfToken && !headers['X-CSRF-TOKEN']) {
+        headers['X-CSRF-TOKEN'] = window.csrfToken;
+    }
+    
+    const config = {
+        ...options,
+        headers
+    };
+    
+    // Add CSRF token to body for POST, PUT, PATCH, DELETE requests if not already present
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(options.method?.toUpperCase()) && !options.body?.includes?.('csrf_token')) {
+        if (typeof options.body === 'string') {
+            // If body is a string (like JSON), we need to handle CSRF differently or ensure it's in headers
+        } else if (options.body instanceof FormData) {
+            if (!options.body.has('_token')) {
+                options.body.append('_token', window.csrfToken);
+            }
+        }
+    }
+    
+    return fetch(url, config);
+};
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

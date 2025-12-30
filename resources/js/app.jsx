@@ -5,14 +5,27 @@ import '../css/app.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import AppRouter from './components/AppRouter';
+import { createRoot } from 'react-dom/client';
+import AppRouter from './router';
 
-const container = document.getElementById('root');
-const root = ReactDOM.createRoot(container);
+// Gunakan flag untuk mencegah double mounting
+let isReactMounted = false;
 
-root.render(
-    <React.StrictMode>
-        <AppRouter />
-    </React.StrictMode>
-);
+// Cek apakah elemen mount point sudah ada dan belum di-mount
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('app');
+    if (container && !isReactMounted) {
+        const root = createRoot(container);
+        isReactMounted = true;
+        
+        root.render(
+            <React.StrictMode>
+                <AppRouter />
+            </React.StrictMode>
+        );
+    } else if (!container) {
+        console.warn('React mount point #app not found. React app will not be initialized.');
+    } else {
+        console.warn('React app already mounted to this container.');
+    }
+});

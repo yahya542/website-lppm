@@ -2,9 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\NewsController;
-use App\Http\Controllers\Api\AnnouncementController;
-use App\Http\Controllers\Api\ResearchController;
+use App\Http\Controllers\Api\News\NewsController;
+use App\Http\Controllers\Api\Announcement\AnnouncementController;
+use App\Http\Controllers\Api\Research\ResearchController;
 use App\Http\Controllers\Api\HomeController;
 
 /*
@@ -25,21 +25,34 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Home route
 Route::get('/home', [HomeController::class, 'index']);
 
-// News routes
-Route::get('/news', [NewsController::class, 'index']);
-Route::get('/news/{id}', [NewsController::class, 'show']);
-Route::get('/news/category/{categoryId}', [NewsController::class, 'getByCategory']);
+// =====================
+// NEWS FLOW
+// =====================
+Route::prefix('news')->controller(NewsController::class)->group(function () {
+    Route::get('/', 'index');                 // /api/news
+    Route::get('/latest', 'latest');          // /api/news/latest
+    Route::get('/popular', 'popular');        // /api/news/popular
+    Route::get('/category/{categoryId}', 'getByCategory');
+    Route::get('/{id}', 'show');
+});
+
 Route::get('/categories', [NewsController::class, 'categories']);
-Route::get('/news/latest', [NewsController::class, 'latest']);
-Route::get('/news/popular', [NewsController::class, 'popular']);
 
-// Announcement routes
-Route::get('/announcements', [AnnouncementController::class, 'index']);
-Route::get('/announcements/{id}', [AnnouncementController::class, 'show']);
-Route::get('/announcements/latest', [AnnouncementController::class, 'latest']);
+// =====================
+// ANNOUNCEMENT FLOW
+// =====================
+Route::prefix('announcements')->controller(AnnouncementController::class)->group(function () {
+    Route::get('/', 'index');                 // /api/announcements
+    Route::get('/latest', 'latest');          // /api/announcements/latest
+    Route::get('/{id}', 'show');
+});
 
-// Research routes
-Route::get('/research', [ResearchController::class, 'index']);
-Route::get('/research/{id}', [ResearchController::class, 'show']);
-Route::get('/research/type/{type}', [ResearchController::class, 'byType']);
-Route::get('/research/latest', [ResearchController::class, 'latest']);
+// =====================
+// RESEARCH FLOW
+// =====================
+Route::prefix('research')->controller(ResearchController::class)->group(function () {
+    Route::get('/', 'index');                 // /api/research
+    Route::get('/latest', 'latest');          // /api/research/latest
+    Route::get('/type/{type}', 'byType');
+    Route::get('/{id}', 'show');
+});
