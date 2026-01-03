@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\Announcement\AnnouncementController;
 use App\Http\Controllers\Api\Research\ResearchController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\OpenApi\SwaggerExampleController;  // Add this import
+use App\Http\Controllers\OpenApi\AllEndpointsDocumentation;  // Add this import for complete documentation
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Swagger example routes
+Route::prefix('/')->controller(SwaggerExampleController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'store');
+    Route::get('/{id}', 'show');
+});
+
+// Complete API documentation routes
+Route::prefix('docs')->controller(AllEndpointsDocumentation::class)->group(function () {
+    Route::get('/', 'getNews');
+    Route::get('/{id}', 'getSingleNews');
+    Route::get('/latest', 'getLatestNews');
+    Route::get('/popular', 'getPopularNews');
+    Route::get('/category/{categoryId}', 'getNewsByCategory');
 });
 
 // Home route
