@@ -76,7 +76,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 /*------------------------------------------------------------------
 [ Bootstrap ]*/
-.container {max-width: 1080px;}
+.container {max-width: 1500px;}
 
 
 
@@ -114,6 +114,14 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
     opacity: 0; } 
 }
 
+.modif1 {
+  
+  position: fixed; /* Membuatnya tetap */
+  top: 0;          /* Menempatkannya di paling atas */
+  width: 100%;     /* Lebar penuh */
+  z-index: 1000;   /* Pastikan di atas elemen lain */
+
+}
 
 /*//////////////////////////////////////////////////////////////////
 [ BUTTON BACK TO TOP ]*/
@@ -434,13 +442,10 @@ a.left-topbar-item:hover {
   -moz-transition: all 0.3s;
 }
 
-li.main-menu-active > a {
+/* li.main-menu-active > a {
   /* Hapus animasi garis bawah */
-}
 
-.main-menu > li > a:hover {
-  /* Hapus animasi garis bawah */
-}
+
 
 @media (max-width: 1199px) {
   .main-menu > li > a {

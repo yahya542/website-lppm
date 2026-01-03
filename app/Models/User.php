@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // Menambahkan role ke dalam fillable
     ];
 
     /**
@@ -42,4 +43,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    
+    /**
+     * Check if the user is an admin
+     */
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+    
+    /**
+     * Check if the user is a regular user
+     */
+    public function isUser()
+    {
+        return $this->role === 'user';
+    }
 }

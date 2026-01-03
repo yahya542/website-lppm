@@ -74,7 +74,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 /*------------------------------------------------------------------
 [ Bootstrap ]*/
-.container {max-width: 1080px;}
+.container {max-width: 2560px;}
 
 
 
@@ -557,13 +557,13 @@ li.respon-sub-menu > .sub-menu .sub-menu {
 
 /*---------------------------------------------*/
 .main-menu > li:hover > a:after {
-  color: #ffff;
+  color: orange;
 }
 
 .main-menu > li:hover > a {
 
   color: #ffff;
-  background-color: orange;
+
 }
 
 .main-menu > li:hover > .sub-menu {

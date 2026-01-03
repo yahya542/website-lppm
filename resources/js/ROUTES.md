@@ -2,39 +2,28 @@
 
 This document outlines the React routing structure for the application.
 
-## Routes
+## Routes Documentation
 
-### Home Page
-- **Path**: `/`
-- **Component**: `Home`
-- **Description**: Main landing page showing latest news, announcements, and research
-
-### News Routes
-- **Path**: `/news`
-- **Component**: `NewsList`
-- **Description**: Displays list of news articles
-
-- **Path**: `/news/:id`
-- **Component**: `NewsDetail`
-- **Description**: Displays detailed view of a specific news article
-
-### Announcement Routes
-- **Path**: `/announcements`
-- **Component**: `AnnouncementList`
-- **Description**: Displays list of announcements
-
-- **Path**: `/announcements/:id`
-- **Component**: `AnnouncementDetail`
-- **Description**: Displays detailed view of a specific announcement
-
-### Research Routes
-- **Path**: `/research`
-- **Component**: `ResearchList`
-- **Description**: Displays list of research publications
-
-- **Path**: `/research/:id`
-- **Component**: `ResearchDetail`
-- **Description**: Displays detailed view of a specific research publication
+## Main Routes
+- `/` - Home
+- `/profil` - Profil page
+- `/profil/:id` - Profil detail page
+- `/penelitian` - Penelitian page
+- `/penelitian/:id` - Penelitian detail page
+- `/pengabdian` - Pengabdian page
+- `/pengabdian/:id` - Pengabdian detail page
+- `/hki` - HKI page
+- `/hki/:id` - HKI detail page
+- `/seminar` - Seminar page
+- `/seminar/:id` - Seminar detail page
+- `/permohonan-surat` - Permohonan Surat page
+- `/permohonan-surat/:id` - Permohonan Surat detail page
+- `/about` - About page
+- `/contact` - Contact page
+- `/announcements` - Announcement page
+- `/announcements/:id` - Announcement detail page
+- `/research` - Research page
+- `/research/:id` - Research detail page
 
 ## Router Structure
 

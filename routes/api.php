@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\News\NewsController;
 use App\Http\Controllers\Api\Announcement\AnnouncementController;
 use App\Http\Controllers\Api\Research\ResearchController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,13 @@ use App\Http\Controllers\Api\HomeController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+// Rute untuk autentikasi admin
+Route::post('/admin/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/admin/logout', [AuthController::class, 'logout']);
+    Route::get('/admin/user', [AuthController::class, 'user']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -34,6 +42,17 @@ Route::prefix('news')->controller(NewsController::class)->group(function () {
     Route::get('/popular', 'popular');        // /api/news/popular
     Route::get('/category/{categoryId}', 'getByCategory');
     Route::get('/{id}', 'show');
+});
+
+// Admin news routes - hanya bisa diakses oleh admin
+Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+    Route::prefix('news')->controller(NewsController::class)->group(function () {
+        Route::get('/', 'adminIndex');        // Get all news for admin
+        Route::post('/', 'adminStore');       // Create news
+        Route::get('/{id}', 'adminShow');     // Get single news for admin
+        Route::put('/{id}', 'adminUpdate');   // Update news
+        Route::delete('/{id}', 'adminDestroy'); // Delete news
+    });
 });
 
 Route::get('/categories', [NewsController::class, 'categories']);

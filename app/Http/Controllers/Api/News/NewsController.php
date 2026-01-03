@@ -160,4 +160,122 @@ class NewsController extends Controller
             ], 500);
         }
     }
+    
+    /**
+     * Admin endpoints
+     */
+    
+    /**
+     * Get all news for admin (including unpublished)
+     */
+    public function adminIndex(Request $request)
+    {
+        $query = News::with('category')->latest();
+        
+        // Tambahkan pencarian jika ada parameter search
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function (Builder $q) use ($searchTerm) {
+                $q->where('title', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('content', 'like', '%' . $searchTerm . '%');
+            });
+        }
+        
+        // Filter berdasarkan kategori jika ada parameter category
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+        
+        $perPage = min($request->get('per_page', 10), 100); // Batasi maksimal 100 item per halaman
+        $news = $query->paginate($perPage);
+        
+        return response()->json($news);
+    }
+    
+    /**
+     * Store a newly created news
+     */
+    public function adminStore(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'excerpt' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_published' => 'boolean'
+        ]);
+        
+        $data = $request->only(['title', 'content', 'excerpt', 'category_id', 'is_published']);
+        $data['is_published'] = $request->has('is_published') ? $request->is_published : false;
+        
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('news', 'public');
+            $data['image'] = $imagePath;
+        }
+        
+        $news = News::create($data);
+        
+        return response()->json($news, 201);
+    }
+    
+    /**
+     * Update the specified news
+     */
+    public function adminUpdate(Request $request, $id)
+    {
+        $news = News::findOrFail($id);
+        
+        $request->validate([
+            'title' => 'sometimes|required|string|max:255',
+            'content' => 'sometimes|required|string',
+            'excerpt' => 'sometimes|required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_published' => 'boolean'
+        ]);
+        
+        $data = $request->only(['title', 'content', 'excerpt', 'category_id', 'is_published']);
+        
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($news->image) {
+                \Storage::disk('public')->delete($news->image);
+            }
+            
+            $imagePath = $request->file('image')->store('news', 'public');
+            $data['image'] = $imagePath;
+        }
+        
+        $news->update($data);
+        
+        return response()->json($news);
+    }
+    
+    /**
+     * Remove the specified news
+     */
+    public function adminDestroy($id)
+    {
+        $news = News::findOrFail($id);
+        
+        // Hapus gambar jika ada
+        if ($news->image) {
+            \Storage::disk('public')->delete($news->image);
+        }
+        
+        $news->delete();
+        
+        return response()->json(['message' => 'Berita berhasil dihapus.']);
+    }
+    
+    /**
+     * Get single news for admin (including unpublished)
+     */
+    public function adminShow($id)
+    {
+        $news = News::with('category')->findOrFail($id);
+        
+        return response()->json($news);
+    }
 }
