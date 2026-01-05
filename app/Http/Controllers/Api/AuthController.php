@@ -44,13 +44,30 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ]);
     }
+    
 
     /**
      * Handle user logout
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        // Logout Sanctum token if exists
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
+
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ]);
+    }
+    
+    /**
+     * Handle admin logout with session
+     */
+    public function adminLogout(Request $request)
+    {
+        // Logout session
+        auth()->logout();
 
         return response()->json([
             'message' => 'Logged out successfully'
@@ -63,5 +80,52 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         return response()->json($request->user());
+    }
+    
+    /**
+     * Handle admin login and session
+     */
+    public function adminSessionLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'The provided credentials are incorrect.'
+            ], 401);
+        }
+
+        // Cek apakah user adalah admin
+        if ($user->role !== 'admin') {
+            return response()->json([
+                'message' => 'Unauthorized access. Admins only.'
+            ], 403);
+        }
+
+        // Login user secara session
+        Auth::login($user);
+
+        return response()->json([
+            'message' => 'Login successful',
+            'redirect_url' => '/admin'
+        ]);
+    }
+    
+    /**
+     * Handle admin logout with session
+     */
+    public function adminSessionLogout(Request $request)
+    {
+        // Logout session
+        Auth::logout();
+
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ]);
     }
 }

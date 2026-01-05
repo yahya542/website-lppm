@@ -40,7 +40,7 @@ const Home = () => {
                         }
                     }
                 `}</style>
-                <div className="row">
+               {/*  <div className="row">
                     <div className="col-md-8">
                         <div style={{ backgroundColor: 'white', padding: '20px', marginBottom: '20px', borderRadius: '5px' }}>
                             <h2>Berita Terbaru</h2>
@@ -174,7 +174,7 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

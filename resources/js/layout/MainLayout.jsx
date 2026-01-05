@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Nama from '../home/nama.jsx';
+import { apiCall } from '../api.js';
 
 const MainLayout = () => {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [loginCredentials, setLoginCredentials] = useState({ email: '', password: '' });
+    const [loginError, setLoginError] = useState('');
+    const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -13,6 +19,94 @@ const MainLayout = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+    
+    // Check admin login status on component mount
+    useEffect(() => {
+        const checkAdminStatus = async () => {
+            try {
+                const response = await fetch('/api/admin/user', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    credentials: 'include'  // Include cookies for session
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.role === 'admin') {
+                        setIsAdminLoggedIn(true);
+                    }
+                } else {
+                    setIsAdminLoggedIn(false);
+                }
+            } catch (error) {
+                // Jika terjadi error, anggap tidak login
+                setIsAdminLoggedIn(false);
+            }
+        };
+        
+        checkAdminStatus();
+    }, []);
+    
+
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const response = await fetch('/api/admin/session-login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(loginCredentials)
+            });
+
+            const data = await response.json();
+            
+            if (response.ok) {
+                // Set login status
+                setIsAdminLoggedIn(true);
+                
+                // Redirect ke admin panel
+                window.location.href = data.redirect_url || '/admin';
+            } else {
+                setLoginError(data.message || 'Login failed');
+            }
+        } catch (error) {
+            setLoginError('An error occurred during login');
+            console.error('Login error:', error);
+        }
+    };
+    
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('/api/admin/session-logout', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+            
+            if (response.ok) {
+                // Set login status
+                setIsAdminLoggedIn(false);
+                
+                // Redirect ke halaman utama
+                window.location.href = '/';
+            }
+        } catch (error) {
+            // Jika logout gagal, tetap set login status dan redirect ke halaman utama
+            setIsAdminLoggedIn(false);
+            window.location.href = '/';
+            console.error('Logout error:', error);
+        }
+    };
+
+
 
     return (
         <div className="main-layout">
@@ -21,7 +115,21 @@ const MainLayout = () => {
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <span id="current-time" style={{ fontSize: '14px' }}>Waktu saat ini akan ditampilkan di sini</span>
                     <li style={{ height: '50px', display: 'flex', alignItems: 'center', marginLeft: '150px' }}>
-                        <a href="/login" style={{ display: 'block', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', display: 'flex', alignItems: 'center' }}>Login</a>
+                        {isAdminLoggedIn ? (
+                            <button 
+                                onClick={handleLogout}
+                                style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center' }}
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <button 
+                                onClick={() => setIsLoginModalOpen(true)}
+                                style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center' }}
+                            >
+                                Login
+                            </button>
+                        )}
                     </li>
                 </div>
             </div>
@@ -48,49 +156,59 @@ const MainLayout = () => {
                             <div className="menu-desktop">
                                 <ul style={{ display: 'flex', alignItems: 'stretch', gap: '0', margin: '0', padding: '0', listStyle: 'none', position: 'relative' }}  className="main-menu">
                                     <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                                        <a href="/" style={{ display: 'block', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                                        <a href="/" style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}>
                                             <span style={{ position: 'relative', zIndex: 1 }}>Home</span>
                                         </a>
                                     </li>
 
                                     <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                                        <a href="/profil" style={{ display: 'block', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                                        <a href="/profil" style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}>
                                             <span style={{ position: 'relative', zIndex: 1 }}>Profil</span>
                                         </a>
                                     </li>
 
                                     <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                                        <a href="/penelitian" style={{ display: 'block', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                                        <a href="/penelitian" style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}>
                                             <span style={{ position: 'relative', zIndex: 1 }}>Penelitian</span>
                                         </a>
                                     </li>
 
                                     <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                                        <a href="/pengabdian" style={{ display: 'block', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                                        <a href="/pengabdian" style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}>
                                             <span style={{ position: 'relative', zIndex: 1 }}>Pengabdian</span>
                                         </a>
                                     </li>
 
                                     <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                                        <a href="/hki" style={{ display: 'block', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                                        <a href="/hki" style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}>
                                             <span style={{ position: 'relative', zIndex: 1 }}>HKI</span>
                                         </a>
                                     </li>
 
                                     <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                                        <a href="/seminar" style={{ display: 'block', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                                        <a href="/seminar" style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}>
                                             <span style={{ position: 'relative', zIndex: 1 }}>Seminar</span>
                                         </a>
                                     </li>
 
                                     <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                                        <a href="/permohonan-surat" style={{ display: 'block', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                                        <a href="/permohonan-surat" style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}>
                                             <span style={{ position: 'relative', zIndex: 1 }}>Permohonan Surat</span>
                                         </a>
                                     </li>
 
-                                 
-
+                                    <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
+                                        <a 
+                                            href="#" 
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setIsLoginModalOpen(true);
+                                            }}
+                                            style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}
+                                        >
+                                            <span style={{ position: 'relative', zIndex: 1 }}>Admin</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -165,9 +283,89 @@ const MainLayout = () => {
                         <li>
                             <a href="/permohonan-surat">Permohonan Surat</a>
                         </li>
+                        
+                        <li>
+                            <a 
+                                href="#" 
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setIsLoginModalOpen(true);
+                                }}
+                            >
+                                Admin
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </header>
+
+            {/* Login Modal */}
+            {isLoginModalOpen && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 9999
+                }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        width: '400px',
+                        maxWidth: '90%'
+                    }}>
+                        <h3>Admin Login</h3>
+                        {loginError && (
+                            <div style={{ color: 'red', marginBottom: '10px' }}>
+                                {loginError}
+                            </div>
+                        )}
+                        <form onSubmit={handleLogin}>
+                            <div style={{ marginBottom: '15px' }}>
+                                <label>Email:</label>
+                                <input
+                                    type="email"
+                                    value={loginCredentials.email}
+                                    onChange={(e) => setLoginCredentials({...loginCredentials, email: e.target.value})}
+                                    style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                                    required
+                                />
+                            </div>
+                            <div style={{ marginBottom: '15px' }}>
+                                <label>Password:</label>
+                                <input
+                                    type="password"
+                                    value={loginCredentials.password}
+                                    onChange={(e) => setLoginCredentials({...loginCredentials, password: e.target.value})}
+                                    style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                                    required
+                                />
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <button 
+                                    type="button" 
+                                    onClick={() => setIsLoginModalOpen(false)}
+                                    style={{ padding: '8px 16px', backgroundColor: '#ccc', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    type="submit" 
+                                    style={{ padding: '8px 16px', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                >
+                                    Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             {/* Main Content - Outlet untuk React Router */}
             <main style={{ paddingTop: isScrolled ? '50px' : '0' }}>
