@@ -192,18 +192,7 @@ const MainLayout = () => {
                                         </a>
                                     </li>
 
-                                    <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                                        <a 
-                                            href="#" 
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setIsLoginModalOpen(true);
-                                            }}
-                                            style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}
-                                        >
-                                            <span style={{ position: 'relative', zIndex: 1 }}>Admin</span>
-                                        </a>
-                                    </li>
+                                  
                                 </ul>
                             </div>
                         </div>
