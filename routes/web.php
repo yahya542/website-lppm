@@ -83,29 +83,15 @@ Route::get('/research/{id}', function () {
     return view('index');
 })->where('id', '.*');
 
-// Rute untuk admin dengan middleware admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', function () {
-        return view('admin.layout');
-    })->name('dashboard');
-    Route::resource('news', \App\Http\Controllers\Admin\NewsController::class);
-});
-
 // Rute untuk admin dengan Sanctum auth
-Route::middleware(['sanctum.admin'])->prefix('api/admin/web')->name('api.admin.web.')->group(function () {
+Route::middleware(['sanctum.admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', function () {
         return view('admin.layout');
     })->name('dashboard');
     Route::resource('news', \App\Http\Controllers\Admin\NewsController::class);
 });
 
-
-
-// Login and logout routes
-Route::get('/login', function () {
-    return view('index'); // Return to React app for login
-})->name('login');
-
+// Logout route
 Route::post('/logout', function () {
     auth()->logout();
     return redirect('/');

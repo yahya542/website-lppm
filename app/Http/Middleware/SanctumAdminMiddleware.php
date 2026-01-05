@@ -29,9 +29,9 @@ class SanctumAdminMiddleware
         }
 
         if (!$token) {
-            // For web requests, redirect to login page
+            // For web requests, redirect to homepage since /login route is removed
             if (!$request->expectsJson()) {
-                return redirect('/login');
+                return redirect('/');
             }
             
             return response()->json([
@@ -43,9 +43,9 @@ class SanctumAdminMiddleware
         $accessToken = PersonalAccessToken::findToken($token);
         
         if (!$accessToken) {
-            // For web requests, redirect to login page
+            // For web requests, redirect to homepage since /login route is removed
             if (!$request->expectsJson()) {
-                return redirect('/login');
+                return redirect('/');
             }
             
             return response()->json([
@@ -57,9 +57,9 @@ class SanctumAdminMiddleware
         $user = $accessToken->tokenable;
         
         if (!$user || $user->role !== 'admin') {
-            // For web requests, redirect to login page
+            // For web requests, redirect to homepage since /login route is removed
             if (!$request->expectsJson()) {
-                return redirect('/login');
+                return redirect('/');
             }
             
             return response()->json([
