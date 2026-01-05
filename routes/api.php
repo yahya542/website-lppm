@@ -21,21 +21,14 @@ use App\Http\Controllers\OpenApi\AllEndpointsDocumentation;  // Add this import 
 |
 */
 
-// Rute untuk autentikasi admin
+// Login route for React SPA authentication
 Route::post('/admin/login', [AuthController::class, 'login']);
 
-// Rute untuk login admin dengan session
-Route::post('/admin/session-login', [AuthController::class, 'adminSessionLogin']);
-
-// Rute untuk logout admin dengan session
-Route::post('/admin/session-logout', [AuthController::class, 'adminSessionLogout']);
-
+// Protected routes using Sanctum token authentication
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/logout', [AuthController::class, 'logout']);
     Route::get('/admin/user', [AuthController::class, 'user']);
 });
-
-
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

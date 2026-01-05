@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Nama from '../home/nama.jsx';
-import { apiCall } from '../api.js';
+import api from '../axios';
 
 const MainLayout = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -23,27 +23,25 @@ const MainLayout = () => {
     // Check admin login status on component mount
     useEffect(() => {
         const checkAdminStatus = async () => {
+            const token = localStorage.getItem('admin_token');
+            if (!token) {
+                setIsAdminLoggedIn(false);
+                return;
+            }
+
             try {
-                const response = await fetch('/api/admin/user', {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    credentials: 'include'  // Include cookies for session
-                });
+                const response = await api.get('/api/admin/user');
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.role === 'admin') {
-                        setIsAdminLoggedIn(true);
-                    }
+                if (response.status === 200) {
+                    setIsAdminLoggedIn(true);
                 } else {
                     setIsAdminLoggedIn(false);
+                    localStorage.removeItem('admin_token');
                 }
             } catch (error) {
                 // Jika terjadi error, anggap tidak login
                 setIsAdminLoggedIn(false);
+                localStorage.removeItem('admin_token');
             }
         };
         
@@ -51,47 +49,42 @@ const MainLayout = () => {
     }, []);
     
 
-
     const handleLogin = async (e) => {
         e.preventDefault();
         
         try {
-            const response = await fetch('/api/admin/session-login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify(loginCredentials)
-            });
+            const response = await api.post('/api/admin/login', loginCredentials);
 
-            const data = await response.json();
-            
-            if (response.ok) {
+            if (response.status === 200) {
+                // Store the token
+                localStorage.setItem('admin_token', response.data.token);
+                
                 // Set login status
                 setIsAdminLoggedIn(true);
                 
                 // Redirect ke admin panel
-                window.location.href = data.redirect_url || '/admin';
+                window.location.href = '/admin';
             } else {
-                setLoginError(data.message || 'Login failed');
+                setLoginError(response.data.message || 'Login failed');
             }
         } catch (error) {
-            setLoginError('An error occurred during login');
+            if (error.response) {
+                setLoginError(error.response.data.message || 'An error occurred during login');
+            } else {
+                setLoginError('Network error occurred during login');
+            }
             console.error('Login error:', error);
         }
     };
     
     const handleLogout = async () => {
         try {
-            const response = await fetch('/api/admin/session-logout', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                },
-            });
+            const response = await api.post('/api/admin/logout');
             
-            if (response.ok) {
+            if (response.status === 200) {
+                // Remove token from localStorage
+                localStorage.removeItem('admin_token');
+                
                 // Set login status
                 setIsAdminLoggedIn(false);
                 
@@ -99,13 +92,15 @@ const MainLayout = () => {
                 window.location.href = '/';
             }
         } catch (error) {
-            // Jika logout gagal, tetap set login status dan redirect ke halaman utama
+            // Remove token from localStorage even if logout API fails
+            localStorage.removeItem('admin_token');
+            
+            // Set login status and redirect to halaman utama
             setIsAdminLoggedIn(false);
             window.location.href = '/';
             console.error('Logout error:', error);
         }
     };
-
 
 
     return (

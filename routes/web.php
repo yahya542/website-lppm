@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -9,90 +11,24 @@ use Illuminate\Support\Facades\Route;
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| be assigned to the "web" middleware group.
 |
 */
 
+// Public routes
 Route::get('/', function () {
     return view('index');
 });
 
-// Rute untuk halaman React
-Route::get('/profil', function () {
-    return view('index');
-});
+// Authentication routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/profil/{id}', function () {
-    return view('index');
-})->where('id', '.*');
-
-Route::get('/penelitian', function () {
-    return view('index');
-});
-
-Route::get('/penelitian/{id}', function () {
-    return view('index');
-})->where('id', '.*');
-
-Route::get('/pengabdian', function () {
-    return view('index');
-});
-
-Route::get('/pengabdian/{id}', function () {
-    return view('index');
-})->where('id', '.*');
-
-Route::get('/hki', function () {
-    return view('index');
-});
-
-Route::get('/hki/{id}', function () {
-    return view('index');
-})->where('id', '.*');
-
-Route::get('/seminar', function () {
-    return view('index');
-});
-
-Route::get('/seminar/{id}', function () {
-    return view('index');
-})->where('id', '.*');
-
-Route::get('/permohonan-surat', function () {
-    return view('index');
-});
-
-Route::get('/permohonan-surat/{id}', function () {
-    return view('index');
-})->where('id', '.*');
-
-// Rute untuk announcements dan research (jika masih digunakan)
-Route::get('/announcements', function () {
-    return view('index');
-});
-
-Route::get('/announcements/{id}', function () {
-    return view('index');
-})->where('id', '.*');
-
-Route::get('/research', function () {
-    return view('index');
-});
-
-Route::get('/research/{id}', function () {
-    return view('index');
-})->where('id', '.*');
-
-// Rute untuk admin dengan Sanctum auth
-Route::middleware(['sanctum.admin'])->prefix('admin')->name('admin.')->group(function () {
+// Admin routes with authentication
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('news', NewsController::class);
     Route::get('/', function () {
-        return view('admin.layout');
+        return redirect()->route('admin.news.index');
     })->name('dashboard');
-    Route::resource('news', \App\Http\Controllers\Admin\NewsController::class);
 });
-
-// Logout route
-Route::post('/logout', function () {
-    auth()->logout();
-    return redirect('/');
-})->name('logout');

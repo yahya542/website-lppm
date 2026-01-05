@@ -24,9 +24,9 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json([
+                'message' => 'The provided credentials are incorrect.'
+            ], 401);
         }
 
         // Cek apakah user adalah admin
@@ -45,7 +45,6 @@ class AuthController extends Controller
         ]);
     }
     
-
     /**
      * Handle user logout
      */
@@ -62,70 +61,10 @@ class AuthController extends Controller
     }
     
     /**
-     * Handle admin logout with session
-     */
-    public function adminLogout(Request $request)
-    {
-        // Logout session
-        auth()->logout();
-
-        return response()->json([
-            'message' => 'Logged out successfully'
-        ]);
-    }
-
-    /**
      * Get authenticated user
      */
     public function user(Request $request)
     {
         return response()->json($request->user());
-    }
-    
-    /**
-     * Handle admin login and session
-     */
-    public function adminSessionLogin(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'The provided credentials are incorrect.'
-            ], 401);
-        }
-
-        // Cek apakah user adalah admin
-        if ($user->role !== 'admin') {
-            return response()->json([
-                'message' => 'Unauthorized access. Admins only.'
-            ], 403);
-        }
-
-        // Login user secara session
-        Auth::login($user);
-
-        return response()->json([
-            'message' => 'Login successful',
-            'redirect_url' => '/admin'
-        ]);
-    }
-    
-    /**
-     * Handle admin logout with session
-     */
-    public function adminSessionLogout(Request $request)
-    {
-        // Logout session
-        Auth::logout();
-
-        return response()->json([
-            'message' => 'Logged out successfully'
-        ]);
     }
 }

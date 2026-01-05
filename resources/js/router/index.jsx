@@ -17,6 +17,8 @@ import PermohonanSuratList from '../permohonan-surat/pages/PermohonanSuratList';
 import PermohonanSuratDetail from '../permohonan-surat/pages/PermohonanSuratDetail';
 import About from '../shared/pages/About';
 import Contact from '../shared/pages/Contact';
+import AdminDashboard from '../admin/AdminDashboard';
+import NewsManagement from '../admin/NewsManagement';
 
 const AppRouter = () => {
     return (
@@ -39,6 +41,8 @@ const AppRouter = () => {
                     <Route path="/permohonan-surat/:id" element={<PermohonanSuratDetail />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/admin" element={<AdminDashboard />} />
+                    <Route path="/admin/news" element={<NewsManagement />} />
                 </Route>
             </Routes>
         </BrowserRouter>
