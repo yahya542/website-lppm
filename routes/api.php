@@ -34,12 +34,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Swagger example routes
-Route::prefix('/')->controller(SwaggerExampleController::class)->group(function () {
-    Route::get('/', 'index');
-    Route::post('/', 'store');
-    Route::get('/{id}', 'show');
-});
+
 
 // Complete API documentation routes
 Route::prefix('docs')->controller(AllEndpointsDocumentation::class)->group(function () {
@@ -57,11 +52,11 @@ Route::get('/home', [HomeController::class, 'index']);
 // NEWS FLOW
 // =====================
 Route::prefix('news')->controller(NewsController::class)->group(function () {
-    Route::get('/', 'index');                 // /api/news
-    Route::get('/latest', 'latest');          // /api/news/latest
-    Route::get('/popular', 'popular');        // /api/news/popular
+    Route::get('/', 'index');                 
+    Route::get('/latest', 'latest');          
+    Route::get('/popular', 'popular');        
     Route::get('/category/{categoryId}', 'getByCategory');
-    Route::get('/{id}', 'show');
+    Route::get('/{id}', 'show')->whereNumber('id');
 });
 
 // Admin news routes - hanya bisa diakses oleh admin

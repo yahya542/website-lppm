@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Nama from '../home/nama.jsx';
+import Tentang from '../home/tentang.jsx';
+import Bidang from '../home/bidang.jsx';
 import api from '../axios';
 
 const MainLayout = () => {
@@ -19,7 +21,7 @@ const MainLayout = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-    
+
     // Check admin login status on component mount
     useEffect(() => {
         const checkAdminStatus = async () => {
@@ -31,7 +33,7 @@ const MainLayout = () => {
 
             try {
                 const response = await api.get('/api/admin/user');
-                
+
                 if (response.status === 200) {
                     setIsAdminLoggedIn(true);
                 } else {
@@ -44,24 +46,24 @@ const MainLayout = () => {
                 localStorage.removeItem('admin_token');
             }
         };
-        
+
         checkAdminStatus();
     }, []);
-    
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        
+
         try {
             const response = await api.post('/api/admin/login', loginCredentials);
 
             if (response.status === 200) {
                 // Store the token
                 localStorage.setItem('admin_token', response.data.token);
-                
+
                 // Set login status
                 setIsAdminLoggedIn(true);
-                
+
                 // Redirect ke admin panel
                 window.location.href = '/admin';
             } else {
@@ -76,25 +78,25 @@ const MainLayout = () => {
             console.error('Login error:', error);
         }
     };
-    
+
     const handleLogout = async () => {
         try {
             const response = await api.post('/api/admin/logout');
-            
+
             if (response.status === 200) {
                 // Remove token from localStorage
                 localStorage.removeItem('admin_token');
-                
+
                 // Set login status
                 setIsAdminLoggedIn(false);
-                
+
                 // Redirect ke halaman utama
                 window.location.href = '/';
             }
         } catch (error) {
             // Remove token from localStorage even if logout API fails
             localStorage.removeItem('admin_token');
-            
+
             // Set login status and redirect to halaman utama
             setIsAdminLoggedIn(false);
             window.location.href = '/';
@@ -108,17 +110,17 @@ const MainLayout = () => {
             {/* Top Bar - untuk jam atau waktu */}
             <div style={{ backgroundColor: 'green', color: 'white', padding: '5px 0', textAlign: 'center', height: 40, borderBottom: '0.5px grey' }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <span id="current-time" style={{ fontSize: '14px' }}>Waktu saat ini akan ditampilkan di sini</span>
-                    <li style={{ height: '50px', display: 'flex', alignItems: 'center', marginLeft: '150px' }}>
+
+                    <li style={{ height: '50px', display: 'flex', alignItems: 'flex-end', marginLeft: '1200px' }}>
                         {isAdminLoggedIn ? (
-                            <button 
+                            <button
                                 onClick={handleLogout}
                                 style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center' }}
                             >
                                 Logout
                             </button>
                         ) : (
-                            <button 
+                            <button
                                 onClick={() => setIsLoginModalOpen(true)}
                                 style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center' }}
                             >
@@ -130,26 +132,26 @@ const MainLayout = () => {
             </div>
 
             {/* Header */}
-            <header style={{ position: 'relative' }}>
+            <header style={{ position: 'flex-start' }}>
                 {/* Header desktop */}
-                <div className="wrap-menu-desktop" style={{ 
-                    backgroundColor: 'green', 
-                    position: isScrolled ? 'fixed' : 'static', 
+                <div className="wrap-menu-desktop" style={{
+                    backgroundColor: 'green',
+                    position: isScrolled ? 'fixed' : 'static',
                     top: isScrolled ? 0 : 'auto',
-                    width: '100%', 
+                    width: '100%',
                     zIndex: '1000',
                     height: '50px'
                 }}>
                     <nav className="limiter-menu-desktop container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 15px' }}>
                         {/* Logo */}
-                        <a href="/"style={{ display: 'flex', alignItems: 'center', height: '40px'}}>
+                        <a href="/" style={{ display: 'flex', alignItems: 'center', height: '40px' }}>
                             <img src="/images/icons/uim.png" alt="LOGO" style={{ width: '40px', height: '40px' }} />
                         </a>
 
                         {/* Menu */}
                         <div className="wrap-menu-desktop" >
                             <div className="menu-desktop">
-                                <ul style={{ display: 'flex', alignItems: 'stretch', gap: '0', margin: '0', padding: '0', listStyle: 'none', position: 'relative' }}  className="main-menu">
+                                <ul style={{ display: 'flex', alignItems: 'stretch', gap: '0', margin: '0', padding: '0', listStyle: 'none', position: 'relative' }} className="main-menu">
                                     <li style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
                                         <a href="/" style={{ display: 'flex', padding: '0 15px', color: 'white', textDecoration: 'none', height: '100%', alignItems: 'center', position: 'relative' }}>
                                             <span style={{ position: 'relative', zIndex: 1 }}>Home</span>
@@ -192,7 +194,7 @@ const MainLayout = () => {
                                         </a>
                                     </li>
 
-                                  
+
                                 </ul>
                             </div>
                         </div>
@@ -267,10 +269,10 @@ const MainLayout = () => {
                         <li>
                             <a href="/permohonan-surat">Permohonan Surat</a>
                         </li>
-                        
+
                         <li>
-                            <a 
-                                href="#" 
+                            <a
+                                href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     setIsLoginModalOpen(true);
@@ -316,7 +318,7 @@ const MainLayout = () => {
                                 <input
                                     type="email"
                                     value={loginCredentials.email}
-                                    onChange={(e) => setLoginCredentials({...loginCredentials, email: e.target.value})}
+                                    onChange={(e) => setLoginCredentials({ ...loginCredentials, email: e.target.value })}
                                     style={{ width: '100%', padding: '8px', marginTop: '5px' }}
                                     required
                                 />
@@ -326,21 +328,21 @@ const MainLayout = () => {
                                 <input
                                     type="password"
                                     value={loginCredentials.password}
-                                    onChange={(e) => setLoginCredentials({...loginCredentials, password: e.target.value})}
+                                    onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })}
                                     style={{ width: '100%', padding: '8px', marginTop: '5px' }}
                                     required
                                 />
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     onClick={() => setIsLoginModalOpen(false)}
                                     style={{ padding: '8px 16px', backgroundColor: '#ccc', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                                 >
                                     Cancel
                                 </button>
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     style={{ padding: '8px 16px', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                                 >
                                     Login
@@ -353,10 +355,26 @@ const MainLayout = () => {
 
             {/* Main Content - Outlet untuk React Router */}
             <main style={{ paddingTop: isScrolled ? '50px' : '0' }}>
-                <Nama/>
+                <Nama />
+                <Bidang />
                 <Outlet />
+                <Tentang />
+                
             </main>
+
+            {/* Footer */}
+            <footer>
+                <div className="bg11" style={{ backgroundColor: 'green', color: '#fff' }}>
+                    <div className="container size-h-4 flex-c-c p-tb-15" style={{ maxWidth: '1200px', margin: '0 auto', padding: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+
+                        Created by ©  Sajak Codingan
+
+                    </div>
+                </div>
+            </footer>
         </div>
+
     );
 };
 

@@ -1,21 +1,68 @@
 import React from 'react';
 
 const Nama = () => {
+    const styles = {
+        container: {
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '24px',
+        },
+        titleContainer: {
+            textAlign: 'center',
+            marginBottom: '48px',
+        },
+        rowContainer: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '16px',
+            marginBottom: '16px',
+         
+        },
+        verticalLine: {
+            height: '2px',
+            width: '64px',
+            backgroundColor: 'black', // gray-400 equivalent
+        },
+        logoTextContainer: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
+        logo: {
+            width: '192px',
+            height: '192px',
+            objectFit: 'contain',
+        },
+        title: {
+            fontSize: '2rem',
+            color: '#1f2937', // gray-800 equivalent
+            textTransform: 'uppercase',
+            letterSpacing: '0.025em',
+            textAlign: 'center',
+            marginTop: '16px',
+            fontWeight: 'bold',
+        },
+    };
+
     return (
-      <main className="container mx-auto px-6 py-12">
+      <main style={styles.container}>
           {/* Main Title */}
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-4 mb-4" style={{backgroundColor: 'yellow'}}>
-              <div className="h-0.5 w-16 bg-gray-400"></div>
-              <img src="../images/icons/logo-01.png" alt="Logo" className="h-16" />
-              <h1 className="text-4xl text-gray-800 uppercase tracking-wide">
-                INSTITUTE OF RESEARCH AND<br />COMMUNITY SERVICES
-              </h1>
-              <div className="h-0.5 w-16 bg-gray-400"></div>
+          <div style={styles.titleContainer}>
+            <div style={styles.rowContainer}>
+              <div style={styles.verticalLine}></div>
+              <div style={styles.logoTextContainer}>
+                <img src="/images/icons/uim.png" alt="Logo" style={styles.logo} />
+                <h1 style={styles.title}>
+                  INSTITUTE OF RESEARCH AND<br />COMMUNITY SERVICES
+                </h1>
+              </div>
+              <div style={styles.verticalLine}></div>
             </div>
           </div>
       </main>
     );
-}; 
+};
 
 export default Nama;
