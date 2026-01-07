@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -36,6 +37,14 @@ class AuthController extends Controller
             ], 403);
         }
 
+        // Hapus semua token lama milik user
+        try {
+            $user->tokens()->delete();
+        } catch (\Exception $e) {
+            // Jika ada error saat menghapus token lama, lanjutkan saja
+            Log::warning('Error during old token deletion: ' . $e->getMessage());
+        }
+
         $token = $user->createToken('admin-token')->plainTextToken;
 
         return response()->json([
@@ -50,14 +59,29 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        // Logout Sanctum token if exists
-        if ($request->user()) {
-            $request->user()->currentAccessToken()->delete();
+        try {
+            // Logout Sanctum token if exists
+            if ($request->user()) {
+                $request->user()->currentAccessToken()->delete();
+            }
+            
+            // Juga hapus semua token Sanctum milik user ini untuk memastikan bersih
+            if ($request->user()) {
+                $request->user()->tokens()->delete();
+            }
+        } catch (\Exception $e) {
+            // Jika token tidak ditemukan atau ada error lain, lanjutkan logout
+            Log::warning('Error during token deletion: ' . $e->getMessage());
         }
+
+        // Juga logout dari sesi web tradisional
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json([
             'message' => 'Logged out successfully'
-        ]);
+        ], 200);
     }
     
     /**

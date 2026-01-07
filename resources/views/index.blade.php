@@ -4,7 +4,8 @@
 	<title>LPPM UIM</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Removed CSRF token as we're using token-based authentication -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- CSRF token for web logout functionality -->
 <!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="{{ asset('images/icons/favicon.png') }}"/>
 <!--===============================================================================================-->

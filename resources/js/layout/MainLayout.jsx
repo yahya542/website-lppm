@@ -22,34 +22,7 @@ const MainLayout = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Check admin login status on component mount
-    useEffect(() => {
-        const checkAdminStatus = async () => {
-            const token = localStorage.getItem('admin_token');
-            if (!token) {
-                setIsAdminLoggedIn(false);
-                return;
-            }
-
-            try {
-                const response = await api.get('/api/admin/user');
-
-                if (response.status === 200) {
-                    setIsAdminLoggedIn(true);
-                } else {
-                    setIsAdminLoggedIn(false);
-                    localStorage.removeItem('admin_token');
-                }
-            } catch (error) {
-                // Jika terjadi error, anggap tidak login
-                setIsAdminLoggedIn(false);
-                localStorage.removeItem('admin_token');
-            }
-        };
-
-        checkAdminStatus();
-    }, []);
-
+    
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -74,6 +47,7 @@ const MainLayout = () => {
                 setLoginError(error.response.data.message || 'An error occurred during login');
             } else {
                 setLoginError('Network error occurred during login');
+                console.error('Network error during login:', error);
             }
             console.error('Login error:', error);
         }
@@ -81,26 +55,17 @@ const MainLayout = () => {
 
     const handleLogout = async () => {
         try {
-            const response = await api.post('/api/admin/logout');
-
-            if (response.status === 200) {
-                // Remove token from localStorage
-                localStorage.removeItem('admin_token');
-
-                // Set login status
-                setIsAdminLoggedIn(false);
-
-                // Redirect ke halaman utama
-                window.location.href = '/';
-            }
-        } catch (error) {
-            // Remove token from localStorage even if logout API fails
-            localStorage.removeItem('admin_token');
-
-            // Set login status and redirect to halaman utama
-            setIsAdminLoggedIn(false);
+            // Hanya redirect ke halaman utama tanpa menghapus token
             window.location.href = '/';
+            
+            // Set login status ke false untuk UI
+            setIsAdminLoggedIn(false);
+        } catch (error) {
             console.error('Logout error:', error);
+            
+            // Jika terjadi error, tetap redirect ke halaman utama
+            window.location.href = '/';
+            setIsAdminLoggedIn(false);
         }
     };
 
