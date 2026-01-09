@@ -25,7 +25,7 @@ const Bidang = () => {
     }, []);
 
     return (
-        <div className="main-content" style={{ padding: '20px', }}>
+        <div className="main-content" style={{ padding: '20px', marginTop: '-70px' }}>
             <div className='container'   >
                 <div className="horizontal-scroll-container" style={{ overflowX: 'hidden', whiteSpace: 'nowrap', padding: '25px 20px', width: '100%', position: 'relative', margin: '30px 0', }}>
                     <div className="horizontal-grid" style={{ display: 'flex', width: '200%' }}>

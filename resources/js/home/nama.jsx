@@ -31,12 +31,12 @@ const Nama = () => {
             alignItems: 'center',
         },
         logo: {
-            width: '192px',
-            height: '192px',
+            width: '250px',
+            height: '250px',
             objectFit: 'contain',
         },
         title: {
-            fontSize: '2rem',
+            fontSize: '3rem',
             color: '#1f2937', // gray-800 equivalent
             textTransform: 'uppercase',
             letterSpacing: '0.025em',

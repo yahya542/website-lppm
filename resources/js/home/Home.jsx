@@ -24,7 +24,7 @@ const styles = {
   },
 
   title: {
-    fontSize: "22px",
+    fontSize: "3rem",
     fontWeight: "600",
     letterSpacing: "1px",
     whiteSpace: "nowrap",
@@ -100,7 +100,7 @@ const Home = () => {
       </motion.section>
 
       {/* ===== SECTION POSTER ===== */}
-      <div className="main-content" style={{ padding: "20px" }}>
+      <div className="main-content" style={{ padding: "20px", marginTop: "-100px" }}>
         <div className="container">
           <div
             style={{

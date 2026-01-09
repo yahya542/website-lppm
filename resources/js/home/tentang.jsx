@@ -24,7 +24,7 @@ export default function Tentang() {
     },
 
     title: {
-      fontSize: "22px",
+      fontSize: "3rem",
       fontWeight: "600",
       letterSpacing: "1px",
       whiteSpace: "nowrap",
