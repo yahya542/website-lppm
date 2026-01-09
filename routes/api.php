@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\News\NewsController;
+use App\Http\Controllers\Api\News\NewsController;  // Use the one with admin methods
 use App\Http\Controllers\Api\Announcement\AnnouncementController;
 use App\Http\Controllers\Api\Research\ResearchController;
 use App\Http\Controllers\Api\HomeController;
@@ -33,7 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 
 
 // Complete API documentation routes
