@@ -1,4 +1,4 @@
-import * as motion from "motion/react-client"
+import { motion } from "motion/react"
 import { fadeUpText } from "../components/transisi"
 
 export default function Tentang() {

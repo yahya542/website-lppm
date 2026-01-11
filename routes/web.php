@@ -32,3 +32,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         return redirect()->route('admin.news.index');
     })->name('dashboard');
 });
+
+// Catch-all route for SPA (MUST BE LAST)
+Route::get('/{any}', function () {
+    return view('index');
+})->where('any', '.*');
