@@ -22,7 +22,7 @@ const MainLayout = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -57,12 +57,12 @@ const MainLayout = () => {
         try {
             // Hanya redirect ke halaman utama tanpa menghapus token
             window.location.href = '/';
-            
+
             // Set login status ke false untuk UI
             setIsAdminLoggedIn(false);
         } catch (error) {
             console.error('Logout error:', error);
-            
+
             // Jika terjadi error, tetap redirect ke halaman utama
             window.location.href = '/';
             setIsAdminLoggedIn(false);
@@ -319,22 +319,63 @@ const MainLayout = () => {
             )}
 
             {/* Main Content - Outlet untuk React Router */}
-            <main style={{ paddingTop: isScrolled ? '50px' : '0' }}>
-                <Nama />
-                <Bidang />
+            <main style={{ paddingTop: isScrolled ? '50px' : '0', minHeight: 'calc(100vh - 300px)' }}>
                 <Outlet />
-                <Tentang />
-                
             </main>
 
             {/* Footer */}
-            <footer>
-                <div className="bg11" style={{ backgroundColor: 'green', color: '#fff' }}>
-                    <div className="container size-h-4 flex-c-c p-tb-15" style={{ maxWidth: '1200px', margin: '0 auto', padding: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <footer style={{ backgroundColor: 'green', color: '#fff', padding: '40px 0 20px' }}>
+                <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px', marginBottom: '30px' }}>
 
+                        {/* Column 1: Address */}
+                        <div>
+                            <h5 style={{ fontWeight: 'bold', marginBottom: '15px', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '10px' }}>Address</h5>
+                            <p style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                Jl. Raya Bettet Pamekasan<br />
+                                Madura - Jawa Timur
+                            </p>
+                        </div>
 
-                        Created by ©  Sajak Codingan
+                        {/* Column 2: Contact Us */}
+                        <div>
+                            <h5 style={{ fontWeight: 'bold', marginBottom: '15px', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '10px' }}>Contact Us</h5>
+                            <p style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                Phone: (0324) 322222<br />
+                                Email: lppm@uim.ac.id
+                            </p>
+                        </div>
 
+                        {/* Column 3: Follow us */}
+                        <div>
+                            <h5 style={{ fontWeight: 'bold', marginBottom: '15px', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '10px' }}>Follow us on Social Media</h5>
+                            <div style={{ display: 'flex', gap: '15px' }}>
+                                <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-facebook-f"></i></a>
+                                <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-twitter"></i></a>
+                                <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-instagram"></i></a>
+                                <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+
+                        {/* Column 4: Maps */}
+                        <div>
+                            <h5 style={{ fontWeight: 'bold', marginBottom: '15px', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '10px' }}>Maps</h5>
+                            <div style={{ width: '100%', height: '100px', backgroundColor: '#e0e0e0', borderRadius: '4px', overflow: 'hidden' }}>
+                                {/* Placeholder for Map */}
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.966528723963!2d113.4839843147743!3d-7.135350994847661!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd77e2e3b2b9ad1%3A0x6b4b2b2b2b2b2b2b!2sUniversitas%20Islam%20Madura!5e0!3m2!1sen!2sid!4v1622522222222!5m2!1sen!2sid"
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen=""
+                                    loading="lazy"
+                                ></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '20px', textAlign: 'center', fontSize: '12px' }}>
+                        COPYRIGHT © 2026 - LPPM UNIVERSITAS ISLAM MADURA. ALL RIGHTS RESERVED.
                     </div>
                 </div>
             </footer>

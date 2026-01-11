@@ -1,66 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import api from '../axios'; // Import axios for API calls
+import React from 'react';
 
 const Bidang = () => {
-    const [latestNews, setLatestNews] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchLatestNews = async () => {
-            try {
-                const response = await api.get('/api/news/latest');
-                if (response.data && response.data.length > 0) {
-                    setLatestNews(response.data[0]); // Get the most recent news
-                }
-                setLoading(false);
-            } catch (err) {
-                console.error('Error fetching latest news:', err);
-                setError(err);
-                setLoading(false);
-            }
-        };
-
-        fetchLatestNews();
-    }, []);
+    const cards = [
+        {
+            title: "BIDANG 1",
+            subtitle: "PENELITIAN & INOVASI",
+        },
+        {
+            title: "BIDANG 2",
+            subtitle: "PUBLIKASI, SENTRA HKI, PLAGIARISME, UNUSA PRESS", // Using text from image roughly
+        },
+        {
+            title: "BIDANG 3",
+            subtitle: "PENGABDIAN KEPADA MASYARAKAT, KKN, KERJASAMA",
+        }
+    ];
 
     return (
-        <div className="main-content" style={{ padding: '20px', marginTop: '-70px' }}>
-            <div className='container'   >
-                <div className="horizontal-scroll-container" style={{ overflowX: 'hidden', whiteSpace: 'nowrap', padding: '25px 20px', width: '100%', position: 'relative', margin: '30px 0', }}>
-                    <div className="horizontal-grid" style={{ display: 'flex', width: '200%' }}>
-                        
-                        <div className="grid-item" style={{ width: '320px', height: '320px', backgroundColor: 'white', margin: '0 25px', borderRadius: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#666' }}>
-                            <img src="/images/icons/1.png" alt="1" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
+        <section className="bidang-section" style={{ padding: '20px 0 60px' }}>
+            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+                {cards.map((card, index) => (
+                    <div key={index} style={{
+                        background: 'linear-gradient(to bottom, #008000, #006400)',
+                        borderRadius: '15px',
+                        padding: '30px 20px',
+                        width: '350px',
+                        textAlign: 'center',
+                        color: 'white',
+                        boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: '250px'
+                    }}>
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '50%',
+                            width: '80px',
+                            height: '80px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: '20px',
+                            boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                        }}>
+                            {/* Placeholder Icon/Logo */}
+                            <img src="/images/icons/uim.png" alt="Icon" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
                         </div>
-                        <div className="grid-item" style={{ width: '320px', height: '320px', backgroundColor: 'white', margin: '0 25px', borderRadius: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#666' }}>
-                            <img src="/images/icons/2.png" alt="1" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
-                        </div>
-                        {/* Duplikat untuk efek looping */}
-                        <div className="grid-item" style={{ width: '320px', height: '320px', backgroundColor: 'white', margin: '0 25px', borderRadius: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#666' }}>
-                            <img src="/images/icons/3.png" alt="1" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
-                        </div>
-                        <div className="grid-item" style={{ width: '320px', height: '320px', backgroundColor: 'white', margin: '0 25px', borderRadius: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#666' }}>
-                            <img src="/images/icons/4.png" alt="1" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
-                        </div>
-                        
+                        <h3 style={{ fontSize: '24px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '10px' }}>{card.title}</h3>
+                        <p style={{ fontSize: '14px', textTransform: 'uppercase', lineHeight: '1.4', margin: 0, opacity: 0.9 }}>{card.subtitle}</p>
                     </div>
-                </div>
-                <style>{`
-                    #autoScrollGrid {
-                        animation: scrollAnimation 20s linear infinite;
-                    }
-                    @keyframes scrollAnimation {
-                        0% {
-                            transform: translateX(0);
-                        }
-                        100% {
-                            transform: translateX(-50%);
-                        }
-                    }
-                `}</style>
+                ))}
             </div>
-        </div>
+        </section>
     );
 };
 
