@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { translations } from '../../contexts/translations';
@@ -6,6 +6,14 @@ import { translations } from '../../contexts/translations';
 const PermohonanSuratList = () => {
     const { language } = useLanguage();
     const t = translations[language];
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Animation variants
     const fadeInUp = {
@@ -248,18 +256,41 @@ const PermohonanSuratList = () => {
                         {/* Connecting Line (Background) */}
                         <div style={{
                             position: 'absolute',
-                            top: '85px',
-                            left: '10%',
-                            right: '10%',
-                            height: '4px',
                             backgroundColor: '#eee',
                             zIndex: 1,
-                            display: 'flex'
+                            ...(isMobile ? {
+                                top: '40px',
+                                bottom: '40px',
+                                left: '85px', // Align with icon center (40px padding + 45px half-width)
+                                width: '4px',
+                                transform: 'translateX(-50%)'
+                            } : {
+                                top: '85px',
+                                left: '10%',
+                                right: '10%',
+                                height: '4px'
+                            })
                         }}>
-                            <div style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, #fb8c00 0%, #ef6c00 100%)', opacity: 0.3 }}></div>
+                            <div style={{
+                                width: '100%',
+                                height: '100%',
+                                background: isMobile
+                                    ? 'linear-gradient(180deg, #fb8c00 0%, #ef6c00 100%)'
+                                    : 'linear-gradient(90deg, #fb8c00 0%, #ef6c00 100%)',
+                                opacity: 0.3
+                            }}></div>
                         </div>
 
-                        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', position: 'relative', zIndex: 2, gap: '20px' }}>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexWrap: 'wrap',
+                            position: 'relative',
+                            zIndex: 2,
+                            gap: isMobile ? '30px' : '20px', // Adjusted gap
+                            flexDirection: isMobile ? 'column' : 'row',
+                            alignItems: isMobile ? 'flex-start' : 'stretch'
+                        }}>
                             {[
                                 { step: "1", title: "Login Akun", title_en: "Account Login", icon: "fa-sign-in-alt", desc: "Masuk akun SSO UIM", desc_en: "Login with SSO" },
                                 { step: "2", title: "Pilih Layanan", title_en: "Select Service", icon: "fa-list-ul", desc: "Pilih jenis surat", desc_en: "Choose letter type" },
@@ -267,19 +298,28 @@ const PermohonanSuratList = () => {
                                 { step: "4", title: "Verifikasi", title_en: "Verification", icon: "fa-check-circle", desc: "Proses admin", desc_en: "Admin process" },
                                 { step: "5", title: "Unduh Surat", title_en: "Download Letter", icon: "fa-download", desc: "Unduh dokumen", desc_en: "Download doc" }
                             ].map((item, index) => (
-                                <div key={index} style={{ flex: '1', minWidth: '140px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div key={index} style={{
+                                    flex: '1',
+                                    minWidth: '140px',
+                                    textAlign: isMobile ? 'left' : 'center',
+                                    display: 'flex',
+                                    flexDirection: isMobile ? 'row' : 'column',
+                                    alignItems: 'center',
+                                    gap: isMobile ? '20px' : '0'
+                                }}>
                                     <div style={{
                                         width: '90px',
                                         height: '90px',
-                                        backgroundColor: 'white', // bg white to cover line
+                                        backgroundColor: 'white',
                                         borderRadius: '50%',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        marginBottom: '20px',
+                                        marginBottom: isMobile ? '0' : '20px',
                                         boxShadow: '0 5px 15px rgba(251, 140, 0, 0.2)',
                                         border: '4px solid #fff3e0',
-                                        position: 'relative'
+                                        position: 'relative',
+                                        flexShrink: 0
                                     }}>
                                         <div style={{
                                             width: '60px',
@@ -314,12 +354,14 @@ const PermohonanSuratList = () => {
                                         </div>
                                     </div>
 
-                                    <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
-                                        {language === 'id' ? item.title : item.title_en}
-                                    </h4>
-                                    <p style={{ fontSize: '13px', color: '#777', maxWidth: '150px', lineHeight: '1.4' }}>
-                                        {language === 'id' ? item.desc : item.desc_en}
-                                    </p>
+                                    <div>
+                                        <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
+                                            {language === 'id' ? item.title : item.title_en}
+                                        </h4>
+                                        <p style={{ fontSize: '13px', color: '#777', maxWidth: isMobile ? 'none' : '150px', lineHeight: '1.4', margin: 0 }}>
+                                            {language === 'id' ? item.desc : item.desc_en}
+                                        </p>
+                                    </div>
                                 </div>
                             ))}
                         </div>
