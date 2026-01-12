@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Nama from '../home/nama.jsx';
 import Tentang from '../home/tentang.jsx';
@@ -299,74 +300,202 @@ const MainLayout = () => {
 
 
             {/* Login Modal */}
-            {
-                isLoginModalOpen && (
-                    <div style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 9999
-                    }}>
-                        <div style={{
-                            backgroundColor: 'white',
-                            padding: '20px',
-                            borderRadius: '8px',
-                            width: '400px',
-                            maxWidth: '90%'
-                        }}>
-                            <h3>Admin Login</h3>
-                            {loginError && (
-                                <div style={{ color: 'red', marginBottom: '10px' }}>
-                                    {loginError}
+            <AnimatePresence>
+                {isLoginModalOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsLoginModalOpen(false)} // Close on backdrop click
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                            backdropFilter: 'blur(5px)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: 9999
+                        }}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.8, opacity: 0, y: 20 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 500 }}
+                            onClick={(e) => e.stopPropagation()} // Prevent close on card click
+                            style={{
+                                backgroundColor: 'white',
+                                borderRadius: '20px',
+                                width: '400px',
+                                maxWidth: '90%',
+                                overflow: 'hidden',
+                                boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
+                                position: 'relative'
+                            }}
+                        >
+                            {/* Header */}
+                            <div style={{
+                                background: 'linear-gradient(135deg, #004d26 0%, #008000 100%)',
+                                padding: '30px',
+                                textAlign: 'center',
+                                color: 'white'
+                            }}>
+                                <div style={{
+                                    width: '60px',
+                                    height: '60px',
+                                    backgroundColor: 'white',
+                                    borderRadius: '50%',
+                                    margin: '0 auto 15px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: '0 5px 15px rgba(0,0,0,0.2)'
+                                }}>
+                                    <img src="/images/icons/uim.png" alt="Logo" style={{ width: '40px' }} />
                                 </div>
-                            )}
-                            <form onSubmit={handleLogin}>
-                                <div style={{ marginBottom: '15px' }}>
-                                    <label>Email:</label>
-                                    <input
-                                        type="email"
-                                        value={loginCredentials.email}
-                                        onChange={(e) => setLoginCredentials({ ...loginCredentials, email: e.target.value })}
-                                        style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-                                        required
-                                    />
-                                </div>
-                                <div style={{ marginBottom: '15px' }}>
-                                    <label>Password:</label>
-                                    <input
-                                        type="password"
-                                        value={loginCredentials.password}
-                                        onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })}
-                                        style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-                                        required
-                                    />
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsLoginModalOpen(false)}
-                                        style={{ padding: '8px 16px', backgroundColor: '#ccc', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                <h3 style={{ margin: 0, fontWeight: 'bold', fontSize: '1.5rem' }}>Admin Portal</h3>
+                                <p style={{ margin: '5px 0 0', opacity: 0.8, fontSize: '0.9rem' }}>Silakan login untuk melanjutkan</p>
+                            </div>
+
+                            {/* Body */}
+                            <div style={{ padding: '30px' }}>
+                                {loginError && (
+                                    <motion.div
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        style={{
+                                            backgroundColor: '#ffebee',
+                                            color: '#c62828',
+                                            padding: '10px 15px',
+                                            borderRadius: '8px',
+                                            marginBottom: '20px',
+                                            fontSize: '14px',
+                                            display: 'flex',
+                                            alignItems: 'center'
+                                        }}
                                     >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        style={{ padding: '8px 16px', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                                    >
-                                        Login
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                )
-            }
+                                        <i className="fas fa-exclamation-circle" style={{ marginRight: '8px' }}></i>
+                                        {loginError}
+                                    </motion.div>
+                                )}
+
+                                <form onSubmit={handleLogin}>
+                                    <div style={{ marginBottom: '20px' }}>
+                                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Email Address</label>
+                                        <div style={{ position: 'relative' }}>
+                                            <i className="fas fa-envelope" style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#aaa' }}></i>
+                                            <input
+                                                type="email"
+                                                value={loginCredentials.email}
+                                                onChange={(e) => setLoginCredentials({ ...loginCredentials, email: e.target.value })}
+                                                placeholder="Masukan email anda"
+                                                style={{
+                                                    width: '100%',
+                                                    padding: '12px 15px 12px 45px',
+                                                    borderRadius: '10px',
+                                                    border: '1px solid #eee',
+                                                    backgroundColor: '#f9f9f9',
+                                                    outline: 'none',
+                                                    transition: 'all 0.3s'
+                                                }}
+                                                onFocus={(e) => {
+                                                    e.target.style.borderColor = 'green';
+                                                    e.target.style.backgroundColor = 'white';
+                                                    e.target.style.boxShadow = '0 0 0 3px rgba(0, 128, 0, 0.1)';
+                                                }}
+                                                onBlur={(e) => {
+                                                    e.target.style.borderColor = '#eee';
+                                                    e.target.style.backgroundColor = '#f9f9f9';
+                                                    e.target.style.boxShadow = 'none';
+                                                }}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div style={{ marginBottom: '25px' }}>
+                                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Password</label>
+                                        <div style={{ position: 'relative' }}>
+                                            <i className="fas fa-lock" style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#aaa' }}></i>
+                                            <input
+                                                type="password"
+                                                value={loginCredentials.password}
+                                                onChange={(e) => setLoginCredentials({ ...loginCredentials, password: e.target.value })}
+                                                placeholder="Masukan password"
+                                                style={{
+                                                    width: '100%',
+                                                    padding: '12px 15px 12px 45px',
+                                                    borderRadius: '10px',
+                                                    border: '1px solid #eee',
+                                                    backgroundColor: '#f9f9f9',
+                                                    outline: 'none',
+                                                    transition: 'all 0.3s'
+                                                }}
+                                                onFocus={(e) => {
+                                                    e.target.style.borderColor = 'green';
+                                                    e.target.style.backgroundColor = 'white';
+                                                    e.target.style.boxShadow = '0 0 0 3px rgba(0, 128, 0, 0.1)';
+                                                }}
+                                                onBlur={(e) => {
+                                                    e.target.style.borderColor = '#eee';
+                                                    e.target.style.backgroundColor = '#f9f9f9';
+                                                    e.target.style.boxShadow = 'none';
+                                                }}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div style={{ display: 'flex', gap: '15px' }}>
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsLoginModalOpen(false)}
+                                            style={{
+                                                flex: 1,
+                                                padding: '12px',
+                                                backgroundColor: '#f5f5f5',
+                                                color: '#777',
+                                                border: 'none',
+                                                borderRadius: '10px',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold',
+                                                transition: 'all 0.2s'
+                                            }}
+                                            onMouseOver={(e) => e.target.style.backgroundColor = '#eeeeee'}
+                                            onMouseOut={(e) => e.target.style.backgroundColor = '#f5f5f5'}
+                                        >
+                                            Batal
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            style={{
+                                                flex: 1,
+                                                padding: '12px',
+                                                background: 'linear-gradient(135deg, #004d26 0%, #008000 100%)',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: '10px',
+                                                cursor: 'pointer',
+                                                fontWeight: 'bold',
+                                                boxShadow: '0 4px 15px rgba(0, 128, 0, 0.3)',
+                                                transition: 'all 0.2s'
+                                            }}
+                                            onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                            onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+                                        >
+                                            Masuk <i className="fas fa-arrow-right" style={{ marginLeft: '8px' }}></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Main Content - Outlet untuk React Router */}
             <main style={{ paddingTop: isScrolled ? '50px' : '0', minHeight: 'calc(100vh - 300px)' }}>
