@@ -234,6 +234,78 @@ const Home = () => {
         </div>
       </section>
 
+      {/* 6.5. AGENDA KEGIATAN - Light Background */}
+      <section style={{ padding: '80px 0', backgroundColor: '#fafafa' }}>
+        <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+            <h2 style={{ color: '#004d26', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '1.8rem', fontWeight: 'bold' }}>Agenda Kegiatan Terdekat</h2>
+            <div style={{ width: '80px', height: '4px', backgroundColor: '#fec107', margin: '15px auto', borderRadius: '2px' }}></div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
+            {/* Agenda Item 1 */}
+            <div style={{ backgroundColor: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 5px 20px rgba(0,0,0,0.05)', display: 'flex', transition: 'transform 0.3s' }}
+              onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+              onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+            >
+              <div style={{ backgroundColor: '#004d26', width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', padding: '15px' }}>
+                <span style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>20</span>
+                <span style={{ textTransform: 'uppercase', fontSize: '0.9rem', letterSpacing: '1px' }}>Jan</span>
+              </div>
+              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', color: '#333' }}>Seminar Nasional Pendidikan</h3>
+                <div style={{ fontSize: '0.9rem', color: '#666', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '5px' }}>
+                  <i className="far fa-clock"></i> 08:00 - 12:00 WIB
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#666', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <i className="fas fa-map-marker-alt"></i> Aula UIM Lantai 3
+                </div>
+              </div>
+            </div>
+
+            {/* Agenda Item 2 */}
+            <div style={{ backgroundColor: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 5px 20px rgba(0,0,0,0.05)', display: 'flex', transition: 'transform 0.3s' }}
+              onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+              onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+            >
+              <div style={{ backgroundColor: '#ffa000', width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', padding: '15px' }}>
+                <span style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>15</span>
+                <span style={{ textTransform: 'uppercase', fontSize: '0.9rem', letterSpacing: '1px' }}>Feb</span>
+              </div>
+              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', color: '#333' }}>Batas Upload Proposal</h3>
+                <div style={{ fontSize: '0.9rem', color: '#666', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '5px' }}>
+                  <i className="far fa-clock"></i> 23:59 WIB
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#666', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <i className="fas fa-globe"></i> Portal SIMLITABMAS
+                </div>
+              </div>
+            </div>
+
+            {/* Agenda Item 3 */}
+            <div style={{ backgroundColor: 'white', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 5px 20px rgba(0,0,0,0.05)', display: 'flex', transition: 'transform 0.3s' }}
+              onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+              onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+            >
+              <div style={{ backgroundColor: '#1565c0', width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', padding: '15px' }}>
+                <span style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>02</span>
+                <span style={{ textTransform: 'uppercase', fontSize: '0.9rem', letterSpacing: '1px' }}>Mar</span>
+              </div>
+              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', color: '#333' }}>Workshop Metodologi</h3>
+                <div style={{ fontSize: '0.9rem', color: '#666', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '5px' }}>
+                  <i className="far fa-clock"></i> 09:00 - 15:00 WIB
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#666', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <i className="fas fa-video"></i> Zoom Meeting
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 7. VIDEO SECTION - White Background */}
       <section style={{ padding: '80px 0', backgroundColor: 'white' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
