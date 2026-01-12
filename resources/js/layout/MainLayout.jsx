@@ -27,6 +27,7 @@ const MainLayout = () => {
 
 
     const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -81,6 +82,7 @@ const MainLayout = () => {
             setIsAdminLoggedIn(false);
         }
     };
+
 
 
     return (
@@ -208,95 +210,108 @@ const MainLayout = () => {
                 </header>
             )}
 
-            {/* Mobile Header (Hidden on Desktop, Visible on Mobile via CSS usually, but here we force visibility based on state for cleanup) */}
+            {/* Mobile Header */}
             {isMobile && (
-                <div className="wrap-header-mobile" style={{ backgroundColor: 'green', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 20px' }}>
+                <div className="wrap-header-mobile" style={{
+                    backgroundColor: 'green',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '10px 20px',
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 1001
+                }}>
                     {/* Logo Mobile */}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img src="/images/icons/uim.png" alt="LOGO" style={{ width: '40px', height: '40px' }} />
+                        <span style={{ color: 'white', fontWeight: 'bold', marginLeft: '10px', fontSize: '18px' }}>LPPM UIM</span>
                     </div>
 
-                    {/* Simplified for this refactor to focus on Desktop fix first */}
-                    <div className="btn-show-menu-mobile hamburger hamburger--squeeze m-r--8" style={{ padding: '0' }}>
-                        <span className="hamburger-box">
-                            <span className="hamburger-inner"></span>
-                        </span>
+                    {/* Hamburger Button */}
+                    <div
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        style={{ padding: '10px', cursor: 'pointer', color: 'white', fontSize: '24px' }}
+                    >
+                        {isMobileMenuOpen ? <i className="fas fa-times"></i> : <i className="fas fa-bars"></i>}
                     </div>
                 </div>
             )}
 
             {/* Menu Mobile */}
-            <div className="menu-mobile">
-                <ul className="topbar-mobile">
-                    <li className="left-topbar">
-                        <span className="left-topbar-item flex-wr-s-c">
-                            <span>
-                                LPPM UIM
-                            </span>
-                        </span>
-                    </li>
-
-                    <li className="right-topbar">
-                        <a href="#">
-                            <span className="fab fa-facebook-f"></span>
-                        </a>
-
-                        <a href="#">
-                            <span className="fab fa-twitter"></span>
-                        </a>
-
-                        <a href="#">
-                            <span className="fab fa-instagram"></span>
-                        </a>
-
-                        <a href="#">
-                            <span className="fab fa-youtube"></span>
-                        </a>
-                    </li>
-                </ul>
-
-                <ul className="main-menu-m">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-
-                    <li>
-                        <a href="/profil">Profil</a>
-                    </li>
-
-                    <li>
-                        <a href="/penelitian">Penelitian</a>
-                    </li>
-
-                    <li>
-                        <a href="/pengabdian">Pengabdian</a>
-                    </li>
-
-                    <li>
-                        <a href="/hki">HKI</a>
-                    </li>
-
-                    <li>
-                        <a href="/seminar">Seminar</a>
-                    </li>
-
-                    <li>
-                        <a href="/permohonan-surat">Permohonan Surat</a>
-                    </li>
-
-                    <li>
-                        <a
-                            href="#"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setIsLoginModalOpen(true);
-                            }}
-                        >
-                            Admin
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <AnimatePresence>
+                {isMobile && isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        style={{
+                            overflow: 'hidden',
+                            backgroundColor: '#fff',
+                            borderBottom: '1px solid #eee',
+                            position: 'fixed',
+                            top: '60px', // Adjust based on header height
+                            left: 0,
+                            width: '100%',
+                            zIndex: 1000,
+                            boxShadow: '0 5px 15px rgba(0,0,0,0.1)'
+                        }}
+                    >
+                        <ul style={{ listStyle: 'none', padding: '20px', margin: 0 }}>
+                            {[
+                                { name: 'Home', path: '/' },
+                                { name: 'Profil', path: '/profil' },
+                                { name: 'Penelitian', path: '/penelitian' },
+                                { name: 'Pengabdian', path: '/pengabdian' },
+                                { name: 'HKI', path: '/hki' },
+                                { name: 'Seminar', path: '/seminar' },
+                                { name: 'Permohonan Surat', path: '/permohonan-surat' },
+                            ].map((item, index) => (
+                                <li key={index} style={{ marginBottom: '15px' }}>
+                                    <a
+                                        href={item.path}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        style={{
+                                            color: '#333',
+                                            textDecoration: 'none',
+                                            fontSize: '16px',
+                                            fontWeight: '500',
+                                            display: 'block',
+                                            padding: '10px',
+                                            backgroundColor: location.pathname === item.path ? '#f0f0f0' : 'transparent',
+                                            borderRadius: '5px'
+                                        }}
+                                    >
+                                        {item.name}
+                                    </a>
+                                </li>
+                            ))}
+                            <li style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
+                                <a
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setIsMobileMenuOpen(false);
+                                        setIsLoginModalOpen(true);
+                                    }}
+                                    style={{
+                                        display: 'block',
+                                        textAlign: 'center',
+                                        backgroundColor: 'green',
+                                        color: 'white',
+                                        padding: '10px',
+                                        borderRadius: '20px',
+                                        textDecoration: 'none',
+                                        fontWeight: 'bold'
+                                    }}
+                                >
+                                    Login Admin
+                                </a>
+                            </li>
+                        </ul>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
 
             {/* Login Modal */}
