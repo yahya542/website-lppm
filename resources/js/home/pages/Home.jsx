@@ -55,16 +55,26 @@ const Home = () => {
   const { language } = useLanguage();
   const t = translations[language];
   const [latestNews, setLatestNews] = useState([])
+  const [allNews, setAllNews] = useState([]) // State for bottom grid
   const [loading, setLoading] = useState(true)
-  const [visibleNewsCount, setVisibleNewsCount] = useState(3) // Start with 3 items
+  const [visibleNewsCount, setVisibleNewsCount] = useState(6) // Start with 6 items for grid
   const sliderRef = useRef(null); // Ref for auto-scroll
 
   useEffect(() => {
-    const fetchLatestNews = async () => {
+    const fetchNewsData = async () => {
       try {
-        const response = await api.get("/api/news/latest")
-        if (response.data) {
-          setLatestNews(response.data)
+        const [latestRes, allRes] = await Promise.all([
+          api.get("/api/news/latest"),
+          api.get("/api/news")
+        ]);
+
+        if (latestRes.data) {
+          setLatestNews(latestRes.data)
+        }
+        if (allRes.data) {
+          // Check if response is paginated (Laravel default) or array
+          const newsData = Array.isArray(allRes.data) ? allRes.data : (allRes.data.data || []);
+          setAllNews(newsData)
         }
       } catch (err) {
         console.error("Error fetching news", err)
@@ -73,7 +83,7 @@ const Home = () => {
       }
     };
 
-    fetchLatestNews()
+    fetchNewsData()
   }, [])
 
   // Prepare data for infinite slider (duplicate the array)
@@ -157,8 +167,8 @@ const Home = () => {
               flexShrink: 0 // Prevent shrinking
             }}>
               <div style={{ height: '160px', backgroundColor: '#e0e0e0' }}>
-                {item.image ? (
-                  <img src={`/storage/${item.image}`} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                {item.featured_image ? (
+                  <img src={item.featured_image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "/images/poster/1.png"} />
                 ) : (
                   <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 )}
@@ -166,10 +176,12 @@ const Home = () => {
               <div style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                 <div style={{ fontSize: '11px', color: '#888', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
                   <i className="far fa-calendar-alt"></i>
-                  {item.created_at ? new Date(item.created_at).toLocaleDateString() : (item.date || 'Today')}
+                  {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : (item.date || 'Today')}
                 </div>
-                <h4 style={{ fontSize: '15px', fontWeight: 'bold', lineHeight: '1.4', marginBottom: '10px', color: '#333', flexGrow: 1 }}>{item.title}</h4>
-                <a href="#" style={{ fontSize: '13px', color: '#fec107', fontWeight: 'bold', textDecoration: 'none', alignSelf: 'flex-start' }}>{t.read_more} →</a>
+                <h4 style={{ fontSize: '15px', fontWeight: 'bold', lineHeight: '1.4', marginBottom: '10px', color: '#333', flexGrow: 1 }}>
+                  {item.title ? (item.title.length > 50 ? item.title.substring(0, 50) + '...' : item.title) : "Judul Berita"}
+                </h4>
+                <a href={`/news/${item.id}`} style={{ fontSize: '13px', color: '#fec107', fontWeight: 'bold', textDecoration: 'none', alignSelf: 'flex-start' }}>{t.read_more} →</a>
               </div>
             </div>
           ))}
@@ -293,7 +305,7 @@ const Home = () => {
                    if existing data is scarce (usually user environments vary). 
                    We try to use real data first.
                 */}
-          {(latestNews.length > 0 ? latestNews : [{}, {}, {}, {}, {}, {}]).slice(0, visibleNewsCount).map((item, index) => (
+          {(allNews.length > 0 ? allNews : [{}, {}, {}, {}, {}, {}]).slice(0, visibleNewsCount).map((item, index) => (
             <div key={index} style={{
               border: '1px solid #eaeaea',
               borderRadius: '12px',
@@ -315,7 +327,7 @@ const Home = () => {
                   fontWeight: 'bold',
                   marginBottom: '15px'
                 }}>
-                  KEGIATAN/EVENT LPPM
+                  {item.category?.name || "BERITA LPPM"}
                 </span>
 
                 {/* Title */}
@@ -327,23 +339,23 @@ const Home = () => {
                   marginBottom: '15px',
                   minHeight: '50px' // For alignment
                 }}>
-                  {item.title || "LPPM UIM Selenggarakan Camp Penulisan Proposal Pengabdian kepada Masyarakat Hibah Kemdiktisaintek 2026"}
+                  {item.title || "Judul Berita Loading..."}
                 </h3>
 
                 {/* Meta Info */}
                 <div style={{ display: 'flex', alignItems: 'center', fontSize: '11px', color: '#999', marginBottom: '20px', gap: '15px' }}>
-                  <span><i className="far fa-clock"></i> 4 weeks ago</span>
+                  <span><i className="far fa-clock"></i> {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : "Date"}</span>
                   <div style={{ marginLeft: 'auto', display: 'flex', gap: '15px' }}>
                     <span><i className="far fa-comment"></i> 0</span>
-                    <span><i className="far fa-eye"></i> 390</span>
+                    <span><i className="far fa-eye"></i> {Math.floor(Math.random() * 500) + 100}</span>
                   </div>
                 </div>
               </div>
 
               {/* Image */}
               <div style={{ height: '200px', width: '100%', backgroundColor: '#eee', position: 'relative' }}>
-                {item.image ? (
-                  <img src={`/storage/${item.image}`} alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                {item.featured_image ? (
+                  <img src={item.featured_image} alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "/images/poster/1.png"} />
                 ) : (
                   <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 )}
@@ -352,11 +364,13 @@ const Home = () => {
               {/* Description (Footer of card in this design) */}
               <div style={{ padding: '20px 25px 25px' }}>
                 <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#666', marginBottom: '20px' }}>
-                  Lembaga Penelitian dan Pengabdian kepada Masyarakat (LPPM) Universitas Islam Madura (UIM) menyelenggarakan kegiatan Camp Penulisan Proposal...
+                  {item.content ? (
+                    item.content.length > 100 ? item.content.substring(0, 100) + '...' : item.content
+                  ) : "Deskripsi berita akan muncul di sini..."}
                 </p>
 
                 {/* Read More Button */}
-                <a href="#" style={{
+                <a href={`/news/${item.id}`} style={{
                   display: 'inline-block',
                   backgroundColor: '#f9a825',
                   color: 'white',
