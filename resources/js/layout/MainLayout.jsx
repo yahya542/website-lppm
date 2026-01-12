@@ -13,6 +13,7 @@ const MainLayout = () => {
     const [loginCredentials, setLoginCredentials] = useState({ email: '', password: '' });
     const [loginError, setLoginError] = useState('');
     const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // consume global language context
     const { language, toggleLanguage } = useLanguage();
@@ -43,6 +44,7 @@ const MainLayout = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         try {
             const response = await api.post('/api/admin/login', loginCredentials);
@@ -57,6 +59,8 @@ const MainLayout = () => {
         } catch (error) {
             setLoginError('Login error occurred');
             console.error('Login error:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -522,22 +526,33 @@ const MainLayout = () => {
                                         </button>
                                         <button
                                             type="submit"
+                                            disabled={isLoading}
                                             style={{
                                                 flex: 1,
                                                 padding: '12px',
-                                                background: 'linear-gradient(135deg, #004d26 0%, #008000 100%)',
+                                                background: isLoading ? '#ccc' : 'linear-gradient(135deg, #004d26 0%, #008000 100%)',
                                                 color: 'white',
                                                 border: 'none',
                                                 borderRadius: '10px',
-                                                cursor: 'pointer',
+                                                cursor: isLoading ? 'not-allowed' : 'pointer',
                                                 fontWeight: 'bold',
-                                                boxShadow: '0 4px 15px rgba(0, 128, 0, 0.3)',
-                                                transition: 'all 0.2s'
+                                                boxShadow: isLoading ? 'none' : '0 4px 15px rgba(0, 128, 0, 0.3)',
+                                                transition: 'all 0.2s',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                gap: '8px'
                                             }}
-                                            onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-                                            onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+                                            onMouseOver={(e) => !isLoading && (e.target.style.transform = 'translateY(-2px)')}
+                                            onMouseOut={(e) => !isLoading && (e.target.style.transform = 'translateY(0)')}
                                         >
-                                            Masuk <i className="fas fa-arrow-right" style={{ marginLeft: '8px' }}></i>
+                                            {isLoading ? (
+                                                <>
+                                                    <i className="fas fa-spinner fa-spin"></i> Loading...
+                                                </>
+                                            ) : (
+                                                "Masuk"
+                                            )}
                                         </button>
                                     </div>
                                 </form>
