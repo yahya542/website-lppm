@@ -231,55 +231,99 @@ const PermohonanSuratList = () => {
                         </p>
                     </motion.div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', position: 'relative' }}>
-                        {[
-                            { step: "01", title: "Login Akun", title_en: "Account Login", icon: "fa-sign-in-alt", desc: "Masuk menggunakan akun SSO UIM", desc_en: "Login using UIM SSO account" },
-                            { step: "02", title: "Pilih Layanan", title_en: "Select Service", icon: "fa-list-ul", desc: "Pilih jenis surat yang dibutuhkan", desc_en: "Select the type of letter needed" },
-                            { step: "03", title: "Isi Formulir", title_en: "Fill Form", icon: "fa-edit", desc: "Lengkapi data yang diperlukan", desc_en: "Complete the required data" },
-                            { step: "04", title: "Verifikasi", title_en: "Verification", icon: "fa-check-circle", desc: "Proses verifikasi oleh admin", desc_en: "Verification process by admin" },
-                            { step: "05", title: "Unduh Surat", title_en: "Download Letter", icon: "fa-download", desc: "Unduh surat yang telah terbit", desc_en: "Download the issued letter" }
-                        ].map((item, index) => (
-                            <motion.div
-                                key={index}
-                                variants={fadeInUp}
-                                transition={{ delay: index * 0.1 }}
-                                style={{
-                                    backgroundColor: 'white',
-                                    padding: '20px',
-                                    borderRadius: '15px',
-                                    textAlign: 'center',
-                                    boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
-                                    position: 'relative',
-                                    zIndex: 2
-                                }}
-                            >
-                                <div style={{
-                                    width: '40px',
-                                    height: '40px',
-                                    backgroundColor: '#37474f',
-                                    color: 'white',
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '14px',
-                                    fontWeight: 'bold',
-                                    margin: '0 auto 15px'
-                                }}>
-                                    {item.step}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeInUp}
+                        style={{
+                            backgroundColor: 'white',
+                            padding: '40px',
+                            borderRadius: '20px',
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                            position: 'relative',
+                            overflow: 'hidden'
+                        }}
+                    >
+                        {/* Connecting Line (Background) */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '85px',
+                            left: '10%',
+                            right: '10%',
+                            height: '4px',
+                            backgroundColor: '#eee',
+                            zIndex: 1,
+                            display: 'flex'
+                        }}>
+                            <div style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, #fb8c00 0%, #ef6c00 100%)', opacity: 0.3 }}></div>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', position: 'relative', zIndex: 2, gap: '20px' }}>
+                            {[
+                                { step: "1", title: "Login Akun", title_en: "Account Login", icon: "fa-sign-in-alt", desc: "Masuk akun SSO UIM", desc_en: "Login with SSO" },
+                                { step: "2", title: "Pilih Layanan", title_en: "Select Service", icon: "fa-list-ul", desc: "Pilih jenis surat", desc_en: "Choose letter type" },
+                                { step: "3", title: "Isi Formulir", title_en: "Fill Form", icon: "fa-edit", desc: "Lengkapi data", desc_en: "Fill required data" },
+                                { step: "4", title: "Verifikasi", title_en: "Verification", icon: "fa-check-circle", desc: "Proses admin", desc_en: "Admin process" },
+                                { step: "5", title: "Unduh Surat", title_en: "Download Letter", icon: "fa-download", desc: "Unduh dokumen", desc_en: "Download doc" }
+                            ].map((item, index) => (
+                                <div key={index} style={{ flex: '1', minWidth: '140px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <div style={{
+                                        width: '90px',
+                                        height: '90px',
+                                        backgroundColor: 'white', // bg white to cover line
+                                        borderRadius: '50%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        marginBottom: '20px',
+                                        boxShadow: '0 5px 15px rgba(251, 140, 0, 0.2)',
+                                        border: '4px solid #fff3e0',
+                                        position: 'relative'
+                                    }}>
+                                        <div style={{
+                                            width: '60px',
+                                            height: '60px',
+                                            backgroundColor: '#fb8c00', // Warning/Orange color
+                                            borderRadius: '50%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            color: 'white',
+                                            fontSize: '24px'
+                                        }}>
+                                            <i className={`fas ${item.icon}`}></i>
+                                        </div>
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: '-5px',
+                                            right: '-5px',
+                                            width: '30px',
+                                            height: '30px',
+                                            backgroundColor: '#37474f',
+                                            color: 'white',
+                                            borderRadius: '50%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontSize: '12px',
+                                            fontWeight: 'bold',
+                                            border: '3px solid white'
+                                        }}>
+                                            {item.step}
+                                        </div>
+                                    </div>
+
+                                    <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
+                                        {language === 'id' ? item.title : item.title_en}
+                                    </h4>
+                                    <p style={{ fontSize: '13px', color: '#777', maxWidth: '150px', lineHeight: '1.4' }}>
+                                        {language === 'id' ? item.desc : item.desc_en}
+                                    </p>
                                 </div>
-                                <div style={{ fontSize: '24px', color: '#fb8c00', marginBottom: '10px' }}>
-                                    <i className={`fas ${item.icon}`}></i>
-                                </div>
-                                <h4 style={{ fontWeight: 'bold', marginBottom: '5px' }}>
-                                    {language === 'id' ? item.title : item.title_en}
-                                </h4>
-                                <p style={{ fontSize: '13px', color: '#777' }}>
-                                    {language === 'id' ? item.desc : item.desc_en}
-                                </p>
-                            </motion.div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    </motion.div>
                 </div>
 
             </div>
