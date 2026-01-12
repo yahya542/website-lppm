@@ -1,7 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 const PermohonanSuratList = () => {
+    const { language } = useLanguage();
+    const t = translations[language];
+
     // Animation variants
     const fadeInUp = {
         hidden: { opacity: 0, y: 20 },
@@ -23,7 +28,7 @@ const PermohonanSuratList = () => {
 
             {/* 1. HERO SECTION */}
             <div style={{
-                background: 'linear-gradient(135deg, #4527a0 0%, #311b92 100%)',
+                background: 'linear-gradient(135deg, #fb8c00 0%, #ef6c00 100%)',
                 padding: '80px 20px',
                 color: 'white',
                 textAlign: 'center',
@@ -38,18 +43,20 @@ const PermohonanSuratList = () => {
                     style={{ maxWidth: '1000px', margin: '0 auto' }}
                 >
                     <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.2)', padding: '5px 15px', borderRadius: '20px', marginBottom: '15px', fontSize: '14px', fontWeight: 'bold' }}>
-                        ADMINISTRATION SERVICES
+                        {t.letters_subtitle}
                     </div>
-                    <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '15px', letterSpacing: '1px' }}>PERMOHONAN SURAT</h1>
+                    <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '15px', letterSpacing: '1px' }}>
+                        {t.letters_title}
+                    </h1>
                     <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '750px', margin: '0 auto', lineHeight: '1.6' }}>
-                        Layanan administrasi persuratan digital untuk mendukung kegiatan penelitian dan pengabdian masyarakat.
+                        {t.letters_desc}
                     </p>
                 </motion.div>
             </div>
 
             <div className="container" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px' }}>
 
-                {/* 2. SERVICE OVERVIEW */}
+                {/* 2. SERVICE CENTER */}
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
@@ -60,7 +67,7 @@ const PermohonanSuratList = () => {
                         padding: '40px',
                         borderRadius: '20px',
                         boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                        marginBottom: '60px',
+                        marginBottom: '50px',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '30px',
@@ -71,27 +78,27 @@ const PermohonanSuratList = () => {
                     <div style={{
                         width: '80px',
                         height: '80px',
-                        backgroundColor: '#ede7f6',
+                        backgroundColor: '#fff3e0',
                         borderRadius: '50%',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: '#4527a0',
+                        color: '#fb8c00',
                         fontSize: '32px'
                     }}>
-                        <i className="fas fa-file-signature"></i>
+                        <i className="fas fa-mail-bulk"></i>
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '15px', color: '#333' }}>Pusat Layanan Surat</h2>
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '15px', color: '#333' }}>
+                            {t.letters_service_title}
+                        </h2>
                         <p style={{ fontSize: '1.1rem', color: '#666', lineHeight: '1.8', maxWidth: '800px' }}>
-                            Lembaga Penelitian dan Pengabdian Masyarakat (LPPM) UIM menyediakan layanan permohonan surat
-                            yang dapat diakses oleh dosen, mahasiswa, dan masyarakat umum untuk berbagai keperluan
-                            akademik dan administratif secara efisien.
+                            {t.letters_service_desc}
                         </p>
                     </div>
                 </motion.div>
 
-                {/* 3. JENIS SURAT */}
+                {/* 3. LAYANAN SURAT */}
                 <div style={{ marginBottom: '60px' }}>
                     <motion.div
                         initial="hidden"
@@ -100,12 +107,14 @@ const PermohonanSuratList = () => {
                         variants={fadeInUp}
                         style={{ textAlign: 'center', marginBottom: '40px' }}
                     >
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>Kategori Layanan</h2>
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>
+                            {t.letters_flow_title}
+                        </h2>
                         <div style={{ width: '60px', height: '4px', backgroundColor: '#f9a825', margin: '0 auto' }}></div>
                     </motion.div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '40px' }}>
-                        {/* Dosen & Peneliti */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
+                        {/* Surat Keterangan */}
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
@@ -114,40 +123,30 @@ const PermohonanSuratList = () => {
                             transition={{ delay: 0.1 }}
                             style={{
                                 backgroundColor: 'white',
+                                padding: '30px',
                                 borderRadius: '15px',
-                                overflow: 'hidden',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                                borderTop: '5px solid #d81b60'
+                                boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+                                borderTop: '5px solid #fb8c00',
+                                textAlign: 'center'
                             }}
                         >
-                            <div style={{ padding: '30px', background: 'linear-gradient(to bottom, #d81b6005, white)' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                    <div style={{ width: '50px', height: '50px', borderRadius: '12px', backgroundColor: '#d81b60', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '24px', marginRight: '15px' }}>
-                                        <i className="fas fa-chalkboard-teacher"></i>
-                                    </div>
-                                    <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Dosen & Peneliti</h3>
-                                </div>
-                                <ul style={{ listStyle: 'none', padding: 0 }}>
-                                    {[
-                                        "Surat Keterangan Penelitian",
-                                        "Surat Tugas Penelitian",
-                                        "Surat Rekomendasi Penelitian",
-                                        "Surat Izin Pengumpulan Data",
-                                        "Surat Keterangan Selesai Penelitian"
-                                    ].map((item, idx) => (
-                                        <li key={idx} style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', fontSize: '15px', color: '#555', paddingBottom: '15px', borderBottom: idx === 4 ? 'none' : '1px solid #eee' }}>
-                                            <i className="fas fa-check-circle" style={{ marginRight: '15px', color: '#d81b60', fontSize: '16px' }}></i>
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <button style={{ width: '100%', padding: '12px', backgroundColor: '#d81b60', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', marginTop: '10px' }}>
-                                    AJUKAN SEKARANG
-                                </button>
+                            <div style={{ width: '60px', height: '60px', backgroundColor: '#fff3e0', borderRadius: '50%', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fb8c00', fontSize: '24px' }}>
+                                <i className="fas fa-file-alt"></i>
                             </div>
+                            <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '15px' }}>
+                                {language === 'id' ? 'Surat Keterangan' : 'Certificate Letter'}
+                            </h3>
+                            <p style={{ color: '#666', marginBottom: '20px', fontSize: '14px' }}>
+                                {language === 'id'
+                                    ? 'Layanan pembuatan surat keterangan penelitian, pengabdian, dan kegiatan akademik lainnya untuk keperluan administrasi.'
+                                    : 'Service for creating research, community service, and other academic activity certificates for administrative purposes.'}
+                            </p>
+                            <a href="#" style={{ padding: '8px 20px', backgroundColor: '#fb8c00', color: 'white', borderRadius: '20px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold', display: 'inline-block' }}>
+                                {t.apply_now}
+                            </a>
                         </motion.div>
 
-                        {/* Mahasiswa */}
+                        {/* Surat Rekomendasi */}
                         <motion.div
                             initial="hidden"
                             whileInView="visible"
@@ -156,109 +155,131 @@ const PermohonanSuratList = () => {
                             transition={{ delay: 0.2 }}
                             style={{
                                 backgroundColor: 'white',
+                                padding: '30px',
                                 borderRadius: '15px',
-                                overflow: 'hidden',
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                                borderTop: '5px solid #1976d2'
+                                boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+                                borderTop: '5px solid #43a047',
+                                textAlign: 'center'
                             }}
                         >
-                            <div style={{ padding: '30px', background: 'linear-gradient(to bottom, #1976d205, white)' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                    <div style={{ width: '50px', height: '50px', borderRadius: '12px', backgroundColor: '#1976d2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '24px', marginRight: '15px' }}>
-                                        <i className="fas fa-user-graduate"></i>
-                                    </div>
-                                    <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Mahasiswa</h3>
-                                </div>
-                                <ul style={{ listStyle: 'none', padding: 0 }}>
-                                    {[
-                                        "Surat Izin Penelitian Skripsi/Tesis",
-                                        "Surat Keterangan Bimbingan",
-                                        "Surat Permohonan Data/Informasi",
-                                        "Surat Keterangan Penelitian Lapangan",
-                                        "Surat Permohonan Akses Arsip"
-                                    ].map((item, idx) => (
-                                        <li key={idx} style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', fontSize: '15px', color: '#555', paddingBottom: '15px', borderBottom: idx === 4 ? 'none' : '1px solid #eee' }}>
-                                            <i className="fas fa-check-circle" style={{ marginRight: '15px', color: '#1976d2', fontSize: '16px' }}></i>
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <button style={{ width: '100%', padding: '12px', backgroundColor: '#1976d2', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', marginTop: '10px' }}>
-                                    AJUKAN SEKARANG
-                                </button>
+                            <div style={{ width: '60px', height: '60px', backgroundColor: '#e8f5e9', borderRadius: '50%', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#43a047', fontSize: '24px' }}>
+                                <i className="fas fa-thumbs-up"></i>
                             </div>
+                            <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '15px' }}>
+                                {language === 'id' ? 'Surat Rekomendasi' : 'Recommendation Letter'}
+                            </h3>
+                            <p style={{ color: '#666', marginBottom: '20px', fontSize: '14px' }}>
+                                {language === 'id'
+                                    ? 'Pengajuan surat rekomendasi untuk beasiswa, studi lanjut, atau keperluan profesional lainnya dari pimpinan LPPM.'
+                                    : 'Application for recommendation letters for scholarships, further studies, or other professional needs from LPPM leadership.'}
+                            </p>
+                            <a href="#" style={{ padding: '8px 20px', backgroundColor: '#43a047', color: 'white', borderRadius: '20px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold', display: 'inline-block' }}>
+                                {t.apply_now}
+                            </a>
+                        </motion.div>
+
+                        {/* Surat Tugas */}
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={fadeInUp}
+                            transition={{ delay: 0.3 }}
+                            style={{
+                                backgroundColor: 'white',
+                                padding: '30px',
+                                borderRadius: '15px',
+                                boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+                                borderTop: '5px solid #1e88e5',
+                                textAlign: 'center'
+                            }}
+                        >
+                            <div style={{ width: '60px', height: '60px', backgroundColor: '#e3f2fd', borderRadius: '50%', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1e88e5', fontSize: '24px' }}>
+                                <i className="fas fa-briefcase"></i>
+                            </div>
+                            <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '15px' }}>
+                                {language === 'id' ? 'Surat Tugas' : 'Assignment Letter'}
+                            </h3>
+                            <p style={{ color: '#666', marginBottom: '20px', fontSize: '14px' }}>
+                                {language === 'id'
+                                    ? 'Penerbitan surat tugas untuk pelaksanaan penelitian lapangan, pengabdian masyarakat, atau seminar ilmiah.'
+                                    : 'Issuance of assignment letters for field research, community service, or scientific seminars.'}
+                            </p>
+                            <a href="#" style={{ padding: '8px 20px', backgroundColor: '#1e88e5', color: 'white', borderRadius: '20px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold', display: 'inline-block' }}>
+                                {t.apply_now}
+                            </a>
                         </motion.div>
                     </div>
                 </div>
 
-                {/* 4. TATA CARA */}
-                <div style={{ marginBottom: '30px' }}>
+                {/* 4. ALUR PENGAJUAN */}
+                <div>
                     <motion.div
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
                         variants={fadeInUp}
-                        style={{ padding: '40px', backgroundColor: 'white', borderRadius: '20px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}
+                        style={{ textAlign: 'center', marginBottom: '40px' }}
                     >
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '30px', textAlign: 'center' }}>Alur Pengajuan</h2>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '20px', position: 'relative' }}>
-                            {/* Connector Line (Desktop) */}
-                            <div style={{ position: 'absolute', top: '25px', left: '0', right: '0', height: '2px', backgroundColor: '#eee', zIndex: 0, display: 'none' }} className="d-md-block"></div>
-
-                            {[
-                                { step: 1, title: "Isi Formulir", desc: "Lengkapi data permohonan secara online", icon: "fa-edit" },
-                                { step: 2, title: "Upload Dokumen", desc: "Unggah berkas pendukung yang syaratkan", icon: "fa-upload" },
-                                { step: 3, title: "Verifikasi", desc: "Hunggu proses verifikasi admin LPPM", icon: "fa-clock" },
-                                { step: 4, title: "Selesai", desc: "Unduh surat digital atau ambil fisik", icon: "fa-envelope-open-text" }
-                            ].map((item, index) => (
-                                <div key={index} style={{ flex: '1 1 200px', textAlign: 'center', zIndex: 1, position: 'relative' }}>
-                                    <div style={{
-                                        width: '50px',
-                                        height: '50px',
-                                        backgroundColor: '#4527a0',
-                                        color: 'white',
-                                        borderRadius: '50%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontSize: '20px',
-                                        margin: '0 auto 15px',
-                                        boxShadow: '0 0 0 5px white'
-                                    }}>
-                                        <i className={`fas ${item.icon}`}></i>
-                                    </div>
-                                    <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '5px' }}>{item.title}</h4>
-                                    <p style={{ fontSize: '0.9rem', color: '#666' }}>{item.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="row mt-5">
-                            <div className="col-md-6 mb-4">
-                                <div style={{ padding: '20px', backgroundColor: '#fff3e0', borderRadius: '10px', borderLeft: '4px solid #f57c00' }}>
-                                    <h4 style={{ fontWeight: 'bold', color: '#f57c00', marginBottom: '10px' }}><i className="fas fa-file-alt mr-2"></i> Dokumen Pendukung Wajib</h4>
-                                    <ul style={{ paddingLeft: '20px', marginBottom: 0, fontSize: '14px', color: '#555' }}>
-                                        <li>Formulir permohonan yang telah diisi</li>
-                                        <li>Surat pengantar dari fakultas/jurusan</li>
-                                        <li>Proposal penelitian (jika ada)</li>
-                                        <li>Scan KTP/KTM</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className="col-md-6 mb-4">
-                                <div style={{ padding: '20px', backgroundColor: '#e3f2fd', borderRadius: '10px', borderLeft: '4px solid #1976d2' }}>
-                                    <h4 style={{ fontWeight: 'bold', color: '#1976d2', marginBottom: '10px' }}><i className="fas fa-headset mr-2"></i> Butuh Bantuan?</h4>
-                                    <p style={{ fontSize: '14px', color: '#555', marginBottom: '5px' }}>Jika mengalami kendala, hubungi kami:</p>
-                                    <p style={{ fontSize: '14px', fontWeight: 'bold', color: '#333' }}>
-                                        <i className="fas fa-envelope mr-2"></i> lppm@uim.ac.id <br />
-                                        <i className="fas fa-phone mr-2"></i> (0411) 1234567
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>
+                            {t.letters_flow_title}
+                        </h2>
+                        <p style={{ color: '#666' }}>
+                            {language === 'id'
+                                ? 'Langkah mudah mengajukan permohonan surat secara online'
+                                : 'Easy steps to apply for a letter online'}
+                        </p>
                     </motion.div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', position: 'relative' }}>
+                        {[
+                            { step: "01", title: "Login Akun", title_en: "Account Login", icon: "fa-sign-in-alt", desc: "Masuk menggunakan akun SSO UIM", desc_en: "Login using UIM SSO account" },
+                            { step: "02", title: "Pilih Layanan", title_en: "Select Service", icon: "fa-list-ul", desc: "Pilih jenis surat yang dibutuhkan", desc_en: "Select the type of letter needed" },
+                            { step: "03", title: "Isi Formulir", title_en: "Fill Form", icon: "fa-edit", desc: "Lengkapi data yang diperlukan", desc_en: "Complete the required data" },
+                            { step: "04", title: "Verifikasi", title_en: "Verification", icon: "fa-check-circle", desc: "Proses verifikasi oleh admin", desc_en: "Verification process by admin" },
+                            { step: "05", title: "Unduh Surat", title_en: "Download Letter", icon: "fa-download", desc: "Unduh surat yang telah terbit", desc_en: "Download the issued letter" }
+                        ].map((item, index) => (
+                            <motion.div
+                                key={index}
+                                variants={fadeInUp}
+                                transition={{ delay: index * 0.1 }}
+                                style={{
+                                    backgroundColor: 'white',
+                                    padding: '20px',
+                                    borderRadius: '15px',
+                                    textAlign: 'center',
+                                    boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
+                                    position: 'relative',
+                                    zIndex: 2
+                                }}
+                            >
+                                <div style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    backgroundColor: '#37474f',
+                                    color: 'white',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold',
+                                    margin: '0 auto 15px'
+                                }}>
+                                    {item.step}
+                                </div>
+                                <div style={{ fontSize: '24px', color: '#fb8c00', marginBottom: '10px' }}>
+                                    <i className={`fas ${item.icon}`}></i>
+                                </div>
+                                <h4 style={{ fontWeight: 'bold', marginBottom: '5px' }}>
+                                    {language === 'id' ? item.title : item.title_en}
+                                </h4>
+                                <p style={{ fontSize: '13px', color: '#777' }}>
+                                    {language === 'id' ? item.desc : item.desc_en}
+                                </p>
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
 
             </div>

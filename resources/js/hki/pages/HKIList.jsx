@@ -1,7 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 const HKIList = () => {
+    const { language } = useLanguage();
+    const t = translations[language];
+
     // Animation variants
     const fadeInUp = {
         hidden: { opacity: 0, y: 20 },
@@ -38,11 +43,13 @@ const HKIList = () => {
                     style={{ maxWidth: '1000px', margin: '0 auto' }}
                 >
                     <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.2)', padding: '5px 15px', borderRadius: '20px', marginBottom: '15px', fontSize: '14px', fontWeight: 'bold' }}>
-                        INTELLECTUAL PROPERTY RIGHTS
+                        {t.hki_subtitle}
                     </div>
-                    <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '15px', letterSpacing: '1px' }}>HAK KEKAYAAN INTELEKTUAL</h1>
+                    <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '15px', letterSpacing: '1px' }}>
+                        {t.hki_title}
+                    </h1>
                     <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '750px', margin: '0 auto', lineHeight: '1.6' }}>
-                        Perlindungan inovasi dan kreativitas sivitas akademika UIM untuk kemajuan ilmu pengetahuan dan teknologi.
+                        {t.hki_desc}
                     </p>
                 </motion.div>
             </div>
@@ -82,11 +89,11 @@ const HKIList = () => {
                         <i className="fas fa-certificate"></i>
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '15px', color: '#333' }}>Pusat HKI</h2>
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '15px', color: '#333' }}>
+                            {t.hki_center_title}
+                        </h2>
                         <p style={{ fontSize: '1.1rem', color: '#666', lineHeight: '1.8', maxWidth: '800px' }}>
-                            Lembaga Penelitian dan Pengabdian Masyarakat (LPPM) UIM mendukung penuh pengembangan dan perlindungan
-                            Hak Kekayaan Intelektual (HKI) dari hasil penelitian dan inovasi yang dihasilkan oleh dosen,
-                            mahasiswa, dan tenaga kependidikan di lingkungan Universitas Indonesia Makassar.
+                            {t.hki_center_desc}
                         </p>
                     </div>
                 </motion.div>
@@ -100,7 +107,9 @@ const HKIList = () => {
                         variants={fadeInUp}
                         style={{ textAlign: 'center', marginBottom: '40px' }}
                     >
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>Jenis Perlindungan HKI</h2>
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>
+                            {t.hki_types_title}
+                        </h2>
                         <div style={{ width: '60px', height: '4px', backgroundColor: '#f9a825', margin: '0 auto' }}></div>
                     </motion.div>
 
@@ -121,12 +130,25 @@ const HKIList = () => {
                             }}
                         >
                             <div style={{ fontSize: '30px', marginBottom: '20px', opacity: 0.8 }}><i className="fas fa-lightbulb"></i></div>
-                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>Hak Paten</h3>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>
+                                {language === 'id' ? 'Hak Paten' : 'Patent Rights'}
+                            </h3>
                             <ul style={{ listStyle: 'none', padding: 0 }}>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Paten Produk</li>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Paten Proses</li>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Paten Sederhana</li>
-                                <li style={{ display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Invensi Teknologi Baru</li>
+                                {(language === 'id' ? [
+                                    "Paten Produk",
+                                    "Paten Proses",
+                                    "Paten Sederhana",
+                                    "Invensi Teknologi Baru"
+                                ] : [
+                                    "Product Patent",
+                                    "Process Patent",
+                                    "Simple Patent",
+                                    "New Technology Invention"
+                                ]).map((item, idx) => (
+                                    <li key={idx} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> {item}
+                                    </li>
+                                ))}
                             </ul>
                         </motion.div>
 
@@ -146,12 +168,25 @@ const HKIList = () => {
                             }}
                         >
                             <div style={{ fontSize: '30px', marginBottom: '20px', opacity: 0.8 }}><i className="fas fa-copyright"></i></div>
-                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>Hal Cipta & Lainnya</h3>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>
+                                {language === 'id' ? 'Hak Cipta & Lainnya' : 'Copyright & Others'}
+                            </h3>
                             <ul style={{ listStyle: 'none', padding: 0 }}>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Hak Cipta (Buku, Seni, dll)</li>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Desain Industri</li>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Merek Dagang</li>
-                                <li style={{ display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Rahasia Dagang</li>
+                                {(language === 'id' ? [
+                                    "Hak Cipta (Buku, Seni, dll)",
+                                    "Desain Industri",
+                                    "Merek Dagang",
+                                    "Rahasia Dagang"
+                                ] : [
+                                    "Copyright (Books, Art, etc.)",
+                                    "Industrial Design",
+                                    "Trademark",
+                                    "Trade Secret"
+                                ]).map((item, idx) => (
+                                    <li key={idx} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> {item}
+                                    </li>
+                                ))}
                             </ul>
                         </motion.div>
                     </div>
@@ -167,10 +202,14 @@ const HKIList = () => {
                         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '30px' }}
                     >
                         <div>
-                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '5px' }}>Daftar HKI Terbaru</h2>
-                            <p style={{ color: '#666' }}>Inovasi terbaru UIM yang telah terdaftar</p>
+                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '5px' }}>
+                                {t.hki_latest_title}
+                            </h2>
+                            <p style={{ color: '#666' }}>{t.hki_latest_subtitle}</p>
                         </div>
-                        <a href="#" style={{ color: 'green', fontWeight: 'bold', textDecoration: 'none' }}>Lihat Katalog <i className="fas fa-arrow-right"></i></a>
+                        <a href="#" style={{ color: 'green', fontWeight: 'bold', textDecoration: 'none' }}>
+                            {t.view_catalog} <i className="fas fa-arrow-right"></i>
+                        </a>
                     </motion.div>
 
                     <motion.div
@@ -183,37 +222,45 @@ const HKIList = () => {
                         {[
                             {
                                 title: "Sistem Monitoring Kualitas Udara",
+                                title_en: "Air Quality Monitoring System",
                                 inventor: "Dr. Ahmad Sudrajat, M.T.",
                                 number: "0123456789",
                                 date: "28 Des 2025",
                                 desc: "Sistem inovatif berbasis IoT untuk memonitor kualitas udara secara real-time dan memberikan peringatan dini...",
+                                desc_en: "Innovative IoT-based system to monitor air quality in real-time and provide early warning...",
                                 icon: "fa-wind",
                                 color: "#0288d1"
                             },
                             {
                                 title: "Alat Deteksi Dini Bencana Banjir",
+                                title_en: "Early Flood Detection Tool",
                                 inventor: "Ir. Budi Santoso, Ph.D.",
                                 number: "0987654321",
                                 date: "25 Des 2025",
                                 desc: "Alat sensor ketinggian air otomatis yang dapat mendeteksi dini potensi bencana banjir di daerah rawan...",
+                                desc_en: "Automatic water level sensor tool that can detect potential flood disasters in vulnerable areas early...",
                                 icon: "fa-water",
                                 color: "#d32f2f"
                             },
                             {
                                 title: "Aplikasi Pembelajaran Interaktif",
+                                title_en: "Interactive Learning Application",
                                 inventor: "Dr. Siti Rahmawati, M.Si.",
                                 number: "1122334455",
                                 date: "20 Des 2025",
                                 desc: "Aplikasi mobile berbasis gamifikasi untuk meningkatkan minat belajar siswa pada mata pelajaran sains...",
+                                desc_en: "Gamification-based mobile application to increase student interest in science subjects...",
                                 icon: "fa-mobile-alt",
                                 color: "#7b1fa2"
                             },
                             {
                                 title: "Metode Pengolahan Limbah Organik",
+                                title_en: "Organic Waste Processing Method",
                                 inventor: "Dr. Rina Kartika, M.Pd.",
                                 number: "5544332211",
                                 date: "15 Des 2025",
                                 desc: "Metode baru biokonversi untuk mengolah limbah organik rumah tangga menjadi pupuk kompos berkualitas tinggi...",
+                                desc_en: "New bioconversion method to process household organic waste into high-quality compost fertilizer...",
                                 icon: "fa-leaf",
                                 color: "#388e3c"
                             }
@@ -241,12 +288,14 @@ const HKIList = () => {
                                             fontWeight: 'bold'
                                         }}>
                                             <i className="fas fa-file-contract" style={{ marginRight: '5px' }}></i>
-                                            Terdaftar
+                                            {t.registered}
                                         </div>
                                         <div style={{ color: '#999', fontSize: '13px' }}>{item.date}</div>
                                     </div>
 
-                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', lineHeight: '1.4' }}>{item.title}</h3>
+                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', lineHeight: '1.4' }}>
+                                        {language === 'id' ? item.title : item.title_en}
+                                    </h3>
 
                                     <div style={{ marginBottom: '15px' }}>
                                         <div style={{ fontSize: '13px', color: '#555', marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
@@ -260,11 +309,11 @@ const HKIList = () => {
                                     </div>
 
                                     <p style={{ color: '#777', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
-                                        {item.desc}
+                                        {language === 'id' ? item.desc : item.desc_en}
                                     </p>
 
                                     <a href="#" style={{ display: 'inline-flex', alignItems: 'center', color: item.color, fontWeight: 'bold', fontSize: '13px', textDecoration: 'none' }}>
-                                        DETAIL PATEN <i className="fas fa-arrow-right" style={{ marginLeft: '5px' }}></i>
+                                        {t.patent_detail} <i className="fas fa-arrow-right" style={{ marginLeft: '5px' }}></i>
                                     </a>
                                 </div>
                             </motion.div>
