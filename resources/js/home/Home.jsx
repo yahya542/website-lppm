@@ -164,9 +164,58 @@ const Home = () => {
       </section>
 
       {/* 8. COUNTER */}
-      <section style={{ padding: '40px 20px', textAlign: 'center' }}>
-        <div style={{ fontSize: '2rem', fontWeight: 'bold', letterSpacing: '5px', fontFamily: 'monospace' }}>1 0 2 5 9 2</div>
-        <div style={{ fontSize: '12px', color: '#666' }}>VISITOR COUNT</div>
+      <section style={{ padding: '40px 20px', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto', backgroundColor: 'white', padding: '30px', borderRadius: '15px', boxShadow: '0 5px 15px rgba(0,0,0,0.05)' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '20px', color: '#333' }}>Total Visitors</h3>
+          <div style={{ fontSize: '3rem', fontWeight: 'bold', letterSpacing: '8px', fontFamily: 'monospace', color: '#2e7d32', marginBottom: '10px' }}>1 0 2 5 9 2</div>
+          <div style={{ fontSize: '12px', color: '#999', marginBottom: '30px' }}>SINCE JANUARY 2026</div>
+
+          <div style={{ borderTop: '1px solid #eee', paddingTop: '20px' }}>
+            <h4 style={{ fontSize: '12px', fontWeight: 'bold', color: '#666', marginBottom: '15px', textTransform: 'uppercase' }}>Visitors by Country</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '15px' }}>
+              {/* Indonesia */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555' }}>
+                <img src="https://flagcdn.com/w40/id.png" alt="ID" style={{ width: '25px', borderRadius: '3px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontWeight: 'bold' }}>85%</div>
+                  <div style={{ fontSize: '10px', color: '#999' }}>Indonesia</div>
+                </div>
+              </div>
+              {/* Malaysia */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555' }}>
+                <img src="https://flagcdn.com/w40/my.png" alt="MY" style={{ width: '25px', borderRadius: '3px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontWeight: 'bold' }}>5%</div>
+                  <div style={{ fontSize: '10px', color: '#999' }}>Malaysia</div>
+                </div>
+              </div>
+              {/* USA */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555' }}>
+                <img src="https://flagcdn.com/w40/us.png" alt="US" style={{ width: '25px', borderRadius: '3px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontWeight: 'bold' }}>3%</div>
+                  <div style={{ fontSize: '10px', color: '#999' }}>USA</div>
+                </div>
+              </div>
+              {/* Singapore */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555' }}>
+                <img src="https://flagcdn.com/w40/sg.png" alt="SG" style={{ width: '25px', borderRadius: '3px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontWeight: 'bold' }}>2%</div>
+                  <div style={{ fontSize: '10px', color: '#999' }}>Singapore</div>
+                </div>
+              </div>
+              {/* Others */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555' }}>
+                <div style={{ width: '25px', height: '18px', backgroundColor: '#ddd', borderRadius: '3px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>...</div>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontWeight: 'bold' }}>5%</div>
+                  <div style={{ fontSize: '10px', color: '#999' }}>Others</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* 9. BOTTOM NEWS GRID (New Requested Section) */}
