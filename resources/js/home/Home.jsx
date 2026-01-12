@@ -220,7 +220,7 @@ const Home = () => {
 
       {/* 9. BOTTOM NEWS GRID (New Requested Section) */}
       <section className="container" style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px', marginBottom: '40px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px', marginBottom: '40px' }}>
           {/* 
                    Using latestNews or Duplicating it to ensure we have content to show for the UI Demo 
                    if existing data is scarce (usually user environments vary). 

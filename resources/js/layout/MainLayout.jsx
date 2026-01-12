@@ -25,6 +25,17 @@ const MainLayout = () => {
 
 
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 992);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -73,136 +84,145 @@ const MainLayout = () => {
 
     return (
         <div className="main-layout">
-            {/* Header Unified */}
-            <header
-                className="wrap-menu-desktop"
-                style={{
-                    backgroundColor: 'green',
-                    position: isScrolled ? 'fixed' : 'relative',
-                    top: 0,
-                    width: '100%',
-                    zIndex: '1000',
-                    boxShadow: isScrolled ? '0 2px 5px rgba(0,0,0,0.1)' : 'none',
-                    transition: 'all 0.3s ease'
-                }}
-            >
-                <nav className="container" style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    height: '70px',
-                    padding: '0 20px',
-                    maxWidth: '1200px'
-                }}>
+            {/* Header Unified - Only show on Desktop */}
+            {!isMobile && (
+                <header
+                    className="wrap-menu-desktop"
+                    style={{
+                        backgroundColor: 'green',
+                        position: isScrolled ? 'fixed' : 'relative',
+                        top: 0,
+                        width: '100%',
+                        zIndex: '1000',
+                        boxShadow: isScrolled ? '0 2px 5px rgba(0,0,0,0.1)' : 'none',
+                        transition: 'all 0.3s ease'
+                    }}
+                >
+                    <nav className="container" style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        height: '70px',
+                        padding: '0 20px',
+                        maxWidth: '1200px'
+                    }}>
 
-                    {/* 1. LOGO (Left) */}
-                    <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-                        <img src="/images/icons/uim.png" alt="LOGO" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
-                        {/* Optional Text Logo if needed, currently just Image based on design */}
-                    </a>
+                        {/* 1. LOGO (Left) */}
+                        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+                            <img src="/images/icons/uim.png" alt="LOGO" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+                            {/* Optional Text Logo if needed, currently just Image based on design */}
+                        </a>
 
-                    {/* 2. MENU (Center) */}
+                        {/* 2. MENU (Center) */}
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <ul style={{
+                                display: 'flex',
+                                gap: '5px',
+                                listStyle: 'none',
+                                margin: 0,
+                                padding: 0
+                            }}>
+                                {[
+                                    { name: 'Home', path: '/' },
+                                    { name: 'Profil', path: '/profil' },
+                                    { name: 'Penelitian', path: '/penelitian' },
+                                    { name: 'Pengabdian', path: '/pengabdian' },
+                                    { name: 'HKI', path: '/hki' },
+                                    { name: 'Seminar', path: '/seminar' },
+                                    { name: 'Permohonan Surat', path: '/permohonan-surat' },
+                                ].map((item, index) => {
+                                    const isActive = location.pathname === item.path;
+                                    return (
+                                        <li key={index}>
+                                            <a href={item.path} style={{
+                                                color: 'white',
+                                                textDecoration: 'none',
+                                                padding: '10px 15px',
+                                                fontWeight: '500',
+                                                fontSize: '15px',
+                                                display: 'block',
+                                                transition: 'all 0.2s',
+                                                borderBottom: isActive ? '3px solid white' : '3px solid transparent',
+                                                opacity: isActive ? 1 : 0.9
+                                            }}
+                                                onMouseOver={(e) => {
+                                                    if (!isActive) {
+                                                        e.target.style.opacity = '1';
+                                                        e.target.style.borderBottom = '3px solid rgba(255,255,255,0.5)';
+                                                    }
+                                                }}
+                                                onMouseOut={(e) => {
+                                                    if (!isActive) {
+                                                        e.target.style.opacity = '0.9';
+                                                        e.target.style.borderBottom = '3px solid transparent';
+                                                    }
+                                                }}
+                                            >
+                                                {item.name}
+                                            </a>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+
+                        {/* 3. LOGIN BUTTON (Right) */}
+                        <div>
+                            {isAdminLoggedIn ? (
+                                <button
+                                    onClick={handleLogout}
+                                    style={{
+                                        padding: '8px 20px',
+                                        backgroundColor: 'white',
+                                        color: 'green',
+                                        border: 'none',
+                                        borderRadius: '20px',
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Logout
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => setIsLoginModalOpen(true)}
+                                    style={{
+                                        padding: '8px 20px',
+                                        backgroundColor: 'rgba(255,255,255,0.2)',
+                                        color: 'white',
+                                        border: '1px solid rgba(255,255,255,0.5)',
+                                        borderRadius: '20px',
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer',
+                                        transition: 'background-color 0.2s'
+                                    }}
+                                    onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.3)'}
+                                    onMouseOut={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.2)'}
+                                >
+                                    Login
+                                </button>
+                            )}
+                        </div>
+                    </nav>
+                </header>
+            )}
+
+            {/* Mobile Header (Hidden on Desktop, Visible on Mobile via CSS usually, but here we force visibility based on state for cleanup) */}
+            {isMobile && (
+                <div className="wrap-header-mobile" style={{ backgroundColor: 'green', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 20px' }}>
+                    {/* Logo Mobile */}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <ul style={{
-                            display: 'flex',
-                            gap: '5px',
-                            listStyle: 'none',
-                            margin: 0,
-                            padding: 0
-                        }}>
-                            {[
-                                { name: 'Home', path: '/' },
-                                { name: 'Profil', path: '/profil' },
-                                { name: 'Penelitian', path: '/penelitian' },
-                                { name: 'Pengabdian', path: '/pengabdian' },
-                                { name: 'HKI', path: '/hki' },
-                                { name: 'Seminar', path: '/seminar' },
-                                { name: 'Permohonan Surat', path: '/permohonan-surat' },
-                            ].map((item, index) => {
-                                const isActive = location.pathname === item.path;
-                                return (
-                                    <li key={index}>
-                                        <a href={item.path} style={{
-                                            color: 'white',
-                                            textDecoration: 'none',
-                                            padding: '10px 15px',
-                                            fontWeight: '500',
-                                            fontSize: '15px',
-                                            display: 'block',
-                                            transition: 'all 0.2s',
-                                            borderBottom: isActive ? '3px solid white' : '3px solid transparent',
-                                            opacity: isActive ? 1 : 0.9
-                                        }}
-                                            onMouseOver={(e) => {
-                                                if (!isActive) {
-                                                    e.target.style.opacity = '1';
-                                                    e.target.style.borderBottom = '3px solid rgba(255,255,255,0.5)';
-                                                }
-                                            }}
-                                            onMouseOut={(e) => {
-                                                if (!isActive) {
-                                                    e.target.style.opacity = '0.9';
-                                                    e.target.style.borderBottom = '3px solid transparent';
-                                                }
-                                            }}
-                                        >
-                                            {item.name}
-                                        </a>
-                                    </li>
-                                );
-                            })}
-                        </ul>
+                        <img src="/images/icons/uim.png" alt="LOGO" style={{ width: '40px', height: '40px' }} />
                     </div>
 
-                    {/* 3. LOGIN BUTTON (Right) */}
-                    <div>
-                        {isAdminLoggedIn ? (
-                            <button
-                                onClick={handleLogout}
-                                style={{
-                                    padding: '8px 20px',
-                                    backgroundColor: 'white',
-                                    color: 'green',
-                                    border: 'none',
-                                    borderRadius: '20px',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                Logout
-                            </button>
-                        ) : (
-                            <button
-                                onClick={() => setIsLoginModalOpen(true)}
-                                style={{
-                                    padding: '8px 20px',
-                                    backgroundColor: 'rgba(255,255,255,0.2)',
-                                    color: 'white',
-                                    border: '1px solid rgba(255,255,255,0.5)',
-                                    borderRadius: '20px',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer',
-                                    transition: 'background-color 0.2s'
-                                }}
-                                onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.3)'}
-                                onMouseOut={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.2)'}
-                            >
-                                Login
-                            </button>
-                        )}
+                    {/* Simplified for this refactor to focus on Desktop fix first */}
+                    <div className="btn-show-menu-mobile hamburger hamburger--squeeze m-r--8" style={{ padding: '0' }}>
+                        <span className="hamburger-box">
+                            <span className="hamburger-inner"></span>
+                        </span>
                     </div>
-                </nav>
-            </header>
-
-            {/* Mobile Header (Hidden on Desktop, Visible on Mobile via CSS usually, but here we keep structure simply) */}
-            <div className="wrap-header-mobile" style={{ backgroundColor: 'green' }}>
-                {/* Simplified for this refactor to focus on Desktop fix first */}
-                <div className="btn-show-menu-mobile hamburger hamburger--squeeze m-r--8" style={{ padding: '15px' }}>
-                    <span className="hamburger-box">
-                        <span className="hamburger-inner"></span>
-                    </span>
                 </div>
-            </div>
+            )}
 
             {/* Menu Mobile */}
             <div className="menu-mobile">
@@ -356,7 +376,7 @@ const MainLayout = () => {
             {/* Footer */}
             <footer style={{ backgroundColor: 'green', color: '#fff', padding: '40px 0 20px' }}>
                 <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px', marginBottom: '30px' }}>
+                    <div className="footer-content" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)', gap: '30px', marginBottom: '30px' }}>
 
                         {/* Column 1: Address */}
                         <div>

@@ -3,6 +3,15 @@ import React, { useRef, useState, useEffect } from 'react';
 const Bidang = () => {
     const sliderRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const cards = [
         {
@@ -32,8 +41,8 @@ const Bidang = () => {
         }
     ];
 
-    const cardWidth = 350;
-    const gap = 30;
+    const cardWidth = isMobile ? 300 : 350; // Reduce card width slightly on mobile
+    const gap = isMobile ? 15 : 30;
     const scrollAmount = cardWidth + gap;
 
     const scroll = (direction) => {
@@ -74,32 +83,34 @@ const Bidang = () => {
 
     return (
         <section className="bidang-section" style={{ padding: '20px 0 60px', position: 'relative' }}>
-            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', padding: '0 50px' }}>
+            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', padding: isMobile ? '0 10px' : '0 50px' }}>
 
-                {/* Left Arrow */}
-                <button
-                    onClick={() => scroll('left')}
-                    style={{
-                        position: 'absolute',
-                        left: '0',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        backgroundColor: '#2e7d32',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '50%',
-                        width: '40px',
-                        height: '40px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        zIndex: 10,
-                        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-                    }}
-                >
-                    <i className="fas fa-chevron-left"></i>
-                </button>
+                {/* Left Arrow - Hide on Mobile to save space (user can swipe) */}
+                {!isMobile && (
+                    <button
+                        onClick={() => scroll('left')}
+                        style={{
+                            position: 'absolute',
+                            left: '0',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            backgroundColor: '#2e7d32',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '40px',
+                            height: '40px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            zIndex: 10,
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                        }}
+                    >
+                        <i className="fas fa-chevron-left"></i>
+                    </button>
+                )}
 
                 {/* Cards Container */}
                 <div
@@ -160,30 +171,32 @@ const Bidang = () => {
                     ))}
                 </div>
 
-                {/* Right Arrow */}
-                <button
-                    onClick={() => scroll('right')}
-                    style={{
-                        position: 'absolute',
-                        right: '0',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        backgroundColor: '#2e7d32',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '50%',
-                        width: '40px',
-                        height: '40px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        zIndex: 10,
-                        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-                    }}
-                >
-                    <i className="fas fa-chevron-right"></i>
-                </button>
+                {/* Right Arrow - Hide on Mobile */}
+                {!isMobile && (
+                    <button
+                        onClick={() => scroll('right')}
+                        style={{
+                            position: 'absolute',
+                            right: '0',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            backgroundColor: '#2e7d32',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '40px',
+                            height: '40px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            zIndex: 10,
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                        }}
+                    >
+                        <i className="fas fa-chevron-right"></i>
+                    </button>
+                )}
 
                 {/* Slider Indicators (Dots) */}
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
