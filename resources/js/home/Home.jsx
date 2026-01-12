@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { motion } from "motion/react"
 import api from "../axios"
 import Nama from "./nama"
@@ -53,6 +53,7 @@ const Home = () => {
   const [latestNews, setLatestNews] = useState([])
   const [loading, setLoading] = useState(true)
   const [visibleNewsCount, setVisibleNewsCount] = useState(3) // Start with 3 items
+  const sliderRef = useRef(null); // Ref for auto-scroll
 
   useEffect(() => {
     const fetchLatestNews = async () => {
@@ -71,6 +72,42 @@ const Home = () => {
     fetchLatestNews()
   }, [])
 
+  // Prepare data for infinite slider (duplicate the array)
+  const baseNews = latestNews.length > 0 ? latestNews : [
+    { title: "Judul Berita 1 Yang Panjang", date: "12 Jan 2026", image: null },
+    { title: "Kegiatan Seminar Nasional 2026", date: "11 Jan 2026", image: null },
+    { title: "Pengabdian Masyarakat di Desa A", date: "10 Jan 2026", image: null },
+    { title: "Kunjungan Industri Mahasiswa", date: "09 Jan 2026", image: null },
+    { title: "Workshop Penulisan Karya Ilmiah", date: "08 Jan 2026", image: null }
+  ];
+
+  // Create a looped array for seamless scrolling
+  const displayNews = [...baseNews, ...baseNews];
+
+  // Auto-scroll logic
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (sliderRef.current) {
+        const slider = sliderRef.current;
+        const cardWidth = 300; // 280px width + 20px gap
+        const maxScroll = slider.scrollWidth / 2; // Halfway point (end of first set)
+
+        // If we have scrolled past or to the end of the first set, snap back INSTANTLY to the start of the first set (which looks identical)
+        // We do this check BEFORE scrolling to ensure we always have room to scroll right.
+        // Note: We use a threshold relative to the content. 
+        // If current scroll is near the "duplicate" part, reset to the "original" part.
+        if (slider.scrollLeft >= maxScroll - 5) { // -5 for tolerance
+          slider.scrollLeft = slider.scrollLeft - maxScroll;
+        }
+
+        // Now scroll forward smoothly
+        slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      }
+    }, 3000); // 3 seconds
+
+    return () => clearInterval(interval);
+  }, [baseNews]); // Re-create interval if data changes
+
   const handleLoadMore = () => {
     setVisibleNewsCount(prev => prev + 3);
   }
@@ -83,36 +120,62 @@ const Home = () => {
       {/* 2. BIDANG CARDS */}
       <Bidang />
 
-      {/* 3. NEWS SECTION (Top Simple Grid) */}
+      {/* 3. NEWS SECTION (Slider) */}
       <section className="container" style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ borderBottom: '2px solid #fec107', paddingBottom: '10px', marginBottom: '20px', width: 'fit-content' }}>
           <h3 style={{ margin: 0, color: '#fec107', fontWeight: 'bold' }}>NEWS</h3>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-          {loading ? <p>Loading news...</p> : latestNews.slice(0, 4).map((item, index) => (
-            <div key={index} style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderRadius: '8px', overflow: 'hidden', backgroundColor: 'white' }}>
-              <div style={{ height: '180px', backgroundColor: '#eee' }}>
+        {/* Slider Container */}
+        <div
+          ref={sliderRef}
+          style={{
+            display: 'flex',
+            gap: '20px',
+            overflowX: 'auto',
+            paddingBottom: '20px', /* Space for scrollbar/shadow */
+            scrollBehavior: 'smooth', // Keep smooth for the programmed scrollBy
+            scrollbarWidth: 'none', /* Firefox */
+            msOverflowStyle: 'none' /* IE */
+          }} className="hide-scrollbar">
+          <style>{`.hide-scrollbar::-webkit-scrollbar { display: none; }`}</style>
+
+          {displayNews.map((item, index) => (
+            <div key={index} style={{
+              minWidth: '280px',
+              maxWidth: '280px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              borderRadius: '10px',
+              overflow: 'hidden',
+              backgroundColor: 'white',
+              display: 'flex',
+              flexDirection: 'column',
+              flexShrink: 0 // Prevent shrinking
+            }}>
+              <div style={{ height: '160px', backgroundColor: '#e0e0e0' }}>
                 {item.image ? (
                   <img src={`/storage/${item.image}`} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 )}
               </div>
-              <div style={{ padding: '15px' }}>
-                <div style={{ fontSize: '10px', color: '#999', marginBottom: '5px' }}>
-                  {new Date(item.created_at || Date.now()).toLocaleDateString()}
+              <div style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ fontSize: '11px', color: '#888', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <i className="far fa-calendar-alt"></i>
+                  {item.created_at ? new Date(item.created_at).toLocaleDateString() : (item.date || 'Today')}
                 </div>
-                <h4 style={{ fontSize: '14px', fontWeight: 'bold', lineHeight: '1.4', marginBottom: '10px' }}>{item.title}</h4>
-                <a href="#" style={{ fontSize: '12px', color: 'green', textDecoration: 'none' }}>Read More</a>
+                <h4 style={{ fontSize: '15px', fontWeight: 'bold', lineHeight: '1.4', marginBottom: '10px', color: '#333', flexGrow: 1 }}>{item.title}</h4>
+                <a href="#" style={{ fontSize: '13px', color: '#fec107', fontWeight: 'bold', textDecoration: 'none', alignSelf: 'flex-start' }}>Read More →</a>
               </div>
             </div>
           ))}
         </div>
+
         {/* Pagination dots simulation */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '5px', marginTop: '20px' }}>
-          <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#fec107' }}></span>
-          <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#eee' }}></span>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '10px' }}>
+          <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#fec107', cursor: 'pointer' }}></span>
+          <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ddd', cursor: 'pointer' }}></span>
+          <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ddd', cursor: 'pointer' }}></span>
         </div>
       </section>
 
