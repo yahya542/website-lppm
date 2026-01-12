@@ -1,7 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 const PenelitianList = () => {
+    const { language } = useLanguage();
+    const t = translations[language];
+
     // Animation variants
     const fadeInUp = {
         hidden: { opacity: 0, y: 20 },
@@ -38,11 +43,13 @@ const PenelitianList = () => {
                     style={{ maxWidth: '1000px', margin: '0 auto' }}
                 >
                     <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.2)', padding: '5px 15px', borderRadius: '20px', marginBottom: '15px', fontSize: '14px', fontWeight: 'bold' }}>
-                        RESEARCH & DEVELOPMENT
+                        {t.research_subtitle}
                     </div>
-                    <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '15px', letterSpacing: '1px' }}>PENELITIAN</h1>
+                    <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '15px', letterSpacing: '1px' }}>
+                        {t.research_title}
+                    </h1>
                     <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '700px', margin: '0 auto', lineHeight: '1.6' }}>
-                        Pusat keunggulan inovasi dan pengembangan ilmu pengetahuan untuk kemajuan peradaban dan kesejahteraan masyarakat.
+                        {t.research_desc}
                     </p>
                 </motion.div>
             </div>
@@ -82,11 +89,11 @@ const PenelitianList = () => {
                         <i className="fas fa-microscope"></i>
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '15px', color: '#333' }}>Program Penelitian</h2>
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '15px', color: '#333' }}>
+                            {t.research_program_title}
+                        </h2>
                         <p style={{ fontSize: '1.1rem', color: '#666', lineHeight: '1.8', maxWidth: '800px' }}>
-                            Lembaga Penelitian dan Pengabdian Masyarakat (LPPM) UIM menyelenggarakan berbagai program
-                            penelitian yang bertujuan untuk menghasilkan karya ilmiah berkualitas. Kami fokus pada
-                            penemuan solusi nyata yang bermanfaat bagi pengembangan ilmu pengetahuan serta kesejahteraan masyarakat luas.
+                            {t.research_program_desc}
                         </p>
                     </div>
                 </motion.div>
@@ -100,7 +107,9 @@ const PenelitianList = () => {
                         variants={fadeInUp}
                         style={{ textAlign: 'center', marginBottom: '40px' }}
                     >
-                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>Fokus Riset</h2>
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>
+                            {t.research_focus_title}
+                        </h2>
                         <div style={{ width: '60px', height: '4px', backgroundColor: '#f9a825', margin: '0 auto' }}></div>
                     </motion.div>
 
@@ -121,12 +130,25 @@ const PenelitianList = () => {
                             }}
                         >
                             <div style={{ fontSize: '30px', marginBottom: '20px', opacity: 0.8 }}><i className="fas fa-atom"></i></div>
-                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>Sains & Teknologi</h3>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>
+                                {language === 'id' ? 'Sains & Teknologi' : 'Science & Technology'}
+                            </h3>
                             <ul style={{ listStyle: 'none', padding: 0 }}>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Ilmu Komputer & TI</li>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Teknik & Industri</li>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Bioteknologi</li>
-                                <li style={{ display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Material Canggih</li>
+                                {(language === 'id' ? [
+                                    "Ilmu Komputer & TI",
+                                    "Teknik & Industri",
+                                    "Bioteknologi",
+                                    "Material Canggih"
+                                ] : [
+                                    "Computer Science & IT",
+                                    "Engineering & Industry",
+                                    "Biotechnology",
+                                    "Advanced Materials"
+                                ]).map((item, idx) => (
+                                    <li key={idx} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> {item}
+                                    </li>
+                                ))}
                             </ul>
                         </motion.div>
 
@@ -146,12 +168,25 @@ const PenelitianList = () => {
                             }}
                         >
                             <div style={{ fontSize: '30px', marginBottom: '20px', opacity: 0.8 }}><i className="fas fa-users"></i></div>
-                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>Sosial Humaniora</h3>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>
+                                {language === 'id' ? 'Sosial Humaniora' : 'Social Humanities'}
+                            </h3>
                             <ul style={{ listStyle: 'none', padding: 0 }}>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Ekonomi & Pembangunan</li>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Pendidikan</li>
-                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Sosiologi & Antropologi</li>
-                                <li style={{ display: 'flex', alignItems: 'center' }}><i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> Bahasa & Sastra</li>
+                                {(language === 'id' ? [
+                                    "Ekonomi & Pembangunan",
+                                    "Pendidikan",
+                                    "Sosiologi & Antropologi",
+                                    "Bahasa & Sastra"
+                                ] : [
+                                    "Economics & Development",
+                                    "Education",
+                                    "Sociology & Anthropology",
+                                    "Language & Literature"
+                                ]).map((item, idx) => (
+                                    <li key={idx} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> {item}
+                                    </li>
+                                ))}
                             </ul>
                         </motion.div>
                     </div>
@@ -167,10 +202,14 @@ const PenelitianList = () => {
                         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '30px' }}
                     >
                         <div>
-                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '5px' }}>Publikasi Terbaru</h2>
-                            <p style={{ color: '#666' }}>Karya ilmiah dosen dan peneliti UIM</p>
+                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '5px' }}>
+                                {t.research_publications_title}
+                            </h2>
+                            <p style={{ color: '#666' }}>{t.research_publications_subtitle}</p>
                         </div>
-                        <a href="#" style={{ color: 'green', fontWeight: 'bold', textDecoration: 'none' }}>Lihat Semua <i className="fas fa-arrow-right"></i></a>
+                        <a href="#" style={{ color: 'green', fontWeight: 'bold', textDecoration: 'none' }}>
+                            {t.view_all} <i className="fas fa-arrow-right"></i>
+                        </a>
                     </motion.div>
 
                     <motion.div
@@ -183,28 +222,37 @@ const PenelitianList = () => {
                         {[
                             {
                                 title: "Penelitian Inovatif di Bidang Teknologi",
+                                title_en: "Innovative Research in Technology",
                                 author: "Dr. Ahmad Sudrajat, M.T.",
                                 journal: "Jurnal Ilmiah Nasional",
+                                journal_en: "National Scientific Journal",
                                 date: "26 Des 2025",
                                 desc: "Penelitian ini membahas inovasi terbaru dalam bidang teknologi informasi dan dampaknya terhadap industri 4.0...",
+                                desc_en: "This research discusses the latest innovations in information technology and their impact on industry 4.0...",
                                 icon: "fa-laptop-code",
                                 color: "#1e88e5"
                             },
                             {
                                 title: "Analisis Kebijakan Pendidikan Terkini",
+                                title_en: "Latest Education Policy Analysis",
                                 author: "Dr. Rina Kartika, M.Pd.",
                                 journal: "Jurnal Kebijakan Pendidikan",
+                                journal_en: "Journal of Education Policy",
                                 date: "23 Des 2025",
                                 desc: "Studi komprehensif tentang efektivitas kebijakan pendidikan di Indonesia saat ini dan rekomendasi perbaikan...",
+                                desc_en: "A comprehensive study on the effectiveness of current education policies in Indonesia and recommendations for improvement...",
                                 icon: "fa-book-reader",
                                 color: "#43a047"
                             },
                             {
                                 title: "Implementasi AI dalam Pendidikan",
+                                title_en: "Implementation of AI in Education",
                                 author: "Dr. Budi Santoso, Ph.D.",
                                 journal: "Konferensi Internasional",
+                                journal_en: "International Conference",
                                 date: "24 Des 2025",
                                 desc: "Penerapan kecerdasan buatan dalam personalisasi proses pembelajaran mahasiswa di perguruan tinggi...",
+                                desc_en: "Implementation of AI in personalizing the student learning process in higher education...",
                                 icon: "fa-robot",
                                 color: "#fb8c00"
                             }
@@ -231,12 +279,14 @@ const PenelitianList = () => {
                                             fontSize: '12px',
                                             fontWeight: 'bold'
                                         }}>
-                                            {item.journal}
+                                            {language === 'id' ? item.journal : item.journal_en}
                                         </div>
                                         <div style={{ color: '#999', fontSize: '13px' }}><i className="far fa-calendar-alt"></i> {item.date}</div>
                                     </div>
 
-                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', lineHeight: '1.4' }}>{item.title}</h3>
+                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', lineHeight: '1.4' }}>
+                                        {language === 'id' ? item.title : item.title_en}
+                                    </h3>
 
                                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
                                         <div style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '10px', color: '#666', fontSize: '12px' }}>
@@ -246,11 +296,11 @@ const PenelitianList = () => {
                                     </div>
 
                                     <p style={{ color: '#777', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
-                                        {item.desc}
+                                        {language === 'id' ? item.desc : item.desc_en}
                                     </p>
 
                                     <a href="#" style={{ display: 'inline-flex', alignItems: 'center', color: item.color, fontWeight: 'bold', fontSize: '13px', textDecoration: 'none' }}>
-                                        BACA SELENGKAPNYA <i className="fas fa-arrow-right" style={{ marginLeft: '5px' }}></i>
+                                        {t.read_more} <i className="fas fa-arrow-right" style={{ marginLeft: '5px' }}></i>
                                     </a>
                                 </div>
                             </motion.div>

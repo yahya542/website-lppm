@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../contexts/LanguageContext';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Nama from '../home/nama.jsx';
 import Tentang from '../home/tentang.jsx';
@@ -12,20 +13,23 @@ const MainLayout = () => {
     const [loginCredentials, setLoginCredentials] = useState({ email: '', password: '' });
     const [loginError, setLoginError] = useState('');
     const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
+    // consume global language context
+    const { language, toggleLanguage } = useLanguage();
+
     const navigate = useNavigate();
     const location = useLocation();
 
+    // Scroll Effect
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 0);
         };
-
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-
-
+    // Mobile Detection
     const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -33,7 +37,6 @@ const MainLayout = () => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 992);
         };
-
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -45,45 +48,33 @@ const MainLayout = () => {
             const response = await api.post('/api/admin/login', loginCredentials);
 
             if (response.status === 200) {
-                // Store the token
                 localStorage.setItem('admin_token', response.data.token);
-
-                // Set login status
                 setIsAdminLoggedIn(true);
-
-                // Redirect ke admin panel
                 window.location.href = '/admin';
             } else {
                 setLoginError(response.data.message || 'Login failed');
             }
         } catch (error) {
-            if (error.response) {
-                setLoginError(error.response.data.message || 'An error occurred during login');
-            } else {
-                setLoginError('Network error occurred during login');
-                console.error('Network error during login:', error);
-            }
+            setLoginError('Login error occurred');
             console.error('Login error:', error);
         }
     };
 
     const handleLogout = async () => {
-        try {
-            // Hanya redirect ke halaman utama tanpa menghapus token
-            window.location.href = '/';
-
-            // Set login status ke false untuk UI
-            setIsAdminLoggedIn(false);
-        } catch (error) {
-            console.error('Logout error:', error);
-
-            // Jika terjadi error, tetap redirect ke halaman utama
-            window.location.href = '/';
-            setIsAdminLoggedIn(false);
-        }
+        window.location.href = '/';
+        setIsAdminLoggedIn(false);
     };
 
-
+    // Menu items configuration
+    const menuItems = [
+        { name: language === 'id' ? 'Beranda' : 'Home', path: '/' },
+        { name: language === 'id' ? 'Profil' : 'Profile', path: '/profil' },
+        { name: language === 'id' ? 'Penelitian' : 'Research', path: '/penelitian' },
+        { name: language === 'id' ? 'Pengabdian' : 'Service', path: '/pengabdian' },
+        { name: language === 'id' ? 'HKI' : 'IPR', path: '/hki' },
+        { name: language === 'id' ? 'Seminar' : 'Seminar', path: '/seminar' },
+        { name: language === 'id' ? 'Permohonan Surat' : 'Letters', path: '/permohonan-surat' },
+    ];
 
     return (
         <div className="main-layout">
@@ -125,15 +116,7 @@ const MainLayout = () => {
                                 margin: 0,
                                 padding: 0
                             }}>
-                                {[
-                                    { name: 'Home', path: '/' },
-                                    { name: 'Profil', path: '/profil' },
-                                    { name: 'Penelitian', path: '/penelitian' },
-                                    { name: 'Pengabdian', path: '/pengabdian' },
-                                    { name: 'HKI', path: '/hki' },
-                                    { name: 'Seminar', path: '/seminar' },
-                                    { name: 'Permohonan Surat', path: '/permohonan-surat' },
-                                ].map((item, index) => {
+                                {menuItems.map((item, index) => {
                                     const isActive = location.pathname === item.path;
                                     return (
                                         <li key={index}>
@@ -169,8 +152,30 @@ const MainLayout = () => {
                             </ul>
                         </div>
 
-                        {/* 3. LOGIN BUTTON (Right) */}
-                        <div>
+                        {/* 3. RIGHT SECTION (Login + Language) */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            {/* Language Switcher */}
+                            <button
+                                onClick={toggleLanguage}
+                                style={{
+                                    background: 'none',
+                                    border: '1px solid rgba(255,255,255,0.3)',
+                                    borderRadius: '20px',
+                                    padding: '5px 12px',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '5px',
+                                    color: 'white',
+                                    fontSize: '14px'
+                                }}
+                                title={language === 'id' ? "Switch to English" : "Ganti ke Bahasa Indonesia"}
+                            >
+                                <span style={{ fontSize: '18px' }}>{language === 'id' ? '🇬🇧' : '🇮🇩'}</span>
+                                <span style={{ fontWeight: 'bold' }}>{language === 'id' ? 'EN' : 'ID'}</span>
+                            </button>
+
+                            {/* Login Button */}
                             {isAdminLoggedIn ? (
                                 <button
                                     onClick={handleLogout}
@@ -258,15 +263,7 @@ const MainLayout = () => {
                         }}
                     >
                         <ul style={{ listStyle: 'none', padding: '20px', margin: 0 }}>
-                            {[
-                                { name: 'Home', path: '/' },
-                                { name: 'Profil', path: '/profil' },
-                                { name: 'Penelitian', path: '/penelitian' },
-                                { name: 'Pengabdian', path: '/pengabdian' },
-                                { name: 'HKI', path: '/hki' },
-                                { name: 'Seminar', path: '/seminar' },
-                                { name: 'Permohonan Surat', path: '/permohonan-surat' },
-                            ].map((item, index) => (
+                            {menuItems.map((item, index) => (
                                 <li key={index} style={{ marginBottom: '15px' }}>
                                     <a
                                         href={item.path}
@@ -286,6 +283,34 @@ const MainLayout = () => {
                                     </a>
                                 </li>
                             ))}
+
+                            {/* Language Switcher Mobile */}
+                            <li style={{ marginBottom: '15px' }}>
+                                <button
+                                    onClick={() => {
+                                        toggleLanguage();
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                    style={{
+                                        width: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        padding: '10px',
+                                        backgroundColor: '#f9f9f9',
+                                        border: '1px solid #eee',
+                                        borderRadius: '5px',
+                                        cursor: 'pointer',
+                                        fontSize: '16px',
+                                        fontWeight: '500',
+                                        color: '#333'
+                                    }}
+                                >
+                                    <span style={{ fontSize: '20px' }}>{language === 'id' ? '🇬🇧' : '🇮🇩'}</span>
+                                    <span>{language === 'id' ? 'English' : 'Bahasa Indonesia'}</span>
+                                </button>
+                            </li>
+
                             <li style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
                                 <a
                                     href="#"
