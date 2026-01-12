@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 const Bidang = () => {
     const sliderRef = useRef(null);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     const cards = [
         {
@@ -31,10 +32,13 @@ const Bidang = () => {
         }
     ];
 
+    const cardWidth = 350;
+    const gap = 30;
+    const scrollAmount = cardWidth + gap;
+
     const scroll = (direction) => {
         if (sliderRef.current) {
             const { current } = sliderRef;
-            const scrollAmount = 350 + 30; // card width + gap
             if (direction === 'left') {
                 current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
             } else {
@@ -42,6 +46,31 @@ const Bidang = () => {
             }
         }
     };
+
+    const scrollToSlide = (index) => {
+        if (sliderRef.current) {
+            const { current } = sliderRef;
+            current.scrollTo({ left: index * scrollAmount, behavior: 'smooth' });
+        }
+    };
+
+    const handleScroll = () => {
+        if (sliderRef.current) {
+            const { scrollLeft } = sliderRef.current;
+            // Calculate active index based on scroll position
+            const index = Math.round(scrollLeft / scrollAmount);
+            setActiveIndex(index);
+        }
+    };
+
+    useEffect(() => {
+        const slider = sliderRef.current;
+        if (slider) {
+            slider.addEventListener('scroll', handleScroll);
+            return () => slider.removeEventListener('scroll', handleScroll);
+        }
+    }, []);
+
 
     return (
         <section className="bidang-section" style={{ padding: '20px 0 60px', position: 'relative' }}>
@@ -77,7 +106,7 @@ const Bidang = () => {
                     ref={sliderRef}
                     style={{
                         display: 'flex',
-                        gap: '30px',
+                        gap: `${gap}px`,
                         overflowX: 'auto',
                         scrollBehavior: 'smooth',
                         padding: '20px 5px', // padding top/bottom for shadow
@@ -101,7 +130,7 @@ const Bidang = () => {
                             background: 'linear-gradient(to bottom, #008000, #006400)',
                             borderRadius: '15px',
                             padding: '30px 20px',
-                            minWidth: '350px', // Fixed width for slider
+                            minWidth: `${cardWidth}px`, // Fixed width for slider
                             textAlign: 'center',
                             color: 'white',
                             boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
@@ -155,6 +184,26 @@ const Bidang = () => {
                 >
                     <i className="fas fa-chevron-right"></i>
                 </button>
+
+                {/* Slider Indicators (Dots) */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
+                    {cards.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => scrollToSlide(index)}
+                            style={{
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                backgroundColor: activeIndex === index ? '#f9a825' : '#ccc', // Active: Orange, Inactive: Gray
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s ease'
+                            }}
+                            aria-label={`Go to slide ${index + 1}`}
+                        />
+                    ))}
+                </div>
 
             </div>
         </section>
