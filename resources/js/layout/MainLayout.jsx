@@ -14,6 +14,14 @@ const MainLayout = () => {
     const [loginError, setLoginError] = useState('');
     const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     // consume global language context
     const { language, toggleLanguage } = useLanguage();
@@ -156,8 +164,29 @@ const MainLayout = () => {
                             </ul>
                         </div>
 
-                        {/* 3. RIGHT SECTION (Login + Language) */}
+                        {/* 3. RIGHT SECTION (Clock + Login + Language) */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            {/* Real-time Clock */}
+                            <div style={{
+                                color: 'white',
+                                textAlign: 'right',
+                                fontSize: '12px',
+                                lineHeight: '1.2',
+                                fontFamily: 'monospace',
+                                borderRight: '1px solid rgba(255,255,255,0.3)',
+                                paddingRight: '15px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'flex-end'
+                            }}>
+                                <div style={{ fontWeight: 'bold', fontSize: '14px' }}>
+                                    {currentTime.toLocaleTimeString(language === 'id' ? 'id-ID' : 'en-US', { hour12: false })}
+                                </div>
+                                <div style={{ opacity: 0.8 }}>
+                                    {currentTime.toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
+                                </div>
+                            </div>
+
                             {/* Language Switcher */}
                             <button
                                 onClick={toggleLanguage}
