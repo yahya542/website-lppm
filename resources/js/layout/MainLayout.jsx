@@ -361,9 +361,9 @@ const MainLayout = () => {
                         <div>
                             <h5 style={{ fontWeight: 'bold', marginBottom: '15px', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '10px' }}>Maps</h5>
                             <div style={{ width: '100%', height: '100px', backgroundColor: '#e0e0e0', borderRadius: '4px', overflow: 'hidden' }}>
-                                {/* Placeholder for Map */}
+                                {/* Map pointing to Universitas Islam Madura */}
                                 <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.966528723963!2d113.4839843147743!3d-7.135350994847661!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd77e2e3b2b9ad1%3A0x6b4b2b2b2b2b2b2b!2sUniversitas%20Islam%20Madura!5e0!3m2!1sen!2sid!4v1622522222222!5m2!1sen!2sid"
+                                    src="https://maps.google.com/maps?q=Universitas%20Islam%20Madura&t=&z=15&ie=UTF8&iwloc=&output=embed"
                                     width="100%"
                                     height="100%"
                                     style={{ border: 0 }}
