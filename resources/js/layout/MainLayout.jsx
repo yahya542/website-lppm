@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import Nama from '../home/nama.jsx';
-import Tentang from '../home/tentang.jsx';
-import Bidang from '../home/bidang.jsx';
+import Nama from '../home/components/nama.jsx';
+import Tentang from '../home/components/tentang.jsx';
+import Bidang from '../home/components/bidang.jsx';
 import api from '../axios';
 
 const MainLayout = () => {
@@ -411,25 +411,7 @@ const MainLayout = () => {
 
                             {/* Body */}
                             <div style={{ padding: '30px' }}>
-                                {loginError && (
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        style={{
-                                            backgroundColor: '#ffebee',
-                                            color: '#c62828',
-                                            padding: '10px 15px',
-                                            borderRadius: '8px',
-                                            marginBottom: '20px',
-                                            fontSize: '14px',
-                                            display: 'flex',
-                                            alignItems: 'center'
-                                        }}
-                                    >
-                                        <i className="fas fa-exclamation-circle" style={{ marginRight: '8px' }}></i>
-                                        {loginError}
-                                    </motion.div>
-                                )}
+
 
                                 <form onSubmit={handleLogin}>
                                     <div style={{ marginBottom: '20px' }}>
@@ -497,6 +479,26 @@ const MainLayout = () => {
                                             />
                                         </div>
                                     </div>
+
+                                    {loginError && (
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            style={{
+                                                backgroundColor: '#ffebee',
+                                                color: '#c62828',
+                                                padding: '10px 15px',
+                                                borderRadius: '8px',
+                                                marginBottom: '20px',
+                                                fontSize: '14px',
+                                                display: 'flex',
+                                                alignItems: 'center'
+                                            }}
+                                        >
+                                            <i className="fas fa-exclamation-circle" style={{ marginRight: '8px' }}></i>
+                                            {loginError}
+                                        </motion.div>
+                                    )}
 
                                     <div style={{ display: 'flex', gap: '15px' }}>
                                         <button

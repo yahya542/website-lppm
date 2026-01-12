@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react"
 import { motion } from "motion/react"
-import api from "../axios"
-import Nama from "./nama"
-import Bidang from "./bidang"
-import { useLanguage } from '../contexts/LanguageContext';
-import { translations } from '../contexts/translations';
+import api from "../../axios"
+import Nama from "../components/nama"
+import Bidang from "../components/bidang"
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 // Simple Accordion Component
 const AccordionItem = ({ title, content }) => {

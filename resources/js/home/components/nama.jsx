@@ -1,6 +1,6 @@
 import React from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
-import { translations } from '../contexts/translations';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 const Nama = () => {
   const { language } = useLanguage();

@@ -1,7 +1,7 @@
 import { motion } from "motion/react"
-import { fadeUpText } from "../components/transisi"
-import { useLanguage } from '../contexts/LanguageContext';
-import { translations } from '../contexts/translations';
+import { fadeUpText } from "../../components/transisi"
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 export default function Tentang() {
   const { language } = useLanguage();

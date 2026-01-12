@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
-import { translations } from '../contexts/translations';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 const Bidang = () => {
     const { language } = useLanguage();
