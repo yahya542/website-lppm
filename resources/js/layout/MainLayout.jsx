@@ -90,166 +90,226 @@ const MainLayout = () => {
 
     return (
         <div className="main-layout">
-            {/* Header Unified - Only show on Desktop */}
+            {/* Desktop Header */}
             {!isMobile && (
-                <header
-                    className="wrap-menu-desktop"
-                    style={{
-                        backgroundColor: 'green',
-                        position: isScrolled ? 'fixed' : 'relative',
-                        top: 0,
-                        width: '100%',
-                        zIndex: '1000',
-                        boxShadow: isScrolled ? '0 2px 5px rgba(0,0,0,0.1)' : 'none',
-                        transition: 'all 0.3s ease'
-                    }}
-                >
-                    <nav className="container" style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        height: '70px',
-                        padding: '0 20px',
-                        maxWidth: '1200px'
-                    }}>
+                <div style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
+                    <header
+                        className="wrap-menu-desktop"
+                        style={{
+                            backgroundColor: 'green',
+                            position: 'relative', // Changed from fixed to relative as wrapper is sticky
+                            width: '100%',
+                            boxShadow: isScrolled ? '0 2px 5px rgba(0,0,0,0.1)' : 'none',
+                            transition: 'all 0.3s ease'
+                        }}
+                    >
+                        <nav className="container" style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            height: '70px',
+                            padding: '0 20px',
+                            maxWidth: '1200px'
+                        }}>
 
-                        {/* 1. LOGO (Left) */}
-                        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-                            <img src="/images/icons/uim.png" alt="LOGO" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
-                            {/* Optional Text Logo if needed, currently just Image based on design */}
-                        </a>
+                            {/* 1. LOGO (Left) */}
+                            <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+                                <img src="/images/icons/uim.png" alt="LOGO" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+                                {/* Optional Text Logo if needed, currently just Image based on design */}
+                            </a>
 
-                        {/* 2. MENU (Center) */}
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <ul style={{
-                                display: 'flex',
-                                gap: '5px',
-                                listStyle: 'none',
-                                margin: 0,
-                                padding: 0
-                            }}>
-                                {menuItems.map((item, index) => {
-                                    const isActive = location.pathname === item.path;
-                                    return (
-                                        <li key={index}>
-                                            <a href={item.path} style={{
-                                                color: 'white',
-                                                textDecoration: 'none',
-                                                padding: '10px 15px',
-                                                fontWeight: '500',
-                                                fontSize: '15px',
-                                                display: 'block',
-                                                transition: 'all 0.2s',
-                                                borderBottom: isActive ? '3px solid white' : '3px solid transparent',
-                                                opacity: isActive ? 1 : 0.9
-                                            }}
-                                                onMouseOver={(e) => {
-                                                    if (!isActive) {
-                                                        e.target.style.opacity = '1';
-                                                        e.target.style.borderBottom = '3px solid rgba(255,255,255,0.5)';
-                                                    }
+                            {/* 2. MENU (Center) */}
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <ul style={{
+                                    display: 'flex',
+                                    gap: '5px',
+                                    listStyle: 'none',
+                                    margin: 0,
+                                    padding: 0
+                                }}>
+                                    {menuItems.map((item, index) => {
+                                        const isActive = location.pathname === item.path;
+                                        return (
+                                            <li key={index}>
+                                                <a href={item.path} style={{
+                                                    color: 'white',
+                                                    textDecoration: 'none',
+                                                    padding: '10px 15px',
+                                                    fontWeight: '500',
+                                                    fontSize: '15px',
+                                                    display: 'block',
+                                                    transition: 'all 0.2s',
+                                                    borderBottom: isActive ? '3px solid white' : '3px solid transparent',
+                                                    opacity: isActive ? 1 : 0.9
                                                 }}
-                                                onMouseOut={(e) => {
-                                                    if (!isActive) {
-                                                        e.target.style.opacity = '0.9';
-                                                        e.target.style.borderBottom = '3px solid transparent';
-                                                    }
-                                                }}
-                                            >
-                                                {item.name}
-                                            </a>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-
-                        {/* 3. RIGHT SECTION (Clock + Login + Language) */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                            {/* Real-time Clock */}
-                            <div style={{
-                                color: 'white',
-                                textAlign: 'right',
-                                fontSize: '12px',
-                                lineHeight: '1.2',
-                                fontFamily: 'monospace',
-                                borderRight: '1px solid rgba(255,255,255,0.3)',
-                                paddingRight: '15px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-end'
-                            }}>
-                                <div style={{ fontWeight: 'bold', fontSize: '14px' }}>
-                                    {currentTime.toLocaleTimeString(language === 'id' ? 'id-ID' : 'en-US', { hour12: false })}
-                                </div>
-                                <div style={{ opacity: 0.8 }}>
-                                    {currentTime.toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
-                                </div>
+                                                    onMouseOver={(e) => {
+                                                        if (!isActive) {
+                                                            e.target.style.opacity = '1';
+                                                            e.target.style.borderBottom = '3px solid rgba(255,255,255,0.5)';
+                                                        }
+                                                    }}
+                                                    onMouseOut={(e) => {
+                                                        if (!isActive) {
+                                                            e.target.style.opacity = '0.9';
+                                                            e.target.style.borderBottom = '3px solid transparent';
+                                                        }
+                                                    }}
+                                                >
+                                                    {item.name}
+                                                </a>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
                             </div>
 
-                            {/* Language Switcher */}
-                            <button
-                                onClick={toggleLanguage}
-                                style={{
-                                    background: 'none',
-                                    border: '1px solid rgba(255,255,255,0.3)',
-                                    borderRadius: '20px',
-                                    padding: '5px 12px',
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '5px',
+                            {/* 3. RIGHT SECTION (Clock + Login + Language) */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                {/* Real-time Clock */}
+                                <div style={{
                                     color: 'white',
-                                    fontSize: '14px'
-                                }}
-                                title={language === 'id' ? "Switch to English" : "Ganti ke Bahasa Indonesia"}
-                            >
-                                <img
-                                    src={language === 'id' ? '/svg/flag-for-flag-united-kingdom-svgrepo-com.svg' : '/svg/flag-for-flag-indonesia-svgrepo-com.svg'}
-                                    alt={language === 'id' ? 'EN' : 'ID'}
-                                    style={{ width: '20px', height: '20px', objectFit: 'cover', borderRadius: '50%' }}
-                                />
-                                <span style={{ fontWeight: 'bold' }}>{language === 'id' ? 'EN' : 'ID'}</span>
-                            </button>
+                                    textAlign: 'right',
+                                    fontSize: '12px',
+                                    lineHeight: '1.2',
+                                    fontFamily: 'monospace',
+                                    borderRight: '1px solid rgba(255,255,255,0.3)',
+                                    paddingRight: '15px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-end'
+                                }}>
+                                    <div style={{ fontWeight: 'bold', fontSize: '14px' }}>
+                                        {currentTime.toLocaleTimeString(language === 'id' ? 'id-ID' : 'en-US', { hour12: false })}
+                                    </div>
+                                    <div style={{ opacity: 0.8 }}>
+                                        {currentTime.toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
+                                    </div>
+                                </div>
 
-                            {/* Login Button */}
-                            {isAdminLoggedIn ? (
+                                {/* Language Switcher */}
                                 <button
-                                    onClick={handleLogout}
+                                    onClick={toggleLanguage}
                                     style={{
-                                        padding: '8px 20px',
-                                        backgroundColor: 'white',
-                                        color: 'green',
-                                        border: 'none',
+                                        background: 'none',
+                                        border: '1px solid rgba(255,255,255,0.3)',
                                         borderRadius: '20px',
-                                        fontWeight: 'bold',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    Logout
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() => setIsLoginModalOpen(true)}
-                                    style={{
-                                        padding: '8px 20px',
-                                        backgroundColor: 'rgba(255,255,255,0.2)',
-                                        color: 'white',
-                                        border: '1px solid rgba(255,255,255,0.5)',
-                                        borderRadius: '20px',
-                                        fontWeight: 'bold',
+                                        padding: '5px 12px',
                                         cursor: 'pointer',
-                                        transition: 'background-color 0.2s'
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '5px',
+                                        color: 'white',
+                                        fontSize: '14px'
                                     }}
-                                    onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.3)'}
-                                    onMouseOut={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.2)'}
+                                    title={language === 'id' ? "Switch to English" : "Ganti ke Bahasa Indonesia"}
                                 >
-                                    Login
+                                    <img
+                                        src={language === 'id' ? '/svg/flag-for-flag-united-kingdom-svgrepo-com.svg' : '/svg/flag-for-flag-indonesia-svgrepo-com.svg'}
+                                        alt={language === 'id' ? 'EN' : 'ID'}
+                                        style={{ width: '20px', height: '20px', objectFit: 'cover', borderRadius: '50%' }}
+                                    />
+                                    <span style={{ fontWeight: 'bold' }}>{language === 'id' ? 'EN' : 'ID'}</span>
                                 </button>
-                            )}
+
+                                {/* Login Button */}
+                                {isAdminLoggedIn ? (
+                                    <button
+                                        onClick={handleLogout}
+                                        style={{
+                                            padding: '8px 20px',
+                                            backgroundColor: 'white',
+                                            color: 'green',
+                                            border: 'none',
+                                            borderRadius: '20px',
+                                            fontWeight: 'bold',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        Logout
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => setIsLoginModalOpen(true)}
+                                        style={{
+                                            padding: '8px 20px',
+                                            backgroundColor: 'rgba(255,255,255,0.2)',
+                                            color: 'white',
+                                            border: '1px solid rgba(255,255,255,0.5)',
+                                            borderRadius: '20px',
+                                            fontWeight: 'bold',
+                                            cursor: 'pointer',
+                                            transition: 'background-color 0.2s'
+                                        }}
+                                        onMouseOver={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.3)'}
+                                        onMouseOut={(e) => e.target.style.backgroundColor = 'rgba(255,255,255,0.2)'}
+                                    >
+                                        Login
+                                    </button>
+                                )}
+                            </div>
+                        </nav>
+                    </header>
+
+                    {/* RUNNING TEXT SECTION */}
+                    <div style={{ backgroundColor: '#f0f2f5', overflow: 'hidden', height: '40px', display: 'flex', alignItems: 'center', borderBottom: '1px solid #e0e0e0' }}>
+                        <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', width: '100%', overflow: 'hidden' }}>
+                            <div style={{
+                                backgroundColor: '#1b5e20', // Dark Green
+                                color: 'white',
+                                padding: '0 20px',
+                                height: '40px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                fontWeight: 'bold',
+                                fontSize: '12px',
+                                textTransform: 'uppercase',
+                                position: 'relative',
+                                zIndex: 2,
+                                whiteSpace: 'nowrap',
+                                letterSpacing: '1px'
+                            }}>
+                                <i className="fas fa-info-circle" style={{ marginRight: '8px', fontSize: '14px' }}></i> INFO TERBARU
+                                {/* Triangle arrow for styling */}
+                                <div style={{
+                                    position: 'absolute',
+                                    right: '-10px',
+                                    top: 0,
+                                    width: 0,
+                                    height: 0,
+                                    borderTop: '40px solid #1b5e20',
+                                    borderRight: '10px solid transparent'
+                                }}></div>
+                            </div>
+                            <div style={{ flex: 1, overflow: 'hidden', position: 'relative', height: '40px' }}>
+                                <motion.div
+                                    animate={{ x: ["100%", "-100%"] }}
+                                    transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        height: '100%',
+                                        whiteSpace: 'nowrap',
+                                        position: 'absolute',
+                                        gap: '80px'
+                                    }}
+                                >
+                                    <span style={{ color: '#444', fontWeight: '500', fontSize: '13px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-check-circle" style={{ color: '#2e7d32', marginRight: '5px' }}></i>
+                                        Selamat kepada Dr. Fulan atas penerimaan proposal hibah penelitian 2026!
+                                    </span>
+                                    <span style={{ color: '#444', fontWeight: '500', fontSize: '13px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-clock" style={{ color: '#e65100', marginRight: '5px' }}></i>
+                                        Batas akhir upload laporan kemajuan penelitian adalah 15 Februari 2026.
+                                    </span>
+                                    <span style={{ color: '#444', fontWeight: '500', fontSize: '13px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-calendar-alt" style={{ color: '#1565c0', marginRight: '5px' }}></i>
+                                        Kunjungan Industri Mahasiswa ke Surabaya akan dilaksanakan pada 20 Januari 2026.
+                                    </span>
+                                </motion.div>
+                            </div>
                         </div>
-                    </nav>
-                </header>
+                    </div>
+                </div>
             )}
 
             {/* Mobile Header */}
