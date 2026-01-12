@@ -52,6 +52,7 @@ const SectionTitle = ({ title }) => (
 const Home = () => {
   const [latestNews, setLatestNews] = useState([])
   const [loading, setLoading] = useState(true)
+  const [visibleNewsCount, setVisibleNewsCount] = useState(3) // Start with 3 items
 
   useEffect(() => {
     const fetchLatestNews = async () => {
@@ -70,6 +71,10 @@ const Home = () => {
     fetchLatestNews()
   }, [])
 
+  const handleLoadMore = () => {
+    setVisibleNewsCount(prev => prev + 3);
+  }
+
   return (
     <div>
       {/* 1. HERO / NAMA */}
@@ -78,7 +83,7 @@ const Home = () => {
       {/* 2. BIDANG CARDS */}
       <Bidang />
 
-      {/* 3. NEWS SECTION */}
+      {/* 3. NEWS SECTION (Top Simple Grid) */}
       <section className="container" style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ borderBottom: '2px solid #fec107', paddingBottom: '10px', marginBottom: '20px', width: 'fit-content' }}>
           <h3 style={{ margin: 0, color: '#fec107', fontWeight: 'bold' }}>NEWS</h3>
@@ -104,7 +109,6 @@ const Home = () => {
             </div>
           ))}
         </div>
-
         {/* Pagination dots simulation */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '5px', marginTop: '20px' }}>
           <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#fec107' }}></span>
@@ -156,8 +160,6 @@ const Home = () => {
               </div>
             </div>
           </div>
-          {/* Sidebar video list simulation */}
-          {/* For simplicity we keep just the main video area for now as seen in broad view */}
         </div>
       </section>
 
@@ -167,8 +169,113 @@ const Home = () => {
         <div style={{ fontSize: '12px', color: '#666' }}>VISITOR COUNT</div>
       </section>
 
-      {/* Extra News (Bottom grid in reference) */}
-      {/* Skipping strict duplication of news to avoid redundancy, but we added the main news section above. */}
+      {/* 9. BOTTOM NEWS GRID (New Requested Section) */}
+      <section className="container" style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px', marginBottom: '40px' }}>
+          {/* 
+                   Using latestNews or Duplicating it to ensure we have content to show for the UI Demo 
+                   if existing data is scarce (usually user environments vary). 
+                   We try to use real data first.
+                */}
+          {(latestNews.length > 0 ? latestNews : [{}, {}, {}, {}, {}, {}]).slice(0, visibleNewsCount).map((item, index) => (
+            <div key={index} style={{
+              border: '1px solid #eaeaea',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              backgroundColor: 'white',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <div style={{ padding: '25px 25px 10px' }}>
+                {/* Category Tag */}
+                <span style={{
+                  display: 'inline-block',
+                  backgroundColor: '#f9a825', // Orange
+                  color: 'white',
+                  padding: '4px 12px',
+                  borderRadius: '20px',
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  marginBottom: '15px'
+                }}>
+                  KEGIATAN/EVENT LPPM
+                </span>
+
+                {/* Title */}
+                <h3 style={{
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  lineHeight: '1.4',
+                  color: '#333',
+                  marginBottom: '15px',
+                  minHeight: '50px' // For alignment
+                }}>
+                  {item.title || "LPPM UIM Selenggarakan Camp Penulisan Proposal Pengabdian kepada Masyarakat Hibah Kemdiktisaintek 2026"}
+                </h3>
+
+                {/* Meta Info */}
+                <div style={{ display: 'flex', alignItems: 'center', fontSize: '11px', color: '#999', marginBottom: '20px', gap: '15px' }}>
+                  <span><i className="far fa-clock"></i> 4 weeks ago</span>
+                  <div style={{ marginLeft: 'auto', display: 'flex', gap: '15px' }}>
+                    <span><i className="far fa-comment"></i> 0</span>
+                    <span><i className="far fa-eye"></i> 390</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Image */}
+              <div style={{ height: '200px', width: '100%', backgroundColor: '#eee', position: 'relative' }}>
+                {item.image ? (
+                  <img src={`/storage/${item.image}`} alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                )}
+              </div>
+
+              {/* Description (Footer of card in this design) */}
+              <div style={{ padding: '20px 25px 25px' }}>
+                <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#666', marginBottom: '20px' }}>
+                  Lembaga Penelitian dan Pengabdian kepada Masyarakat (LPPM) Universitas Islam Madura (UIM) menyelenggarakan kegiatan Camp Penulisan Proposal...
+                </p>
+
+                {/* Read More Button */}
+                <a href="#" style={{
+                  display: 'inline-block',
+                  backgroundColor: '#f9a825',
+                  color: 'white',
+                  padding: '8px 20px',
+                  borderRadius: '20px',
+                  textDecoration: 'none',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}>
+                  Read More »
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Load More Button */}
+        <div style={{ textAlign: 'center' }}>
+          <button
+            onClick={handleLoadMore}
+            style={{
+              backgroundColor: 'white',
+              border: '1px solid #ddd',
+              padding: '10px 40px',
+              borderRadius: '30px',
+              fontSize: '12px',
+              color: '#666',
+              cursor: 'pointer',
+              boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
+            }}
+          >
+            Load More
+          </button>
+        </div>
+      </section>
     </div>
   )
 }
