@@ -80,6 +80,37 @@ export const translations = {
         contact_us: "Hubungi Kami",
         patent_detail: "DETAIL PATEN",
         registered: "Terdaftar",
+
+        // Home / Nama / Bidang
+        nama_title: "LEMBAGA PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT",
+
+        bidang_1_title: "BIDANG 1",
+        bidang_1_subtitle: "PENELITIAN & INOVASI",
+        bidang_2_title: "BIDANG 2",
+        bidang_2_subtitle: "PUBLIKASI, SENTRA HKI, PLAGIARISME, UNUSA PRESS",
+        bidang_3_title: "BIDANG 3",
+        bidang_3_subtitle: "PENGABDIAN KEPADA MASYARAKAT, KKN, KERJASAMA",
+        bidang_4_title: "BIDANG 4",
+        bidang_4_subtitle: "PENGEMBANGAN SISTEM INFORMASI & TEKNOLOGI",
+        bidang_5_title: "BIDANG 5",
+        bidang_5_subtitle: "INKUBATOR BISNIS & KEWIRAUSAHAAN",
+        bidang_6_title: "BIDANG 6",
+        bidang_6_subtitle: "PUSAT STUDI & LAYANAN MASYARAKAT",
+
+        home_news_title: "BERITA",
+        home_performance_title: "CAPAIAN KINERJA",
+        home_achievements_title: "PRESTASI",
+        home_simlitabmas_subtitle: "LPPM UIM",
+        home_video_channel: "LPPM UNIVERSITAS ISLAM MADURA",
+        home_visitors_title: "Total Pengunjung",
+        home_visitors_since: "SEJAK JANUARI 2026",
+        home_visitors_country_title: "Pengunjung berdasarkan Negara",
+        home_load_more: "Muat Lebih Banyak",
+        home_others: "Lainnya",
+
+        // Tentang
+        tentang_title: "Tentang LPPM UIM",
+        tentang_desc: "Lembaga Penelitian dan Pengabdian kepada Masyarakat (LP2M) Universitas Islam Madura (UIM) Pamekasan merupakan institusi organik yang bertugas mengelola seluruh kegiatan penelitian dan pengabdian kepada masyarakat, baik yang bersifat intra universitas maupun ekstra universitas (regional, nasional, dan internasional). LP2M Universitas Islam Madura memfasilitasi segala bentuk kegiatan kerjasama penelitian dan pengabdian kepada masyarakat, baik antar bidang ilmu maupun antar lembaga lembaga ini juga merupakan wadah bagi pembentukan berbagai pusat studi dan pusat kegiatan di lingkungan Universitas Islam Madura.",
     },
     en: {
         // Menu
@@ -162,5 +193,36 @@ export const translations = {
         contact_us: "Contact Us",
         patent_detail: "PATENT DETAIL",
         registered: "Registered",
+
+        // Home / Nama / Bidang
+        nama_title: "INSTITUTE OF RESEARCH AND COMMUNITY SERVICES",
+
+        bidang_1_title: "FIELD 1",
+        bidang_1_subtitle: "RESEARCH & INNOVATION",
+        bidang_2_title: "FIELD 2",
+        bidang_2_subtitle: "PUBLICATION, IPR CENTER, PLAGIARISM, UNUSA PRESS",
+        bidang_3_title: "FIELD 3",
+        bidang_3_subtitle: "COMMUNITY SERVICE, KKN, COOPERATION",
+        bidang_4_title: "FIELD 4",
+        bidang_4_subtitle: "INFORMATION SYSTEM & TECHNOLOGY DEVELOPMENT",
+        bidang_5_title: "FIELD 5",
+        bidang_5_subtitle: "BUSINESS INCUBATOR & ENTREPRENEURSHIP",
+        bidang_6_title: "FIELD 6",
+        bidang_6_subtitle: "STUDY CENTER & PUBLIC SERVICES",
+
+        home_news_title: "NEWS",
+        home_performance_title: "PERFORMANCE ACHIEVEMENTS",
+        home_achievements_title: "ACHIEVEMENTS",
+        home_simlitabmas_subtitle: "LPPM UIM",
+        home_video_channel: "LPPM ISLAMIC UNIVERSITY OF MADURA",
+        home_visitors_title: "Total Visitors",
+        home_visitors_since: "SINCE JANUARY 2026",
+        home_visitors_country_title: "Visitors by Country",
+        home_load_more: "Load More",
+        home_others: "Others",
+
+        // Tentang
+        tentang_title: "About LPPM UIM",
+        tentang_desc: "The Institute for Research and Community Service (LP2M) of the Islamic University of Madura (UIM) Pamekasan is an organic institution tasked with managing all research and community service activities, both intra-university and extra-university (regional, national, and international). LP2M Universitas Islam Madura facilitates all forms of research cooperation and community service activities, both between fields of science and between these institutions. It is also a vehicle for the formation of various study centers and activity centers within the Islamic University of Madura.",
     }
 };

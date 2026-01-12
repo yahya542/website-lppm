@@ -1,6 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../contexts/translations';
 
 const Bidang = () => {
+    const { language } = useLanguage();
+    const t = translations[language];
+
     const sliderRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -15,29 +20,29 @@ const Bidang = () => {
 
     const cards = [
         {
-            title: "BIDANG 1",
-            subtitle: "PENELITIAN & INOVASI",
+            title: t.bidang_1_title,
+            subtitle: t.bidang_1_subtitle,
         },
         {
-            title: "BIDANG 2",
-            subtitle: "PUBLIKASI, SENTRA HKI, PLAGIARISME, UNUSA PRESS",
+            title: t.bidang_2_title,
+            subtitle: t.bidang_2_subtitle,
         },
         {
-            title: "BIDANG 3",
-            subtitle: "PENGABDIAN KEPADA MASYARAKAT, KKN, KERJASAMA",
+            title: t.bidang_3_title,
+            subtitle: t.bidang_3_subtitle,
         },
         // Dummy cards for slider demonstration
         {
-            title: "BIDANG 4",
-            subtitle: "PENGEMBANGAN SISTEM INFORMASI & TEKNOLOGI",
+            title: t.bidang_4_title,
+            subtitle: t.bidang_4_subtitle,
         },
         {
-            title: "BIDANG 5",
-            subtitle: "INKUBATOR BISNIS & KEWIRAUSAHAAN",
+            title: t.bidang_5_title,
+            subtitle: t.bidang_5_subtitle,
         },
         {
-            title: "BIDANG 6",
-            subtitle: "PUSAT STUDI & LAYANAN MASYARAKAT",
+            title: t.bidang_6_title,
+            subtitle: t.bidang_6_subtitle,
         }
     ];
 

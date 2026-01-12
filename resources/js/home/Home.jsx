@@ -3,6 +3,8 @@ import { motion } from "motion/react"
 import api from "../axios"
 import Nama from "./nama"
 import Bidang from "./bidang"
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../contexts/translations';
 
 // Simple Accordion Component
 const AccordionItem = ({ title, content }) => {
@@ -50,6 +52,8 @@ const SectionTitle = ({ title }) => (
 );
 
 const Home = () => {
+  const { language } = useLanguage();
+  const t = translations[language];
   const [latestNews, setLatestNews] = useState([])
   const [loading, setLoading] = useState(true)
   const [visibleNewsCount, setVisibleNewsCount] = useState(3) // Start with 3 items
@@ -123,7 +127,7 @@ const Home = () => {
       {/* 3. NEWS SECTION (Slider) */}
       <section className="container" style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ borderBottom: '2px solid #fec107', paddingBottom: '10px', marginBottom: '20px', width: 'fit-content' }}>
-          <h3 style={{ margin: 0, color: '#fec107', fontWeight: 'bold' }}>NEWS</h3>
+          <h3 style={{ margin: 0, color: '#fec107', fontWeight: 'bold' }}>{t.home_news_title}</h3>
         </div>
 
         {/* Slider Container */}
@@ -165,7 +169,7 @@ const Home = () => {
                   {item.created_at ? new Date(item.created_at).toLocaleDateString() : (item.date || 'Today')}
                 </div>
                 <h4 style={{ fontSize: '15px', fontWeight: 'bold', lineHeight: '1.4', marginBottom: '10px', color: '#333', flexGrow: 1 }}>{item.title}</h4>
-                <a href="#" style={{ fontSize: '13px', color: '#fec107', fontWeight: 'bold', textDecoration: 'none', alignSelf: 'flex-start' }}>Read More →</a>
+                <a href="#" style={{ fontSize: '13px', color: '#fec107', fontWeight: 'bold', textDecoration: 'none', alignSelf: 'flex-start' }}>{t.read_more} →</a>
               </div>
             </div>
           ))}
@@ -181,7 +185,7 @@ const Home = () => {
 
       {/* 4. PERFORMANCE ACHIEVEMENTS */}
       <section className="container" style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <SectionTitle title="PERFORMANCE ACHIEVEMENTS" />
+        <SectionTitle title={t.home_performance_title} />
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <AccordionItem title="CAPAIAN KINERJA LPPM 2023" content="Detail capaian kinerja tahun 2023..." />
           <AccordionItem title="CAPAIAN KINERJA LPPM 2024" content="Detail capaian kinerja tahun 2024..." />
@@ -192,7 +196,7 @@ const Home = () => {
 
       {/* 5. ACHIEVEMENTS */}
       <section className="container" style={{ padding: '20px 20px 40px', maxWidth: '1200px', margin: '0 auto' }}>
-        <SectionTitle title="ACHIEVEMENTS" />
+        <SectionTitle title={t.home_achievements_title} />
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <AccordionItem title="LUARAN PENELITIAN & PENGABDIAN" content="Daftar luaran..." />
           <AccordionItem title="KI DAN PATEN" content="Daftar HKI dan Paten..." />
@@ -206,7 +210,7 @@ const Home = () => {
             <img src="/images/icons/uim.png" alt="Logo" style={{ width: '50px' }} />
           </div>
           <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', letterSpacing: '2px', margin: 0 }}>SIMLITABMAS</h2>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', letterSpacing: '2px', margin: 0, opacity: 0.7 }}>LPPM UIM</h2>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', letterSpacing: '2px', margin: 0, opacity: 0.7 }}>{t.home_simlitabmas_subtitle}</h2>
         </div>
       </section>
 
@@ -219,7 +223,7 @@ const Home = () => {
             <div style={{ position: 'absolute', bottom: '20px', left: '20px', color: 'white' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <img src="/images/icons/uim.png" alt="Channel" style={{ width: '40px', height: '40px', borderRadius: '50%', border: '2px solid white' }} />
-                <span style={{ fontWeight: 'bold' }}>LPPM UNIVERSITAS ISLAM MADURA</span>
+                <span style={{ fontWeight: 'bold' }}>{t.home_video_channel}</span>
               </div>
             </div>
           </div>
@@ -229,12 +233,12 @@ const Home = () => {
       {/* 8. COUNTER */}
       <section style={{ padding: '40px 20px', textAlign: 'center', backgroundColor: '#f9f9f9' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', backgroundColor: 'white', padding: '30px', borderRadius: '15px', boxShadow: '0 5px 15px rgba(0,0,0,0.05)' }}>
-          <h3 style={{ fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '20px', color: '#333' }}>Total Visitors</h3>
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '20px', color: '#333' }}>{t.home_visitors_title}</h3>
           <div style={{ fontSize: '3rem', fontWeight: 'bold', letterSpacing: '8px', fontFamily: 'monospace', color: '#2e7d32', marginBottom: '10px' }}>1 0 2 5 9 2</div>
-          <div style={{ fontSize: '12px', color: '#999', marginBottom: '30px' }}>SINCE JANUARY 2026</div>
+          <div style={{ fontSize: '12px', color: '#999', marginBottom: '30px' }}>{t.home_visitors_since}</div>
 
           <div style={{ borderTop: '1px solid #eee', paddingTop: '20px' }}>
-            <h4 style={{ fontSize: '12px', fontWeight: 'bold', color: '#666', marginBottom: '15px', textTransform: 'uppercase' }}>Visitors by Country</h4>
+            <h4 style={{ fontSize: '12px', fontWeight: 'bold', color: '#666', marginBottom: '15px', textTransform: 'uppercase' }}>{t.home_visitors_country_title}</h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '15px' }}>
               {/* Indonesia */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#555' }}>
@@ -273,7 +277,7 @@ const Home = () => {
                 <div style={{ width: '25px', height: '18px', backgroundColor: '#ddd', borderRadius: '3px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>...</div>
                 <div style={{ textAlign: 'left' }}>
                   <div style={{ fontWeight: 'bold' }}>5%</div>
-                  <div style={{ fontSize: '10px', color: '#999' }}>Others</div>
+                  <div style={{ fontSize: '10px', color: '#999' }}>{t.home_others}</div>
                 </div>
               </div>
             </div>
@@ -362,7 +366,7 @@ const Home = () => {
                   fontSize: '12px',
                   fontWeight: 'bold'
                 }}>
-                  Read More »
+                  {t.read_more} »
                 </a>
               </div>
             </div>
@@ -384,7 +388,7 @@ const Home = () => {
               boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
             }}
           >
-            Load More
+            {t.home_load_more}
           </button>
         </div>
       </section>
