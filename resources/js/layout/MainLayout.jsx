@@ -171,7 +171,11 @@ const MainLayout = () => {
                                 }}
                                 title={language === 'id' ? "Switch to English" : "Ganti ke Bahasa Indonesia"}
                             >
-                                <span style={{ fontSize: '18px' }}>{language === 'id' ? '🇬🇧' : '🇮🇩'}</span>
+                                <img
+                                    src={language === 'id' ? '/svg/flag-for-flag-united-kingdom-svgrepo-com.svg' : '/svg/flag-for-flag-indonesia-svgrepo-com.svg'}
+                                    alt={language === 'id' ? 'EN' : 'ID'}
+                                    style={{ width: '20px', height: '20px', objectFit: 'cover', borderRadius: '50%' }}
+                                />
                                 <span style={{ fontWeight: 'bold' }}>{language === 'id' ? 'EN' : 'ID'}</span>
                             </button>
 
@@ -306,7 +310,11 @@ const MainLayout = () => {
                                         color: '#333'
                                     }}
                                 >
-                                    <span style={{ fontSize: '20px' }}>{language === 'id' ? '🇬🇧' : '🇮🇩'}</span>
+                                    <img
+                                        src={language === 'id' ? '/svg/flag-for-flag-united-kingdom-svgrepo-com.svg' : '/svg/flag-for-flag-indonesia-svgrepo-com.svg'}
+                                        alt={language === 'id' ? 'EN' : 'ID'}
+                                        style={{ width: '24px', height: '24px', objectFit: 'cover', borderRadius: '50%' }}
+                                    />
                                     <span>{language === 'id' ? 'English' : 'Bahasa Indonesia'}</span>
                                 </button>
                             </li>
