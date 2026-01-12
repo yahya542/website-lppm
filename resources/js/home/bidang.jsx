@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 const Bidang = () => {
+    const sliderRef = useRef(null);
+
     const cards = [
         {
             title: "BIDANG 1",
@@ -8,50 +10,152 @@ const Bidang = () => {
         },
         {
             title: "BIDANG 2",
-            subtitle: "PUBLIKASI, SENTRA HKI, PLAGIARISME, UNUSA PRESS", // Using text from image roughly
+            subtitle: "PUBLIKASI, SENTRA HKI, PLAGIARISME, UNUSA PRESS",
         },
         {
             title: "BIDANG 3",
             subtitle: "PENGABDIAN KEPADA MASYARAKAT, KKN, KERJASAMA",
+        },
+        // Dummy cards for slider demonstration
+        {
+            title: "BIDANG 4",
+            subtitle: "PENGEMBANGAN SISTEM INFORMASI & TEKNOLOGI",
+        },
+        {
+            title: "BIDANG 5",
+            subtitle: "INKUBATOR BISNIS & KEWIRAUSAHAAN",
+        },
+        {
+            title: "BIDANG 6",
+            subtitle: "PUSAT STUDI & LAYANAN MASYARAKAT",
         }
     ];
 
+    const scroll = (direction) => {
+        if (sliderRef.current) {
+            const { current } = sliderRef;
+            const scrollAmount = 350 + 30; // card width + gap
+            if (direction === 'left') {
+                current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+    };
+
     return (
-        <section className="bidang-section" style={{ padding: '20px 0 60px' }}>
-            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
-                {cards.map((card, index) => (
-                    <div key={index} style={{
-                        background: 'linear-gradient(to bottom, #008000, #006400)',
-                        borderRadius: '15px',
-                        padding: '30px 20px',
-                        width: '350px',
-                        textAlign: 'center',
+        <section className="bidang-section" style={{ padding: '20px 0 60px', position: 'relative' }}>
+            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', padding: '0 50px' }}>
+
+                {/* Left Arrow */}
+                <button
+                    onClick={() => scroll('left')}
+                    style={{
+                        position: 'absolute',
+                        left: '0',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        backgroundColor: '#2e7d32',
                         color: 'white',
-                        boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '40px',
+                        height: '40px',
                         display: 'flex',
-                        flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        minHeight: '250px'
-                    }}>
-                        <div style={{
-                            backgroundColor: 'white',
-                            borderRadius: '50%',
-                            width: '80px',
-                            height: '80px',
+                        cursor: 'pointer',
+                        zIndex: 10,
+                        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                    }}
+                >
+                    <i className="fas fa-chevron-left"></i>
+                </button>
+
+                {/* Cards Container */}
+                <div
+                    ref={sliderRef}
+                    style={{
+                        display: 'flex',
+                        gap: '30px',
+                        overflowX: 'auto',
+                        scrollBehavior: 'smooth',
+                        padding: '20px 5px', // padding top/bottom for shadow
+                        scrollbarWidth: 'none', // Firefox
+                        msOverflowStyle: 'none',  // IE 10+
+                        justifyContent: 'flex-start' // Align left to allow scrolling
+                    }}
+                    className="hide-scrollbar"
+                >
+                    {/* Add class to hide scrollbar in css if possible, or inline legacy style */}
+                    <style>
+                        {`
+                          .hide-scrollbar::-webkit-scrollbar {
+                            display: none;
+                          }
+                        `}
+                    </style>
+
+                    {cards.map((card, index) => (
+                        <div key={index} style={{
+                            background: 'linear-gradient(to bottom, #008000, #006400)',
+                            borderRadius: '15px',
+                            padding: '30px 20px',
+                            minWidth: '350px', // Fixed width for slider
+                            textAlign: 'center',
+                            color: 'white',
+                            boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
                             display: 'flex',
+                            flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            marginBottom: '20px',
-                            boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                            minHeight: '250px'
                         }}>
-                            {/* Placeholder Icon/Logo */}
-                            <img src="/images/icons/uim.png" alt="Icon" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+                            <div style={{
+                                backgroundColor: 'white',
+                                borderRadius: '50%',
+                                width: '80px',
+                                height: '80px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginBottom: '20px',
+                                boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                            }}>
+                                {/* Placeholder Icon/Logo */}
+                                <img src="/images/icons/uim.png" alt="Icon" style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+                            </div>
+                            <h3 style={{ fontSize: '24px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '10px' }}>{card.title}</h3>
+                            <p style={{ fontSize: '14px', textTransform: 'uppercase', lineHeight: '1.4', margin: 0, opacity: 0.9 }}>{card.subtitle}</p>
                         </div>
-                        <h3 style={{ fontSize: '24px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '10px' }}>{card.title}</h3>
-                        <p style={{ fontSize: '14px', textTransform: 'uppercase', lineHeight: '1.4', margin: 0, opacity: 0.9 }}>{card.subtitle}</p>
-                    </div>
-                ))}
+                    ))}
+                </div>
+
+                {/* Right Arrow */}
+                <button
+                    onClick={() => scroll('right')}
+                    style={{
+                        position: 'absolute',
+                        right: '0',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        backgroundColor: '#2e7d32',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '40px',
+                        height: '40px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        zIndex: 10,
+                        boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                    }}
+                >
+                    <i className="fas fa-chevron-right"></i>
+                </button>
+
             </div>
         </section>
     );
