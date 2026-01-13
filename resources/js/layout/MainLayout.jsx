@@ -99,9 +99,36 @@ const MainLayout = () => {
                 { name: 'Info Penelitian', path: '/penelitian/info' }
             ]
         },
-        { name: language === 'id' ? 'Pengabdian' : 'Service', path: '/pengabdian' },
-        { name: language === 'id' ? 'HKI' : 'IPR', path: '/hki' },
-        { name: language === 'id' ? 'Seminar' : 'Seminar', path: '/seminar' },
+        {
+            name: language === 'id' ? 'Pengabdian Masyarakat' : 'Community Service',
+            path: '/pengabdian',
+            submenu: [
+                { name: 'KKN', path: '/pengabdian/kkn' },
+                { name: 'Pengmas DRPM', path: '/pengabdian/drpm' },
+                { name: 'Pengmas Internal Universitas Islam Madura', path: '/pengabdian/internal' },
+                { name: 'Info Pengabdian Masyarakat', path: '/pengabdian/info' }
+            ]
+        },
+        {
+            name: language === 'id' ? 'HKI dan Publikasi' : 'IPR & Publications',
+            path: '/hki',
+            submenu: [
+                { name: 'Hak Cipta', path: '/hki/hak-cipta' },
+                { name: 'Publikasi', path: '/hki/publikasi' }
+            ]
+        },
+        {
+            name: language === 'id' ? 'Seminar' : 'Seminar',
+            path: '/seminar',
+            submenu: [
+                { name: 'SENIAS', path: '/seminar/senias' },
+                { name: 'SENADA', path: '/seminar/senada' },
+                { name: 'SEHATI', path: '/seminar/sehati' },
+                { name: 'NACOMSE', path: '/seminar/nacomse' },
+                { name: 'SEMNASDAL', path: '/seminar/semnasdal' },
+                { name: 'SINEMA', path: '/seminar/sinema' }
+            ]
+        },
         { name: language === 'id' ? 'Permohonan Surat' : 'Letters', path: '/permohonan-surat' },
     ];
 
