@@ -41,6 +41,7 @@ const MainLayout = () => {
     // Mobile Detection
     const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [hoveredMenu, setHoveredMenu] = useState(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -80,7 +81,15 @@ const MainLayout = () => {
     // Menu items configuration
     const menuItems = [
         { name: language === 'id' ? 'Beranda' : 'Home', path: '/' },
-        { name: language === 'id' ? 'Profil' : 'Profile', path: '/profil' },
+        {
+            name: language === 'id' ? 'Profil' : 'Profile',
+            path: '/profil',
+            submenu: [
+                { name: 'Anggota', path: '/profil/anggota' },
+                { name: 'Visi Misi', path: '/profil/visi-misi' },
+                { name: 'Kontak', path: '/profil/kontak' }
+            ]
+        },
         { name: language === 'id' ? 'Penelitian' : 'Research', path: '/penelitian' },
         { name: language === 'id' ? 'Pengabdian' : 'Service', path: '/pengabdian' },
         { name: language === 'id' ? 'HKI' : 'IPR', path: '/hki' },
@@ -128,35 +137,82 @@ const MainLayout = () => {
                                     padding: 0
                                 }}>
                                     {menuItems.map((item, index) => {
-                                        const isActive = location.pathname === item.path;
+                                        const isActive = location.pathname === item.path || (item.submenu && location.pathname.startsWith(item.path));
+                                        const isHovered = hoveredMenu === index;
+
                                         return (
-                                            <li key={index}>
+                                            <li key={index}
+                                                style={{ position: 'relative' }}
+                                                onMouseEnter={() => setHoveredMenu(index)}
+                                                onMouseLeave={() => setHoveredMenu(null)}
+                                            >
                                                 <a href={item.path} style={{
                                                     color: 'white',
                                                     textDecoration: 'none',
                                                     padding: '10px 15px',
                                                     fontWeight: '500',
                                                     fontSize: '15px',
-                                                    display: 'block',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
                                                     transition: 'all 0.2s',
-                                                    borderBottom: isActive ? '3px solid white' : '3px solid transparent',
-                                                    opacity: isActive ? 1 : 0.9
-                                                }}
-                                                    onMouseOver={(e) => {
-                                                        if (!isActive) {
-                                                            e.target.style.opacity = '1';
-                                                            e.target.style.borderBottom = '3px solid rgba(255,255,255,0.5)';
-                                                        }
-                                                    }}
-                                                    onMouseOut={(e) => {
-                                                        if (!isActive) {
-                                                            e.target.style.opacity = '0.9';
-                                                            e.target.style.borderBottom = '3px solid transparent';
-                                                        }
-                                                    }}
-                                                >
+                                                    borderBottom: isActive ? '3px solid white' : (isHovered ? '3px solid rgba(255,255,255,0.5)' : '3px solid transparent'),
+                                                    opacity: isActive || isHovered ? 1 : 0.9
+                                                }}>
                                                     {item.name}
+                                                    {item.submenu && (
+                                                        <i className="fas fa-chevron-down" style={{ fontSize: '10px', marginLeft: '6px', marginTop: '2px' }}></i>
+                                                    )}
                                                 </a>
+
+                                                {/* Dropdown Menu */}
+                                                <AnimatePresence>
+                                                    {item.submenu && isHovered && (
+                                                        <motion.ul
+                                                            initial={{ opacity: 0, y: 10 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            exit={{ opacity: 0, y: 10 }}
+                                                            transition={{ duration: 0.2 }}
+                                                            style={{
+                                                                position: 'absolute',
+                                                                top: '100%',
+                                                                left: '0',
+                                                                backgroundColor: 'white',
+                                                                minWidth: '200px',
+                                                                boxShadow: '0 5px 20px rgba(0,0,0,0.15)',
+                                                                borderRadius: '8px',
+                                                                padding: '10px 0',
+                                                                listStyle: 'none',
+                                                                zIndex: 1100,
+                                                                overflow: 'hidden'
+                                                            }}
+                                                        >
+                                                            {item.submenu.map((subItem, subIndex) => (
+                                                                <li key={subIndex}>
+                                                                    <a href={subItem.path}
+                                                                        style={{
+                                                                            display: 'block',
+                                                                            padding: '10px 20px',
+                                                                            color: '#333',
+                                                                            textDecoration: 'none',
+                                                                            fontSize: '14px',
+                                                                            transition: 'background-color 0.2s, color 0.2s'
+                                                                        }}
+                                                                        onMouseOver={(e) => {
+                                                                            e.target.style.backgroundColor = '#f5f5f5';
+                                                                            e.target.style.color = 'green';
+                                                                        }}
+                                                                        onMouseOut={(e) => {
+                                                                            e.target.style.backgroundColor = 'transparent';
+                                                                            e.target.style.color = '#333';
+                                                                        }}
+                                                                    >
+                                                                        {subItem.name}
+                                                                    </a>
+                                                                </li>
+                                                            ))}
+                                                        </motion.ul>
+                                                    )}
+                                                </AnimatePresence>
                                             </li>
                                         );
                                     })}
@@ -378,6 +434,29 @@ const MainLayout = () => {
                                     >
                                         {item.name}
                                     </a>
+                                    {/* Submenu Mobile */}
+                                    {item.submenu && (
+                                        <ul style={{ listStyle: 'none', paddingLeft: '20px', marginTop: '5px' }}>
+                                            {item.submenu.map((subItem, subIndex) => (
+                                                <li key={subIndex} style={{ marginBottom: '5px' }}>
+                                                    <a
+                                                        href={subItem.path}
+                                                        onClick={() => setIsMobileMenuOpen(false)}
+                                                        style={{
+                                                            color: '#666',
+                                                            textDecoration: 'none',
+                                                            fontSize: '14px',
+                                                            display: 'block',
+                                                            padding: '8px 10px',
+                                                            borderRadius: '5px'
+                                                        }}
+                                                    >
+                                                        • {subItem.name}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </li>
                             ))}
 
