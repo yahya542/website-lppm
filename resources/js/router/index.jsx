@@ -16,6 +16,7 @@ import PenelitianInfo from '../penelitian/pages/PenelitianInfo';
 import PengabdianList from '../pengabdian/pages/PengabdianList';
 import PengabdianDetail from '../pengabdian/pages/PengabdianDetail';
 import KKN from '../pengabdian/pages/KKN';
+import PengmasDRPM from '../pengabdian/pages/PengmasDRPM';
 import HKIList from '../hki/pages/HKIList';
 import HKIDetail from '../hki/pages/HKIDetail';
 import SeminarList from '../seminar/pages/SeminarList';
@@ -46,6 +47,7 @@ const AppRouter = () => {
                     <Route path="/penelitian/:id" element={<PenelitianDetail />} />
                     <Route path="/pengabdian" element={<PengabdianList />} />
                     <Route path="/pengabdian/kkn" element={<KKN />} />
+                    <Route path="/pengabdian/drpm" element={<PengmasDRPM />} />
                     <Route path="/pengabdian/:id" element={<PengabdianDetail />} />
                     <Route path="/hki" element={<HKIList />} />
                     <Route path="/hki/:id" element={<HKIDetail />} />
