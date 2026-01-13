@@ -90,7 +90,15 @@ const MainLayout = () => {
                 { name: 'Kontak', path: '/profil/kontak' }
             ]
         },
-        { name: language === 'id' ? 'Penelitian' : 'Research', path: '/penelitian' },
+        {
+            name: language === 'id' ? 'Penelitian' : 'Research',
+            path: '/penelitian',
+            submenu: [
+                { name: 'Penelitian DRPM', path: '/penelitian/drpm' },
+                { name: 'Penelitian Internal Universitas Islam Madura', path: '/penelitian/internal' },
+                { name: 'Info Penelitian', path: '/penelitian/info' }
+            ]
+        },
         { name: language === 'id' ? 'Pengabdian' : 'Service', path: '/pengabdian' },
         { name: language === 'id' ? 'HKI' : 'IPR', path: '/hki' },
         { name: language === 'id' ? 'Seminar' : 'Seminar', path: '/seminar' },
