@@ -229,7 +229,9 @@ const MainLayout = () => {
                                                                         style={{
                                                                             display: 'block',
                                                                             padding: '10px 20px',
-                                                                            color: '#333',
+                                                                            color: location.pathname === subItem.path ? '#004d26' : '#333',
+                                                                            backgroundColor: location.pathname === subItem.path ? '#e8f5e9' : 'transparent',
+                                                                            fontWeight: location.pathname === subItem.path ? '600' : 'normal',
                                                                             textDecoration: 'none',
                                                                             fontSize: '14px',
                                                                             transition: 'background-color 0.2s, color 0.2s'
@@ -239,8 +241,9 @@ const MainLayout = () => {
                                                                             e.target.style.color = 'green';
                                                                         }}
                                                                         onMouseOut={(e) => {
-                                                                            e.target.style.backgroundColor = 'transparent';
-                                                                            e.target.style.color = '#333';
+                                                                            const isActive = location.pathname === subItem.path;
+                                                                            e.target.style.backgroundColor = isActive ? '#e8f5e9' : 'transparent';
+                                                                            e.target.style.color = isActive ? '#004d26' : '#333';
                                                                         }}
                                                                     >
                                                                         {subItem.name}
@@ -471,13 +474,13 @@ const MainLayout = () => {
                                                     }
                                                 }}
                                                 style={{
-                                                    color: '#333',
+                                                    color: location.pathname === item.path ? '#004d26' : '#333',
                                                     textDecoration: 'none',
                                                     fontSize: '16px',
                                                     fontWeight: '500',
                                                     display: 'block',
                                                     padding: '10px',
-                                                    backgroundColor: location.pathname === item.path ? '#f0f0f0' : 'transparent',
+                                                    backgroundColor: location.pathname === item.path ? '#e8f5e9' : 'transparent',
                                                     borderRadius: '5px',
                                                     flex: 1
                                                 }}
@@ -508,12 +511,14 @@ const MainLayout = () => {
                                                                 href={subItem.path}
                                                                 onClick={() => setIsMobileMenuOpen(false)}
                                                                 style={{
-                                                                    color: '#666',
+                                                                    color: location.pathname === subItem.path ? '#004d26' : '#666',
                                                                     textDecoration: 'none',
                                                                     fontSize: '14px',
                                                                     display: 'block',
                                                                     padding: '8px 10px',
-                                                                    borderRadius: '5px'
+                                                                    backgroundColor: location.pathname === subItem.path ? '#e8f5e9' : 'transparent',
+                                                                    borderRadius: '5px',
+                                                                    fontWeight: location.pathname === subItem.path ? '600' : 'normal'
                                                                 }}
                                                             >
                                                                 {subItem.name}
