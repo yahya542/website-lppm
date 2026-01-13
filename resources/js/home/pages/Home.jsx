@@ -134,6 +134,44 @@ const Home = () => {
       {/* 2. BIDANG CARDS */}
       <Bidang />
 
+      {/* 2.5. WELCOME MESSAGE - White Background */}
+      <section style={{ backgroundColor: 'white', padding: '60px 0' }}>
+        <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', alignItems: 'center' }}>
+
+            {/* Image Side */}
+            <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ position: 'relative', width: '280px', height: '350px' }}>
+                <div style={{ position: 'absolute', top: '20px', left: '-20px', width: '100%', height: '100%', backgroundColor: '#fec107', borderRadius: '20px' }}></div>
+                <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+                  <img src="https://via.placeholder.com/300x400?text=Ketua+LPPM" alt="Ketua LPPM" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Text Side */}
+            <div style={{ flex: '2 1 400px', textAlign: 'left' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', backgroundColor: '#e8f5e9', padding: '8px 15px', borderRadius: '50px', marginBottom: '20px' }}>
+                <i className="fas fa-quote-left" style={{ color: '#004d26' }}></i>
+                <span style={{ color: '#004d26', fontWeight: 'bold', fontSize: '0.9rem' }}>SAMBUTAN KETUA LPPM</span>
+              </div>
+              <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '20px', lineHeight: '1.3' }}>
+                Mewujudkan Riset dan Pengabdian yang Berdampak
+              </h2>
+              <p style={{ color: '#666', lineHeight: '1.8', fontSize: '1rem', marginBottom: '30px' }}>
+                "Selamat datang di website resmi LPPM Universitas Islam Madura. Kami berkomitmen untuk memfasilitasi dan mendorong sivitas akademika dalam menghasilkan karya penelitian dan pengabdian yang inovatif, bermutu, dan bermanfaat bagi masyarakat luas. Mari bersinergi untuk kemajuan bangsa."
+              </p>
+
+              <div>
+                <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#004d26', margin: 0 }}>Dr. Nama Ketua, M.Si.</h4>
+                <div style={{ color: '#888', fontStyle: 'italic', fontSize: '0.9rem' }}>Ketua LPPM Universitas Islam Madura</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* 3. NEWS SECTION (Slider) - Light Gray Background */}
       <section style={{ backgroundColor: '#f8f9fa', padding: '50px 0' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
