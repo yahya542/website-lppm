@@ -42,6 +42,7 @@ const MainLayout = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [hoveredMenu, setHoveredMenu] = useState(null);
+    const [activeMobileSubmenu, setActiveMobileSubmenu] = useState(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -451,49 +452,79 @@ const MainLayout = () => {
                         }}
                     >
                         <ul style={{ listStyle: 'none', padding: '20px', margin: 0 }}>
-                            {menuItems.map((item, index) => (
-                                <li key={index} style={{ marginBottom: '15px' }}>
-                                    <a
-                                        href={item.path}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        style={{
-                                            color: '#333',
-                                            textDecoration: 'none',
-                                            fontSize: '16px',
-                                            fontWeight: '500',
-                                            display: 'block',
-                                            padding: '10px',
-                                            backgroundColor: location.pathname === item.path ? '#f0f0f0' : 'transparent',
-                                            borderRadius: '5px'
-                                        }}
-                                    >
-                                        {item.name}
-                                    </a>
-                                    {/* Submenu Mobile */}
-                                    {item.submenu && (
-                                        <ul style={{ listStyle: 'none', paddingLeft: '20px', marginTop: '5px' }}>
-                                            {item.submenu.map((subItem, subIndex) => (
-                                                <li key={subIndex} style={{ marginBottom: '5px' }}>
-                                                    <a
-                                                        href={subItem.path}
-                                                        onClick={() => setIsMobileMenuOpen(false)}
-                                                        style={{
-                                                            color: '#666',
-                                                            textDecoration: 'none',
-                                                            fontSize: '14px',
-                                                            display: 'block',
-                                                            padding: '8px 10px',
-                                                            borderRadius: '5px'
-                                                        }}
-                                                    >
-                                                        • {subItem.name}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </li>
-                            ))}
+                            {menuItems.map((item, index) => {
+                                const hasSubmenu = item.submenu && item.submenu.length > 0;
+                                const isSubmenuOpen = activeMobileSubmenu === index;
+
+                                return (
+                                    <li key={index} style={{ marginBottom: '15px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <a
+                                                href={hasSubmenu ? '#' : item.path}
+                                                onClick={(e) => {
+                                                    if (hasSubmenu) {
+                                                        e.preventDefault();
+                                                        setActiveMobileSubmenu(isSubmenuOpen ? null : index);
+                                                    } else {
+                                                        setIsMobileMenuOpen(false);
+                                                    }
+                                                }}
+                                                style={{
+                                                    color: '#333',
+                                                    textDecoration: 'none',
+                                                    fontSize: '16px',
+                                                    fontWeight: '500',
+                                                    display: 'block',
+                                                    padding: '10px',
+                                                    backgroundColor: location.pathname === item.path ? '#f0f0f0' : 'transparent',
+                                                    borderRadius: '5px',
+                                                    flex: 1
+                                                }}
+                                            >
+                                                {item.name}
+                                            </a>
+                                            {hasSubmenu && (
+                                                <div
+                                                    onClick={() => setActiveMobileSubmenu(isSubmenuOpen ? null : index)}
+                                                    style={{ padding: '10px', cursor: 'pointer', color: '#666' }}>
+                                                    <i className={`fas fa-chevron-${isSubmenuOpen ? 'up' : 'down'}`} style={{ fontSize: '12px' }}></i>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Submenu Mobile */}
+                                        <AnimatePresence>
+                                            {hasSubmenu && isSubmenuOpen && (
+                                                <motion.ul
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    style={{ listStyle: 'none', paddingLeft: '20px', marginTop: '5px', overflow: 'hidden' }}
+                                                >
+                                                    {item.submenu.map((subItem, subIndex) => (
+                                                        <li key={subIndex} style={{ marginBottom: '5px' }}>
+                                                            <a
+                                                                href={subItem.path}
+                                                                onClick={() => setIsMobileMenuOpen(false)}
+                                                                style={{
+                                                                    color: '#666',
+                                                                    textDecoration: 'none',
+                                                                    fontSize: '14px',
+                                                                    display: 'block',
+                                                                    padding: '8px 10px',
+                                                                    borderRadius: '5px'
+                                                                }}
+                                                            >
+                                                                • {subItem.name}
+                                                            </a>
+                                                        </li>
+                                                    ))}
+                                                </motion.ul>
+                                            )}
+                                        </AnimatePresence>
+                                    </li>
+                                );
+                            })}
 
                             {/* Language Switcher Mobile */}
                             <li style={{ marginBottom: '15px' }}>
