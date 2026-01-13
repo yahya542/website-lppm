@@ -5,6 +5,7 @@ import Home from '../home/pages/Home';
 import Nama from '../home/components/nama';
 import ProfilList from '../profil/pages/ProfilList';
 import ProfilDetail from '../profil/pages/ProfilDetail';
+import Anggota from '../profil/pages/Anggota';
 import PenelitianList from '../penelitian/pages/PenelitianList';
 import PenelitianDetail from '../penelitian/pages/PenelitianDetail';
 import PengabdianList from '../pengabdian/pages/PengabdianList';
@@ -28,6 +29,7 @@ const AppRouter = () => {
                     <Route index element={<Home />} />
                     <Route path="/home/nama" element={<Nama />} />
                     <Route path="/profil" element={<ProfilList />} />
+                    <Route path="/profil/anggota" element={<Anggota />} />
                     <Route path="/profil/:id" element={<ProfilDetail />} />
                     <Route path="/penelitian" element={<PenelitianList />} />
                     <Route path="/penelitian/:id" element={<PenelitianDetail />} />

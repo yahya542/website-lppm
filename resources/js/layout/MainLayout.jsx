@@ -154,7 +154,7 @@ const MainLayout = () => {
                             justifyContent: 'space-between',
                             height: '70px',
                             padding: '0 20px',
-                            maxWidth: '1200px'
+                            maxWidth: '1400px'
                         }}>
 
                             {/* 1. LOGO (Left) */}
@@ -185,11 +185,12 @@ const MainLayout = () => {
                                                 <a href={item.path} style={{
                                                     color: 'white',
                                                     textDecoration: 'none',
-                                                    padding: '10px 15px',
+                                                    padding: '10px 8px',
                                                     fontWeight: '500',
-                                                    fontSize: '15px',
+                                                    fontSize: '14px',
                                                     display: 'flex',
                                                     alignItems: 'center',
+                                                    whiteSpace: 'nowrap',
                                                     transition: 'all 0.2s',
                                                     borderBottom: isActive ? '3px solid white' : (isHovered ? '3px solid rgba(255,255,255,0.5)' : '3px solid transparent'),
                                                     opacity: isActive || isHovered ? 1 : 0.9
