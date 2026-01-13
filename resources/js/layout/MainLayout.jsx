@@ -515,7 +515,7 @@ const MainLayout = () => {
                                                                     borderRadius: '5px'
                                                                 }}
                                                             >
-                                                                • {subItem.name}
+                                                                {subItem.name}
                                                             </a>
                                                         </li>
                                                     ))}
