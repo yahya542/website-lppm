@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from '../layout/MainLayout';
-import Home from '../home/Home';
-import Nama from '../home/nama';
+import Home from '../home/pages/Home';
+import Nama from '../home/components/nama';
 import ProfilList from '../profil/pages/ProfilList';
 import ProfilDetail from '../profil/pages/ProfilDetail';
 import PenelitianList from '../penelitian/pages/PenelitianList';

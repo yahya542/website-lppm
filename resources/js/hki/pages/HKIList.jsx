@@ -1,88 +1,326 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 const HKIList = () => {
+    const { language } = useLanguage();
+    const t = translations[language];
+
+    // Animation variants
+    const fadeInUp = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 }
+    };
+
+    const staggerContainer = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2
+            }
+        }
+    };
+
     return (
-        <div className="main-content" style={{ padding: '20px', backgroundColor: '#f5f5f5', minHeight: '800px' }}>
-            <div className="container">
-                <div className="page-header">
-                    <h1>HKI</h1>
-                    <p>Ini adalah halaman Hak Kekayaan Intelektual (HKI) Lembaga Penelitian dan Pengabdian Masyarakat (LPPM) UIM</p>
-                </div>
-                
-                <div className="row">
-                    <div className="col-md-12">
-                        <div style={{ backgroundColor: 'white', padding: '20px', marginBottom: '20px', borderRadius: '5px' }}>
-                            <h2>Program Hak Kekayaan Intelektual</h2>
-                            <p>
-                                Lembaga Penelitian dan Pengabdian Masyarakat (LPPM) UIM mendukung pengembangan dan perlindungan 
-                                Hak Kekayaan Intelektual (HKI) dari hasil penelitian dan inovasi yang dihasilkan oleh dosen, 
-                                mahasiswa, dan tenaga kependidikan di lingkungan Universitas Indonesia Makassar.
-                            </p>
-                        </div>
-                        
-                        <div style={{ backgroundColor: 'white', padding: '20px', marginBottom: '20px', borderRadius: '5px' }}>
-                            <h3>Jenis Hak Kekayaan Intelektual</h3>
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <h4>Hak Paten</h4>
-                                    <ul>
-                                        <li>Paten Produk</li>
-                                        <li>Paten Proses</li>
-                                        <li>Paten Sederhana</li>
-                                        <li>Perlindungan terhadap penemuan baru yang dapat diimplementasikan</li>
-                                    </ul>
-                                </div>
-                                <div className="col-md-6">
-                                    <h4>Hak Kekayaan Intelektual Lainnya</h4>
-                                    <ul>
-                                        <li>Merchandise</li>
-                                        <li>Desain Produk</li>
-                                        <li>Hak Cipta</li>
-                                        <li>Rahasia Dagang</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
-                            <h3>Daftar HKI Terbaru</h3>
-                            <div className="row">
-                                <div className="col-md-6" style={{ marginBottom: '20px' }}>
-                                    <div style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '5px', height: '100%' }}>
-                                        <h5>Sistem Monitoring Kualitas Udara</h5>
-                                        <p style={{ color: '#666', fontSize: '14px' }}>Inventor: Dr. Ahmad Sudrajat, M.T.</p>
-                                        <p>Nomor HKI: 0123456789 | 28 Desember 2025</p>
-                                        <p>Sistem inovatif untuk memonitor kualitas udara secara real-time...</p>
-                                    </div>
-                                </div>
-                                <div className="col-md-6" style={{ marginBottom: '20px' }}>
-                                    <div style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '5px', height: '100%' }}>
-                                        <h5>Alat Deteksi Dini Bencana Banjir</h5>
-                                        <p style={{ color: '#666', fontSize: '14px' }}>Inventor: Ir. Budi Santoso, Ph.D.</p>
-                                        <p>Nomor HKI: 0987654321 | 25 Desember 2025</p>
-                                        <p>Alat yang dapat mendeteksi dini potensi bencana banjir di daerah rawan...</p>
-                                    </div>
-                                </div>
-                                <div className="col-md-6" style={{ marginBottom: '20px' }}>
-                                    <div style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '5px', height: '100%' }}>
-                                        <h5>Aplikasi Pembelajaran Interaktif</h5>
-                                        <p style={{ color: '#666', fontSize: '14px' }}>Inventor: Dr. Siti Rahmawati, M.Si.</p>
-                                        <p>Nomor HKI: 1122334455 | 20 Desember 2025</p>
-                                        <p>Aplikasi mobile untuk pembelajaran interaktif di lingkungan pendidikan...</p>
-                                    </div>
-                                </div>
-                                <div className="col-md-6" style={{ marginBottom: '20px' }}>
-                                    <div style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '5px', height: '100%' }}>
-                                        <h5>Metode Pengolahan Limbah Organik</h5>
-                                        <p style={{ color: '#666', fontSize: '14px' }}>Inventor: Dr. Rina Kartika, M.Pd.</p>
-                                        <p>Nomor HKI: 5544332211 | 15 Desember 2025</p>
-                                        <p>Metode inovatif pengolahan limbah organik menjadi pupuk kompos berkualitas...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div className="main-content" style={{ backgroundColor: '#f9f9f9', paddingBottom: '60px' }}>
+
+            {/* 1. HERO SECTION */}
+            <div style={{
+                background: 'linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%)',
+                padding: '80px 20px',
+                color: 'white',
+                textAlign: 'center',
+                marginBottom: '40px'
+            }}>
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeInUp}
+                    transition={{ duration: 0.6 }}
+                    className="container"
+                    style={{ maxWidth: '1000px', margin: '0 auto' }}
+                >
+                    <div style={{ display: 'inline-block', backgroundColor: 'rgba(255,255,255,0.2)', padding: '5px 15px', borderRadius: '20px', marginBottom: '15px', fontSize: '14px', fontWeight: 'bold' }}>
+                        {t.hki_subtitle}
+                    </div>
+                    <h1 style={{ fontSize: '3.5rem', fontWeight: 'bold', marginBottom: '15px', letterSpacing: '1px' }}>
+                        {t.hki_title}
+                    </h1>
+                    <p style={{ fontSize: '1.2rem', opacity: 0.9, maxWidth: '750px', margin: '0 auto', lineHeight: '1.6' }}>
+                        {t.hki_desc}
+                    </p>
+                </motion.div>
+            </div>
+
+            <div className="container" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px' }}>
+
+                {/* 2. PROGRAM OVERVIEW */}
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={fadeInUp}
+                    style={{
+                        backgroundColor: 'white',
+                        padding: '40px',
+                        borderRadius: '20px',
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                        marginBottom: '50px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '30px',
+                        alignItems: 'center',
+                        textAlign: 'center'
+                    }}
+                >
+                    <div style={{
+                        width: '80px',
+                        height: '80px',
+                        backgroundColor: '#e8f5e9',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'green',
+                        fontSize: '32px'
+                    }}>
+                        <i className="fas fa-certificate"></i>
+                    </div>
+                    <div>
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '15px', color: '#333' }}>
+                            {t.hki_center_title}
+                        </h2>
+                        <p style={{ fontSize: '1.1rem', color: '#666', lineHeight: '1.8', maxWidth: '800px' }}>
+                            {t.hki_center_desc}
+                        </p>
+                    </div>
+                </motion.div>
+
+                {/* 3. JENIS HKI */}
+                <div style={{ marginBottom: '60px' }}>
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeInUp}
+                        style={{ textAlign: 'center', marginBottom: '40px' }}
+                    >
+                        <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>
+                            {t.hki_types_title}
+                        </h2>
+                        <div style={{ width: '60px', height: '4px', backgroundColor: '#f9a825', margin: '0 auto' }}></div>
+                    </motion.div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
+                        {/* Hak Paten */}
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={fadeInUp}
+                            transition={{ delay: 0.1 }}
+                            style={{
+                                background: 'linear-gradient(135deg, #0288d1 0%, #01579b 100%)',
+                                padding: '30px',
+                                borderRadius: '15px',
+                                color: 'white',
+                                boxShadow: '0 10px 20px rgba(2, 136, 209, 0.3)'
+                            }}
+                        >
+                            <div style={{ fontSize: '30px', marginBottom: '20px', opacity: 0.8 }}><i className="fas fa-lightbulb"></i></div>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>
+                                {language === 'id' ? 'Hak Paten' : 'Patent Rights'}
+                            </h3>
+                            <ul style={{ listStyle: 'none', padding: 0 }}>
+                                {(language === 'id' ? [
+                                    "Paten Produk",
+                                    "Paten Proses",
+                                    "Paten Sederhana",
+                                    "Invensi Teknologi Baru"
+                                ] : [
+                                    "Product Patent",
+                                    "Process Patent",
+                                    "Simple Patent",
+                                    "New Technology Invention"
+                                ]).map((item, idx) => (
+                                    <li key={idx} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </motion.div>
+
+                        {/* HKI Lainnya */}
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                            variants={fadeInUp}
+                            transition={{ delay: 0.2 }}
+                            style={{
+                                background: 'linear-gradient(135deg, #7b1fa2 0%, #4a148c 100%)',
+                                padding: '30px',
+                                borderRadius: '15px',
+                                color: 'white',
+                                boxShadow: '0 10px 20px rgba(123, 31, 162, 0.3)'
+                            }}
+                        >
+                            <div style={{ fontSize: '30px', marginBottom: '20px', opacity: 0.8 }}><i className="fas fa-copyright"></i></div>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px' }}>
+                                {language === 'id' ? 'Hak Cipta & Lainnya' : 'Copyright & Others'}
+                            </h3>
+                            <ul style={{ listStyle: 'none', padding: 0 }}>
+                                {(language === 'id' ? [
+                                    "Hak Cipta (Buku, Seni, dll)",
+                                    "Desain Industri",
+                                    "Merek Dagang",
+                                    "Rahasia Dagang"
+                                ] : [
+                                    "Copyright (Books, Art, etc.)",
+                                    "Industrial Design",
+                                    "Trademark",
+                                    "Trade Secret"
+                                ]).map((item, idx) => (
+                                    <li key={idx} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                        <i className="fas fa-check" style={{ marginRight: '10px', fontSize: '12px', opacity: 0.7 }}></i> {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </motion.div>
                     </div>
                 </div>
+
+                {/* 4. DAFTAR HKI TERBARU */}
+                <div>
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeInUp}
+                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: '30px' }}
+                    >
+                        <div>
+                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '5px' }}>
+                                {t.hki_latest_title}
+                            </h2>
+                            <p style={{ color: '#666' }}>{t.hki_latest_subtitle}</p>
+                        </div>
+                        <a href="#" style={{ color: 'green', fontWeight: 'bold', textDecoration: 'none' }}>
+                            {t.view_catalog} <i className="fas fa-arrow-right"></i>
+                        </a>
+                    </motion.div>
+
+                    <motion.div
+                        variants={staggerContainer}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '25px' }}
+                    >
+                        {[
+                            {
+                                title: "Sistem Monitoring Kualitas Udara",
+                                title_en: "Air Quality Monitoring System",
+                                inventor: "Dr. Ahmad Sudrajat, M.T.",
+                                number: "0123456789",
+                                date: "28 Des 2025",
+                                desc: "Sistem inovatif berbasis IoT untuk memonitor kualitas udara secara real-time dan memberikan peringatan dini...",
+                                desc_en: "Innovative IoT-based system to monitor air quality in real-time and provide early warning...",
+                                icon: "fa-wind",
+                                color: "#0288d1"
+                            },
+                            {
+                                title: "Alat Deteksi Dini Bencana Banjir",
+                                title_en: "Early Flood Detection Tool",
+                                inventor: "Ir. Budi Santoso, Ph.D.",
+                                number: "0987654321",
+                                date: "25 Des 2025",
+                                desc: "Alat sensor ketinggian air otomatis yang dapat mendeteksi dini potensi bencana banjir di daerah rawan...",
+                                desc_en: "Automatic water level sensor tool that can detect potential flood disasters in vulnerable areas early...",
+                                icon: "fa-water",
+                                color: "#d32f2f"
+                            },
+                            {
+                                title: "Aplikasi Pembelajaran Interaktif",
+                                title_en: "Interactive Learning Application",
+                                inventor: "Dr. Siti Rahmawati, M.Si.",
+                                number: "1122334455",
+                                date: "20 Des 2025",
+                                desc: "Aplikasi mobile berbasis gamifikasi untuk meningkatkan minat belajar siswa pada mata pelajaran sains...",
+                                desc_en: "Gamification-based mobile application to increase student interest in science subjects...",
+                                icon: "fa-mobile-alt",
+                                color: "#7b1fa2"
+                            },
+                            {
+                                title: "Metode Pengolahan Limbah Organik",
+                                title_en: "Organic Waste Processing Method",
+                                inventor: "Dr. Rina Kartika, M.Pd.",
+                                number: "5544332211",
+                                date: "15 Des 2025",
+                                desc: "Metode baru biokonversi untuk mengolah limbah organik rumah tangga menjadi pupuk kompos berkualitas tinggi...",
+                                desc_en: "New bioconversion method to process household organic waste into high-quality compost fertilizer...",
+                                icon: "fa-leaf",
+                                color: "#388e3c"
+                            }
+                        ].map((item, index) => (
+                            <motion.div
+                                key={index}
+                                variants={fadeInUp}
+                                whileHover={{ y: -5 }}
+                                style={{
+                                    backgroundColor: 'white',
+                                    borderRadius: '15px',
+                                    overflow: 'hidden',
+                                    boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
+                                    border: '1px solid #eee'
+                                }}
+                            >
+                                <div style={{ padding: '25px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+                                        <div style={{
+                                            padding: '5px 12px',
+                                            backgroundColor: `${item.color}15`,
+                                            color: item.color,
+                                            borderRadius: '20px',
+                                            fontSize: '12px',
+                                            fontWeight: 'bold'
+                                        }}>
+                                            <i className="fas fa-file-contract" style={{ marginRight: '5px' }}></i>
+                                            {t.registered}
+                                        </div>
+                                        <div style={{ color: '#999', fontSize: '13px' }}>{item.date}</div>
+                                    </div>
+
+                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '10px', lineHeight: '1.4' }}>
+                                        {language === 'id' ? item.title : item.title_en}
+                                    </h3>
+
+                                    <div style={{ marginBottom: '15px' }}>
+                                        <div style={{ fontSize: '13px', color: '#555', marginBottom: '5px', display: 'flex', alignItems: 'center' }}>
+                                            <i className="fas fa-user-tie" style={{ width: '20px', color: '#999' }}></i>
+                                            {item.inventor}
+                                        </div>
+                                        <div style={{ fontSize: '13px', color: '#555', display: 'flex', alignItems: 'center' }}>
+                                            <i className="fas fa-barcode" style={{ width: '20px', color: '#999' }}></i>
+                                            No. {item.number}
+                                        </div>
+                                    </div>
+
+                                    <p style={{ color: '#777', fontSize: '14px', lineHeight: '1.6', marginBottom: '20px' }}>
+                                        {language === 'id' ? item.desc : item.desc_en}
+                                    </p>
+
+                                    <a href="#" style={{ display: 'inline-flex', alignItems: 'center', color: item.color, fontWeight: 'bold', fontSize: '13px', textDecoration: 'none' }}>
+                                        {t.patent_detail} <i className="fas fa-arrow-right" style={{ marginLeft: '5px' }}></i>
+                                    </a>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
+
             </div>
         </div>
     );

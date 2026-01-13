@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import AppRouter from './router';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 // Gunakan flag untuk mencegah double mounting
 let isReactMounted = false;
@@ -17,10 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (container && !isReactMounted) {
         const root = createRoot(container);
         isReactMounted = true;
-        
+
         root.render(
             <React.StrictMode>
-                <AppRouter />
+                <LanguageProvider>
+                    <AppRouter />
+                </LanguageProvider>
             </React.StrictMode>
         );
     } else if (!container) {

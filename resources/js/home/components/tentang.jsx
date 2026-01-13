@@ -1,7 +1,12 @@
-import * as motion from "motion/react-client"
-import { fadeUpText } from "../components/transisi"
+import { motion } from "motion/react"
+import { fadeUpText } from "../../components/transisi"
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../contexts/translations';
 
 export default function Tentang() {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   const styles = {
     container: {
       padding: "60px 20px",
@@ -67,7 +72,7 @@ export default function Tentang() {
           transition={{ duration: 0.5 }}
         />
 
-        <h2 style={styles.title}>Tentang LPPM UIM</h2>
+        <h2 style={styles.title}>{t.tentang_title}</h2>
 
         <motion.span
           style={styles.line}
@@ -80,7 +85,7 @@ export default function Tentang() {
 
       {/* PARAGRAF */}
       <motion.p style={styles.p} variants={fadeUpText}>
-        Lembaga Penelitian dan Pengabdian kepada Masyarakat (LP2M) Universitas Islam Madura (UIM) Pamekasan merupakan institusi organik yang bertugas mengelola seluruh kegiatan penelitian dan pengabdian kepada masyarakat, baik yang bersifat intra universitas maupun ekstra universitas (regional, nasional, dan internasional). LP2M Universitas Islam Madura memfasilitasi segala bentuk kegiatan kerjasama penelitian dan pengabdian kepada masyarakat, baik antar bidang ilmu maupun antar lembaga lembaga ini juga merupakan wadah bagi pembentukan berbagai pusat studi dan pusat kegiatan di lingku ngan Universitas Islam Madura.
+        {t.tentang_desc}
       </motion.p>
     </motion.section>
   )
