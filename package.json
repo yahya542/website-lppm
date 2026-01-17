@@ -5,7 +5,7 @@
         "dev": "vite",
         "build": "vite build",
         "serve": "php artisan serve",
-        "start": "concurrently \"php artisan serve\" \"npm run dev\""
+        "start": "concurrently \"php artisan serve --port=8083\" \"npm run dev\""
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^5.1.2",
