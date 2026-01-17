@@ -13,6 +13,7 @@ use Dedoc\Scramble\Attributes\Get;
 use Dedoc\Scramble\Attributes\QueryParam;
 use Dedoc\Scramble\Attributes\PathParameter;
 use Dedoc\Scramble\Attributes\Response;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -21,7 +22,7 @@ class NewsController extends Controller
     #[QueryParam('search', 'string', required: false, description: 'Search term to filter news by title or content')]
     #[QueryParam('category', 'integer', required: false, description: 'Category ID to filter news')]
     #[QueryParam('per_page', 'integer', required: false, description: 'Number of items per page (max 100)')]
-    #[Response(200, ['data' => [['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'category' => ['id' => 1, 'name' => 'Sample Category']]]])]
+    #[Response(200, ['data' => [['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'featured_image' => '/storage/news/sample.jpg', 'category' => ['id' => 1, 'name' => 'Sample Category']]]])]
     public function index(Request $request): JsonResponse
     {
         try {
@@ -56,7 +57,7 @@ class NewsController extends Controller
     #[Endpoint(title: 'Get Single News')]
     #[Get('/api/news/{id}')]
     #[PathParameter('id', 'integer', description: 'News ID')]
-    #[Response(200, ['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'category' => ['id' => 1, 'name' => 'Sample Category']])]
+    #[Response(200, ['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'featured_image' => '/storage/news/sample.jpg', 'category' => ['id' => 1, 'name' => 'Sample Category']])]
     #[Response(404, ['error' => 'News not found'])]
     public function show($id): JsonResponse
     {
@@ -83,7 +84,7 @@ class NewsController extends Controller
     #[Endpoint(title: 'Get News by Category')]
     #[Get('/api/news/category/{categoryId}')]
     #[PathParameter('categoryId', 'integer', description: 'Category ID')]
-    #[Response(200, ['data' => [['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'category' => ['id' => 1, 'name' => 'Sample Category']]]])]
+    #[Response(200, ['data' => [['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'featured_image' => '/storage/news/sample.jpg', 'category' => ['id' => 1, 'name' => 'Sample Category']]]])]
     public function getByCategory($categoryId): JsonResponse
     {
         try {
@@ -120,7 +121,7 @@ class NewsController extends Controller
     
     #[Endpoint(title: 'Get Latest News')]
     #[Get('/api/news/latest')]
-    #[Response(200, [['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'category' => ['id' => 1, 'name' => 'Sample Category']]])]
+    #[Response(200, [['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'featured_image' => '/storage/news/sample.jpg', 'category' => ['id' => 1, 'name' => 'Sample Category']]])]
     public function latest(): JsonResponse
     {
         try {
@@ -141,7 +142,7 @@ class NewsController extends Controller
     
     #[Endpoint(title: 'Get Popular News')]
     #[Get('/api/news/popular')]
-    #[Response(200, [['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'category' => ['id' => 1, 'name' => 'Sample Category']]])]
+    #[Response(200, [['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'featured_image' => '/storage/news/sample.jpg', 'category' => ['id' => 1, 'name' => 'Sample Category']]])]
     public function popular(): JsonResponse
     {
         try {
@@ -211,7 +212,7 @@ class NewsController extends Controller
         
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('news', 'public');
-            $data['image'] = $imagePath;
+            $data['featured_image'] = $imagePath; // Ubah dari 'image' menjadi 'featured_image'
         }
         
         $news = News::create($data);
@@ -239,12 +240,12 @@ class NewsController extends Controller
         
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
-            if ($news->image) {
-                \Storage::disk('public')->delete($news->image);
+            if ($news->featured_image) {
+                Storage::disk('public')->delete($news->featured_image);
             }
             
             $imagePath = $request->file('image')->store('news', 'public');
-            $data['image'] = $imagePath;
+            $data['featured_image'] = $imagePath; // Ubah dari 'image' menjadi 'featured_image'
         }
         
         $news->update($data);
@@ -260,8 +261,8 @@ class NewsController extends Controller
         $news = News::findOrFail($id);
         
         // Hapus gambar jika ada
-        if ($news->image) {
-            \Storage::disk('public')->delete($news->image);
+        if ($news->featured_image) {
+            Storage::disk('public')->delete($news->featured_image);
         }
         
         $news->delete();

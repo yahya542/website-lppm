@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class News extends Model
 {
@@ -30,6 +31,17 @@ class News extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    
+    /**
+     * Accessor for featured_image to return full URL
+     */
+    public function getFeaturedImageAttribute($value)
+    {
+        if ($value) {
+            return Storage::url($value);
+        }
+        return $value;
     }
     
     /**
