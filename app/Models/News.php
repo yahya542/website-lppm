@@ -33,7 +33,7 @@ class News extends Model
     }
     
     /**
-     * Set the title attribute and automatically generate slug
+     * Set the title attribute and automatically generate slug if not provided
      *
      * @param string $value
      * @return void
@@ -42,8 +42,8 @@ class News extends Model
     {
         $this->attributes['title'] = $value;
         
-        // Only generate slug if it hasn't been set manually
-        if (!$this->isDirty('slug') && !$this->getAttribute('slug')) {
+        // Generate slug if it's empty
+        if (empty($this->attributes['slug'])) {
             $this->attributes['slug'] = $this->generateUniqueSlug($value);
         }
     }
@@ -58,8 +58,8 @@ class News extends Model
     {
         $this->attributes['content'] = $value;
         
-        // Auto-generate excerpt if it hasn't been set manually and content is being updated
-        if (!$this->isDirty('excerpt') && !$this->getAttribute('excerpt') && !empty($value)) {
+        // Auto-generate excerpt if it's empty and content is being set
+        if (empty($this->attributes['excerpt']) && !empty($value)) {
             $this->attributes['excerpt'] = $this->generateExcerpt($value);
         }
     }
@@ -76,9 +76,21 @@ class News extends Model
         $originalSlug = $slug;
         $count = 1;
         
-        while (static::where('slug', $slug)->where('id', '!=', $this->id ?? null)->exists()) {
+        // Query to check for existing slugs, excluding current record if updating
+        $query = static::where('slug', $slug);
+        if (!empty($this->id)) {
+            $query->where('id', '!=', $this->id);
+        }
+        
+        while ($query->exists()) {
             $slug = $originalSlug . '-' . $count;
             $count++;
+            
+            // Update the query to check the new slug
+            $query = static::where('slug', $slug);
+            if (!empty($this->id)) {
+                $query->where('id', '!=', $this->id);
+            }
         }
         
         return $slug;
@@ -106,11 +118,13 @@ class News extends Model
     {
         parent::boot();
         
-        static::creating(function ($news) {
-            if (empty($news->slug)) {
+        static::saving(function ($news) {
+            // Ensure slug is set before saving if not already set
+            if (empty($news->slug) && !empty($news->title)) {
                 $news->slug = $news->generateUniqueSlug($news->title);
             }
             
+            // Ensure excerpt is set before saving if not already set
             if (empty($news->excerpt) && !empty($news->content)) {
                 $news->excerpt = $news->generateExcerpt($news->content);
             }

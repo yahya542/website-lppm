@@ -45,6 +45,13 @@
                         @enderror
                     </div>
                     
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="is_published" name="is_published" value="1" checked> <!-- Checked by default -->
+                            <label class="form-check-label" for="is_published">Terbitkan Berita</label>
+                        </div>
+                    </div>
+                    
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="{{ route('admin.news.index') }}" class="btn btn-secondary">Batal</a>
                         <button type="submit" class="btn btn-primary">Simpan Berita</button>

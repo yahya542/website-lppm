@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -36,17 +37,23 @@ class NewsController extends Controller
             'content' => 'required|string',
             'excerpt' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_published' => 'boolean', // Add validation for is_published
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $data = $request->only(['title', 'content', 'excerpt']);
+        $data = $request->only(['title', 'content', 'excerpt', 'is_published']);
+        
+        // Set is_published to true by default if not provided
+        if (!isset($data['is_published'])) {
+            $data['is_published'] = true;
+        }
         
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('news', 'public');
-            $data['image'] = $imagePath;
+            $data['featured_image'] = $imagePath;
         }
 
         News::create($data);
@@ -80,22 +87,23 @@ class NewsController extends Controller
             'content' => 'required|string',
             'excerpt' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_published' => 'boolean', // Add validation for is_published
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $data = $request->only(['title', 'content', 'excerpt']);
+        $data = $request->only(['title', 'content', 'excerpt', 'is_published']);
         
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
-            if ($news->image) {
-                \Storage::disk('public')->delete($news->image);
+            if ($news->featured_image) {
+                Storage::disk('public')->delete($news->featured_image);
             }
             
             $imagePath = $request->file('image')->store('news', 'public');
-            $data['image'] = $imagePath;
+            $data['featured_image'] = $imagePath;
         }
 
         $news->update($data);
@@ -109,8 +117,8 @@ class NewsController extends Controller
     public function destroy(News $news)
     {
         // Hapus gambar jika ada
-        if ($news->image) {
-            \Storage::disk('public')->delete($news->image);
+        if ($news->featured_image) {
+            Storage::disk('public')->delete($news->featured_image);
         }
         
         $news->delete();

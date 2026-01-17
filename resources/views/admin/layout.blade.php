@@ -25,6 +25,12 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    <!-- Tombol Views ke React App -->
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm me-2" href="{{ url('/') }}" title="Kembali ke Tampilan Website">
+                            <i class="fas fa-home"></i> Views
+                        </a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             {{ Auth::user()->name }}

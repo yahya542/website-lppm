@@ -41,15 +41,22 @@
                         <label for="image" class="form-label">Gambar</label>
                         <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">
                         <div class="form-text">Format: jpeg, png, jpg, gif. Maksimal 2MB.</div>
-                        @if($news->image)
+                        @if($news->featured_image)
                             <div class="mt-2">
                                 <p>Gambar saat ini:</p>
-                                <img src="{{ Storage::url($news->image) }}" alt="Gambar Berita" class="img-thumbnail" style="max-width: 200px;">
+                                <img src="{{ Storage::url($news->featured_image) }}" alt="Gambar Berita" class="img-thumbnail" style="max-width: 200px;">
                             </div>
                         @endif
                         @error('image')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="is_published" name="is_published" value="1" {{ old('is_published', $news->is_published) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="is_published">Terbitkan Berita</label>
+                        </div>
                     </div>
                     
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
