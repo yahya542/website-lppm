@@ -5,10 +5,22 @@ import Home from '../home/pages/Home';
 import Nama from '../home/components/nama';
 import ProfilList from '../profil/pages/ProfilList';
 import ProfilDetail from '../profil/pages/ProfilDetail';
+import Anggota from '../profil/pages/Anggota';
+import VisiMisi from '../profil/pages/VisiMisi';
+import Kontak from '../profil/pages/Kontak';
 import PenelitianList from '../penelitian/pages/PenelitianList';
 import PenelitianDetail from '../penelitian/pages/PenelitianDetail';
+import PenelitianDRPM from '../penelitian/pages/PenelitianDRPM';
+import PenelitianInternal from '../penelitian/pages/PenelitianInternal';
+import PenelitianInfo from '../penelitian/pages/PenelitianInfo';
 import PengabdianList from '../pengabdian/pages/PengabdianList';
 import PengabdianDetail from '../pengabdian/pages/PengabdianDetail';
+import KKN from '../pengabdian/pages/KKN';
+import PengmasDRPM from '../pengabdian/pages/PengmasDRPM';
+import PengmasInternal from '../pengabdian/pages/PengmasInternal';
+import PengabdianInfo from '../pengabdian/pages/PengabdianInfo';
+import HakCipta from '../hki/pages/HakCipta';
+import Publikasi from '../hki/pages/Publikasi';
 import HKIList from '../hki/pages/HKIList';
 import HKIDetail from '../hki/pages/HKIDetail';
 import SeminarList from '../seminar/pages/SeminarList';
@@ -28,12 +40,24 @@ const AppRouter = () => {
                     <Route index element={<Home />} />
                     <Route path="/home/nama" element={<Nama />} />
                     <Route path="/profil" element={<ProfilList />} />
+                    <Route path="/profil/anggota" element={<Anggota />} />
+                    <Route path="/profil/visi-misi" element={<VisiMisi />} />
+                    <Route path="/profil/kontak" element={<Kontak />} />
                     <Route path="/profil/:id" element={<ProfilDetail />} />
                     <Route path="/penelitian" element={<PenelitianList />} />
+                    <Route path="/penelitian/drpm" element={<PenelitianDRPM />} />
+                    <Route path="/penelitian/internal" element={<PenelitianInternal />} />
+                    <Route path="/penelitian/info" element={<PenelitianInfo />} />
                     <Route path="/penelitian/:id" element={<PenelitianDetail />} />
                     <Route path="/pengabdian" element={<PengabdianList />} />
+                    <Route path="/pengabdian/kkn" element={<KKN />} />
+                    <Route path="/pengabdian/drpm" element={<PengmasDRPM />} />
+                    <Route path="/pengabdian/internal" element={<PengmasInternal />} />
+                    <Route path="/pengabdian/info" element={<PengabdianInfo />} />
                     <Route path="/pengabdian/:id" element={<PengabdianDetail />} />
                     <Route path="/hki" element={<HKIList />} />
+                    <Route path="/hki/hak-cipta" element={<HakCipta />} />
+                    <Route path="/hki/publikasi" element={<Publikasi />} />
                     <Route path="/hki/:id" element={<HKIDetail />} />
                     <Route path="/seminar" element={<SeminarList />} />
                     <Route path="/seminar/:id" element={<SeminarDetail />} />

@@ -41,6 +41,8 @@ const MainLayout = () => {
     // Mobile Detection
     const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [hoveredMenu, setHoveredMenu] = useState(null);
+    const [activeMobileSubmenu, setActiveMobileSubmenu] = useState(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -80,11 +82,54 @@ const MainLayout = () => {
     // Menu items configuration
     const menuItems = [
         { name: language === 'id' ? 'Beranda' : 'Home', path: '/' },
-        { name: language === 'id' ? 'Profil' : 'Profile', path: '/profil' },
-        { name: language === 'id' ? 'Penelitian' : 'Research', path: '/penelitian' },
-        { name: language === 'id' ? 'Pengabdian' : 'Service', path: '/pengabdian' },
-        { name: language === 'id' ? 'HKI' : 'IPR', path: '/hki' },
-        { name: language === 'id' ? 'Seminar' : 'Seminar', path: '/seminar' },
+        {
+            name: language === 'id' ? 'Profil' : 'Profile',
+            path: '/profil',
+            submenu: [
+                { name: 'Anggota', path: '/profil/anggota' },
+                { name: 'Visi Misi', path: '/profil/visi-misi' },
+                { name: 'Kontak', path: '/profil/kontak' }
+            ]
+        },
+        {
+            name: language === 'id' ? 'Penelitian' : 'Research',
+            path: '/penelitian',
+            submenu: [
+                { name: 'Penelitian DRPM', path: '/penelitian/drpm' },
+                { name: 'Penelitian Internal Universitas Islam Madura', path: '/penelitian/internal' },
+                { name: 'Info Penelitian', path: '/penelitian/info' }
+            ]
+        },
+        {
+            name: language === 'id' ? 'Pengabdian Masyarakat' : 'Community Service',
+            path: '/pengabdian',
+            submenu: [
+                { name: 'KKN', path: '/pengabdian/kkn' },
+                { name: 'Pengmas DRPM', path: '/pengabdian/drpm' },
+                { name: 'Pengmas Internal Universitas Islam Madura', path: '/pengabdian/internal' },
+                { name: 'Info Pengabdian Masyarakat', path: '/pengabdian/info' }
+            ]
+        },
+        {
+            name: language === 'id' ? 'HKI dan Publikasi' : 'IPR & Publications',
+            path: '/hki',
+            submenu: [
+                { name: 'Hak Cipta', path: '/hki/hak-cipta' },
+                { name: 'Publikasi', path: '/hki/publikasi' }
+            ]
+        },
+        {
+            name: language === 'id' ? 'Seminar' : 'Seminar',
+            path: '/seminar',
+            submenu: [
+                { name: 'SENIAS', path: '/seminar/senias' },
+                { name: 'SENADA', path: '/seminar/senada' },
+                { name: 'SEHATI', path: '/seminar/sehati' },
+                { name: 'NACOMSE', path: '/seminar/nacomse' },
+                { name: 'SEMNASDAL', path: '/seminar/semnasdal' },
+                { name: 'SINEMA', path: '/seminar/sinema' }
+            ]
+        },
         { name: language === 'id' ? 'Permohonan Surat' : 'Letters', path: '/permohonan-surat' },
     ];
 
@@ -109,7 +154,7 @@ const MainLayout = () => {
                             justifyContent: 'space-between',
                             height: '70px',
                             padding: '0 20px',
-                            maxWidth: '1200px'
+                            maxWidth: '1400px'
                         }}>
 
                             {/* 1. LOGO (Left) */}
@@ -128,35 +173,86 @@ const MainLayout = () => {
                                     padding: 0
                                 }}>
                                     {menuItems.map((item, index) => {
-                                        const isActive = location.pathname === item.path;
+                                        const isActive = location.pathname === item.path || (item.submenu && location.pathname.startsWith(item.path));
+                                        const isHovered = hoveredMenu === index;
+
                                         return (
-                                            <li key={index}>
+                                            <li key={index}
+                                                style={{ position: 'relative' }}
+                                                onMouseEnter={() => setHoveredMenu(index)}
+                                                onMouseLeave={() => setHoveredMenu(null)}
+                                            >
                                                 <a href={item.path} style={{
                                                     color: 'white',
                                                     textDecoration: 'none',
-                                                    padding: '10px 15px',
+                                                    padding: '10px 8px',
                                                     fontWeight: '500',
-                                                    fontSize: '15px',
-                                                    display: 'block',
+                                                    fontSize: '14px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    whiteSpace: 'nowrap',
                                                     transition: 'all 0.2s',
-                                                    borderBottom: isActive ? '3px solid white' : '3px solid transparent',
-                                                    opacity: isActive ? 1 : 0.9
-                                                }}
-                                                    onMouseOver={(e) => {
-                                                        if (!isActive) {
-                                                            e.target.style.opacity = '1';
-                                                            e.target.style.borderBottom = '3px solid rgba(255,255,255,0.5)';
-                                                        }
-                                                    }}
-                                                    onMouseOut={(e) => {
-                                                        if (!isActive) {
-                                                            e.target.style.opacity = '0.9';
-                                                            e.target.style.borderBottom = '3px solid transparent';
-                                                        }
-                                                    }}
-                                                >
+                                                    borderBottom: isActive ? '3px solid white' : (isHovered ? '3px solid rgba(255,255,255,0.5)' : '3px solid transparent'),
+                                                    opacity: isActive || isHovered ? 1 : 0.9
+                                                }}>
                                                     {item.name}
+                                                    {item.submenu && (
+                                                        <i className="fas fa-chevron-down" style={{ fontSize: '10px', marginLeft: '6px', marginTop: '2px' }}></i>
+                                                    )}
                                                 </a>
+
+                                                {/* Dropdown Menu */}
+                                                <AnimatePresence>
+                                                    {item.submenu && isHovered && (
+                                                        <motion.ul
+                                                            initial={{ opacity: 0, y: 10 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            exit={{ opacity: 0, y: 10 }}
+                                                            transition={{ duration: 0.2 }}
+                                                            style={{
+                                                                position: 'absolute',
+                                                                top: '100%',
+                                                                left: '0',
+                                                                backgroundColor: 'white',
+                                                                minWidth: '200px',
+                                                                boxShadow: '0 5px 20px rgba(0,0,0,0.15)',
+                                                                borderRadius: '8px',
+                                                                padding: '10px 0',
+                                                                listStyle: 'none',
+                                                                zIndex: 1100,
+                                                                overflow: 'hidden'
+                                                            }}
+                                                        >
+                                                            {item.submenu.map((subItem, subIndex) => (
+                                                                <li key={subIndex}>
+                                                                    <a href={subItem.path}
+                                                                        style={{
+                                                                            display: 'block',
+                                                                            padding: '10px 20px',
+                                                                            color: location.pathname === subItem.path ? '#004d26' : '#333',
+                                                                            backgroundColor: location.pathname === subItem.path ? '#e8f5e9' : 'transparent',
+                                                                            fontWeight: location.pathname === subItem.path ? '600' : 'normal',
+                                                                            textDecoration: 'none',
+                                                                            fontSize: '14px',
+                                                                            transition: 'background-color 0.2s, color 0.2s'
+                                                                        }}
+                                                                        onMouseOver={(e) => {
+                                                                            e.target.style.backgroundColor = '#f5f5f5';
+                                                                            e.target.style.color = 'green';
+                                                                        }}
+                                                                        onMouseOut={(e) => {
+                                                                            const isActive = location.pathname === subItem.path;
+                                                                            e.target.style.backgroundColor = isActive ? '#e8f5e9' : 'transparent';
+                                                                            e.target.style.color = isActive ? '#004d26' : '#333';
+                                                                        }}
+                                                                    >
+                                                                        {subItem.name}
+                                                                    </a>
+                                                                </li>
+                                                            ))}
+                                                        </motion.ul>
+                                                    )}
+                                                </AnimatePresence>
                                             </li>
                                         );
                                     })}
@@ -360,26 +456,81 @@ const MainLayout = () => {
                         }}
                     >
                         <ul style={{ listStyle: 'none', padding: '20px', margin: 0 }}>
-                            {menuItems.map((item, index) => (
-                                <li key={index} style={{ marginBottom: '15px' }}>
-                                    <a
-                                        href={item.path}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        style={{
-                                            color: '#333',
-                                            textDecoration: 'none',
-                                            fontSize: '16px',
-                                            fontWeight: '500',
-                                            display: 'block',
-                                            padding: '10px',
-                                            backgroundColor: location.pathname === item.path ? '#f0f0f0' : 'transparent',
-                                            borderRadius: '5px'
-                                        }}
-                                    >
-                                        {item.name}
-                                    </a>
-                                </li>
-                            ))}
+                            {menuItems.map((item, index) => {
+                                const hasSubmenu = item.submenu && item.submenu.length > 0;
+                                const isSubmenuOpen = activeMobileSubmenu === index;
+
+                                return (
+                                    <li key={index} style={{ marginBottom: '15px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <a
+                                                href={hasSubmenu ? '#' : item.path}
+                                                onClick={(e) => {
+                                                    if (hasSubmenu) {
+                                                        e.preventDefault();
+                                                        setActiveMobileSubmenu(isSubmenuOpen ? null : index);
+                                                    } else {
+                                                        setIsMobileMenuOpen(false);
+                                                    }
+                                                }}
+                                                style={{
+                                                    color: location.pathname === item.path ? '#004d26' : '#333',
+                                                    textDecoration: 'none',
+                                                    fontSize: '16px',
+                                                    fontWeight: '500',
+                                                    display: 'block',
+                                                    padding: '10px',
+                                                    backgroundColor: location.pathname === item.path ? '#e8f5e9' : 'transparent',
+                                                    borderRadius: '5px',
+                                                    flex: 1
+                                                }}
+                                            >
+                                                {item.name}
+                                            </a>
+                                            {hasSubmenu && (
+                                                <div
+                                                    onClick={() => setActiveMobileSubmenu(isSubmenuOpen ? null : index)}
+                                                    style={{ padding: '10px', cursor: 'pointer', color: '#666' }}>
+                                                    <i className={`fas fa-chevron-${isSubmenuOpen ? 'up' : 'down'}`} style={{ fontSize: '12px' }}></i>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Submenu Mobile */}
+                                        <AnimatePresence>
+                                            {hasSubmenu && isSubmenuOpen && (
+                                                <motion.ul
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    style={{ listStyle: 'none', paddingLeft: '20px', marginTop: '5px', overflow: 'hidden' }}
+                                                >
+                                                    {item.submenu.map((subItem, subIndex) => (
+                                                        <li key={subIndex} style={{ marginBottom: '5px' }}>
+                                                            <a
+                                                                href={subItem.path}
+                                                                onClick={() => setIsMobileMenuOpen(false)}
+                                                                style={{
+                                                                    color: location.pathname === subItem.path ? '#004d26' : '#666',
+                                                                    textDecoration: 'none',
+                                                                    fontSize: '14px',
+                                                                    display: 'block',
+                                                                    padding: '8px 10px',
+                                                                    backgroundColor: location.pathname === subItem.path ? '#e8f5e9' : 'transparent',
+                                                                    borderRadius: '5px',
+                                                                    fontWeight: location.pathname === subItem.path ? '600' : 'normal'
+                                                                }}
+                                                            >
+                                                                {subItem.name}
+                                                            </a>
+                                                        </li>
+                                                    ))}
+                                                </motion.ul>
+                                            )}
+                                        </AnimatePresence>
+                                    </li>
+                                );
+                            })}
 
                             {/* Language Switcher Mobile */}
                             <li style={{ marginBottom: '15px' }}>

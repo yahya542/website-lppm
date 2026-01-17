@@ -51,6 +51,84 @@ const SectionTitle = ({ title }) => (
   </div>
 );
 
+// Loading Skeleton Component
+const NewsCardSkeleton = ({ type = "grid" }) => {
+  const isSlider = type === "slider";
+
+  if (isSlider) {
+    return (
+      <div style={{
+        minWidth: '280px',
+        maxWidth: '280px',
+        boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        flexShrink: 0,
+        border: '1px solid rgba(0,0,0,0.05)'
+      }}>
+        {/* Image Top */}
+        <motion.div
+          animate={{ opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          style={{ height: '160px', backgroundColor: '#e0e0e0', width: '100%' }}
+        />
+        <div style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          {/* Date */}
+          <motion.div style={{ width: '40%', height: '10px', backgroundColor: '#e0e0e0', marginBottom: '8px', borderRadius: '4px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
+          {/* Title */}
+          <motion.div style={{ width: '90%', height: '14px', backgroundColor: '#e0e0e0', marginBottom: '5px', borderRadius: '4px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.1 }} />
+          <motion.div style={{ width: '60%', height: '14px', backgroundColor: '#e0e0e0', marginBottom: '10px', borderRadius: '4px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.1 }} />
+          {/* Link */}
+          <motion.div style={{ width: '30%', height: '12px', backgroundColor: '#e0e0e0', marginTop: 'auto', borderRadius: '4px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }} />
+        </div>
+      </div>
+    );
+  }
+
+  // Grid Layout
+  return (
+    <div style={{
+      borderRadius: '16px',
+      overflow: 'hidden',
+      backgroundColor: 'white',
+      boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%'
+    }}>
+      {/* Top: Category, Title, Meta */}
+      <div style={{ padding: '25px 25px 10px' }}>
+        {/* Category */}
+        <motion.div style={{ width: '80px', height: '24px', backgroundColor: '#e0e0e0', borderRadius: '20px', marginBottom: '15px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
+        {/* Title */}
+        <motion.div style={{ width: '100%', height: '20px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '10px' }} animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.1 }} />
+        <motion.div style={{ width: '70%', height: '20px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '15px' }} animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.1 }} />
+        {/* Meta */}
+        <motion.div style={{ width: '120px', height: '12px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '20px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }} />
+      </div>
+
+      {/* Middle: Image */}
+      <motion.div
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+        style={{ height: '220px', width: '100%', backgroundColor: '#e0e0e0' }}
+      />
+
+      {/* Bottom: Description */}
+      <div style={{ padding: '25px', flexGrow: 1 }}>
+        <motion.div style={{ width: '100%', height: '14px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '8px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} />
+        <motion.div style={{ width: '90%', height: '14px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '8px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} />
+        <motion.div style={{ width: '60%', height: '14px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '20px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} />
+        {/* Link */}
+        <motion.div style={{ width: '80px', height: '14px', backgroundColor: '#e0e0e0', borderRadius: '4px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
+      </div>
+    </div>
+  )
+}
+
 const Home = () => {
   const { language } = useLanguage();
   const t = translations[language];
@@ -87,6 +165,7 @@ const Home = () => {
   }, [])
 
   // Prepare data for infinite slider (duplicate the array)
+  // If loading, we don't need this yet or we can return empty array
   const baseNews = latestNews.length > 0 ? latestNews : [
     { title: "Judul Berita 1 Yang Panjang", date: "12 Jan 2026", image: null },
     { title: "Kegiatan Seminar Nasional 2026", date: "11 Jan 2026", image: null },
@@ -100,6 +179,7 @@ const Home = () => {
 
   // Auto-scroll logic
   useEffect(() => {
+    if (loading) return; // Don't scroll if loading
     const interval = setInterval(() => {
       if (sliderRef.current) {
         const slider = sliderRef.current;
@@ -120,7 +200,7 @@ const Home = () => {
     }, 3000); // 3 seconds
 
     return () => clearInterval(interval);
-  }, [baseNews]); // Re-create interval if data changes
+  }, [baseNews, loading]); // Re-create interval if data changes
 
   const handleLoadMore = () => {
     setVisibleNewsCount(prev => prev + 3);
@@ -133,6 +213,44 @@ const Home = () => {
 
       {/* 2. BIDANG CARDS */}
       <Bidang />
+
+      {/* 2.5. WELCOME MESSAGE - White Background */}
+      <section style={{ backgroundColor: 'white', padding: '60px 0' }}>
+        <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', alignItems: 'center' }}>
+
+            {/* Image Side */}
+            <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ position: 'relative', width: '280px', height: '350px' }}>
+                <div style={{ position: 'absolute', top: '20px', left: '-20px', width: '100%', height: '100%', backgroundColor: '#fec107', borderRadius: '20px' }}></div>
+                <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+                  <img src="https://via.placeholder.com/300x400?text=Ketua+LPPM" alt="Ketua LPPM" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Text Side */}
+            <div style={{ flex: '2 1 400px', textAlign: 'left' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', backgroundColor: '#e8f5e9', padding: '8px 15px', borderRadius: '50px', marginBottom: '20px' }}>
+                <i className="fas fa-quote-left" style={{ color: '#004d26' }}></i>
+                <span style={{ color: '#004d26', fontWeight: 'bold', fontSize: '0.9rem' }}>SAMBUTAN KETUA LPPM</span>
+              </div>
+              <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#333', marginBottom: '20px', lineHeight: '1.3' }}>
+                Mewujudkan Riset dan Pengabdian yang Berdampak
+              </h2>
+              <p style={{ color: '#666', lineHeight: '1.8', fontSize: '1rem', marginBottom: '30px' }}>
+                "Selamat datang di website resmi LPPM Universitas Islam Madura. Kami berkomitmen untuk memfasilitasi dan mendorong sivitas akademika dalam menghasilkan karya penelitian dan pengabdian yang inovatif, bermutu, dan bermanfaat bagi masyarakat luas. Mari bersinergi untuk kemajuan bangsa."
+              </p>
+
+              <div>
+                <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#004d26', margin: 0 }}>Dr. Nama Ketua, M.Si.</h4>
+                <div style={{ color: '#888', fontStyle: 'italic', fontSize: '0.9rem' }}>Ketua LPPM Universitas Islam Madura</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
 
       {/* 3. NEWS SECTION (Slider) - Light Gray Background */}
       <section style={{ backgroundColor: '#f8f9fa', padding: '50px 0' }}>
@@ -154,47 +272,57 @@ const Home = () => {
               msOverflowStyle: 'none' /* IE */
             }} className="hide-scrollbar">
             <style>{`.hide-scrollbar::-webkit-scrollbar { display: none; }`}</style>
-            {/* Same content as before, just ensuring wrapper has padding */}
-            {displayNews.map((item, index) => (
-              <div key={index} style={{
-                minWidth: '280px',
-                maxWidth: '280px',
-                boxShadow: '0 10px 20px rgba(0,0,0,0.05)', // Slightly softer shadow
-                borderRadius: '12px', // More rounded
-                overflow: 'hidden',
-                backgroundColor: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                flexShrink: 0,
-                border: '1px solid rgba(0,0,0,0.05)'
-              }}>
-                <div style={{ height: '160px', backgroundColor: '#e0e0e0' }}>
-                  {item.featured_image ? (
-                    <img src={item.featured_image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "/images/poster/1.png"} />
-                  ) : (
-                    <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  )}
-                </div>
-                <div style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ fontSize: '11px', color: '#888', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <i className="far fa-calendar-alt"></i>
-                    {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : (item.date || 'Today')}
+
+            {loading ? (
+              // Loading Skeletons for Slider - Show 5 skeletons
+              Array(5).fill(0).map((_, index) => (
+                <NewsCardSkeleton key={index} type="slider" />
+              ))
+            ) : (
+              // Real Data
+              displayNews.map((item, index) => (
+                <div key={index} style={{
+                  minWidth: '280px',
+                  maxWidth: '280px',
+                  boxShadow: '0 10px 20px rgba(0,0,0,0.05)', // Slightly softer shadow
+                  borderRadius: '12px', // More rounded
+                  overflow: 'hidden',
+                  backgroundColor: 'white',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flexShrink: 0,
+                  border: '1px solid rgba(0,0,0,0.05)'
+                }}>
+                  <div style={{ height: '160px', backgroundColor: '#e0e0e0' }}>
+                    {item.featured_image ? (
+                      <img src={item.featured_image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "/images/poster/1.png"} />
+                    ) : (
+                      <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    )}
                   </div>
-                  <h4 style={{ fontSize: '15px', fontWeight: 'bold', lineHeight: '1.4', marginBottom: '10px', color: '#333', flexGrow: 1 }}>
-                    {item.title ? (item.title.length > 50 ? item.title.substring(0, 50) + '...' : item.title) : "Judul Berita"}
-                  </h4>
-                  <a href={`/news/${item.id}`} style={{ fontSize: '13px', color: '#fec107', fontWeight: 'bold', textDecoration: 'none', alignSelf: 'flex-start' }}>{t.read_more} →</a>
+                  <div style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ fontSize: '11px', color: '#888', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <i className="far fa-calendar-alt"></i>
+                      {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : (item.date || 'Today')}
+                    </div>
+                    <h4 style={{ fontSize: '15px', fontWeight: 'bold', lineHeight: '1.4', marginBottom: '10px', color: '#333', flexGrow: 1 }}>
+                      {item.title ? (item.title.length > 50 ? item.title.substring(0, 50) + '...' : item.title) : "Judul Berita"}
+                    </h4>
+                    <a href={`/news/${item.id}`} style={{ fontSize: '13px', color: '#fec107', fontWeight: 'bold', textDecoration: 'none', alignSelf: 'flex-start' }}>{t.read_more} →</a>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
-          {/* Pagination dots simulation */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
-            <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#fec107', cursor: 'pointer' }}></span>
-            <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ddd', cursor: 'pointer' }}></span>
-            <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ddd', cursor: 'pointer' }}></span>
-          </div>
+          {!loading && (
+            /* Pagination dots simulation */
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
+              <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#fec107', cursor: 'pointer' }}></span>
+              <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ddd', cursor: 'pointer' }}></span>
+              <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ddd', cursor: 'pointer' }}></span>
+            </div>
+          )}
         </div>
       </section>
 
@@ -390,117 +518,122 @@ const Home = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px', marginBottom: '50px' }}>
-            {/* 
-                     Using latestNews or Duplicating it to ensure we have content to show for the UI Demo 
-                     if existing data is scarce (usually user environments vary). 
-                     We try to use real data first.
-                  */}
-            {(allNews.length > 0 ? allNews : [{}, {}, {}, {}, {}, {}]).slice(0, visibleNewsCount).map((item, index) => (
-              <div key={index} style={{
-                border: 'none', // Remove border for cleaner look
-                borderRadius: '16px',
-                overflow: 'hidden',
-                backgroundColor: 'white',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.3s ease',
-                cursor: 'pointer'
-              }}
-                onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-              >
-                <div style={{ padding: '25px 25px 10px' }}>
-                  {/* Category Tag */}
-                  <span style={{
-                    display: 'inline-block',
-                    backgroundColor: item.category?.name ? '#004d26' : '#f9a825', // Use Dark Green for Category if exists
-                    color: 'white',
-                    padding: '6px 14px',
-                    borderRadius: '20px',
-                    fontSize: '11px',
-                    fontWeight: 'bold',
-                    marginBottom: '15px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
-                    {item.category?.name || "BERITA LPPM"}
-                  </span>
+            {loading ? (
+              // Loading Skeletons for Grid - Show 3-6 skeletons
+              Array(6).fill(0).map((_, index) => (
+                <NewsCardSkeleton key={index} type="grid" />
+              ))
+            ) : (
+              // Real Data
+              (allNews.length > 0 ? allNews : [{}, {}, {}, {}, {}, {}]).slice(0, visibleNewsCount).map((item, index) => (
+                <div key={index} style={{
+                  border: 'none', // Remove border for cleaner look
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  backgroundColor: 'white',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'transform 0.3s ease',
+                  cursor: 'pointer'
+                }}
+                  onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+                  onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                >
+                  <div style={{ padding: '25px 25px 10px' }}>
+                    {/* Category Tag */}
+                    <span style={{
+                      display: 'inline-block',
+                      backgroundColor: item.category?.name ? '#004d26' : '#f9a825', // Use Dark Green for Category if exists
+                      color: 'white',
+                      padding: '6px 14px',
+                      borderRadius: '20px',
+                      fontSize: '11px',
+                      fontWeight: 'bold',
+                      marginBottom: '15px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      {item.category?.name || "BERITA LPPM"}
+                    </span>
 
-                  {/* Title */}
-                  <h3 style={{
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    lineHeight: '1.4',
-                    color: '#222',
-                    marginBottom: '15px',
-                    minHeight: '50px' // For alignment
-                  }}>
-                    {item.title || "Judul Berita Loading..."}
-                  </h3>
+                    {/* Title */}
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold',
+                      lineHeight: '1.4',
+                      color: '#222',
+                      marginBottom: '15px',
+                      minHeight: '50px' // For alignment
+                    }}>
+                      {item.title || "Judul Berita Loading..."}
+                    </h3>
 
-                  {/* Meta Info */}
-                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#999', marginBottom: '20px', gap: '15px' }}>
-                    <span><i className="far fa-clock" style={{ marginRight: '5px' }}></i> {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : "Date"}</span>
+                    {/* Meta Info */}
+                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#999', marginBottom: '20px', gap: '15px' }}>
+                      <span><i className="far fa-clock" style={{ marginRight: '5px' }}></i> {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : "Date"}</span>
+                    </div>
+                  </div>
+
+                  {/* Image */}
+                  <div style={{ height: '220px', width: '100%', backgroundColor: '#eee', position: 'relative' }}>
+                    {item.featured_image ? (
+                      <img src={item.featured_image} alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "/images/poster/1.png"} />
+                    ) : (
+                      <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    )}
+                  </div>
+
+                  {/* Description (Footer of card in this design) */}
+                  <div style={{ padding: '25px' }}>
+                    <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: '20px' }}>
+                      {item.content ? (
+                        item.content.length > 100 ? item.content.substring(0, 100) + '...' : item.content
+                      ) : "Deskripsi berita akan muncul di sini..."}
+                    </p>
+
+                    {/* Read More Button */}
+                    <a href={`/news/${item.id}`} style={{
+                      display: 'inline-block',
+                      color: '#004d26',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      borderBottom: '2px solid #004d26',
+                      paddingBottom: '2px'
+                    }}>
+                      {t.read_more}
+                    </a>
                   </div>
                 </div>
-
-                {/* Image */}
-                <div style={{ height: '220px', width: '100%', backgroundColor: '#eee', position: 'relative' }}>
-                  {item.featured_image ? (
-                    <img src={item.featured_image} alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "/images/poster/1.png"} />
-                  ) : (
-                    <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  )}
-                </div>
-
-                {/* Description (Footer of card in this design) */}
-                <div style={{ padding: '25px' }}>
-                  <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: '20px' }}>
-                    {item.content ? (
-                      item.content.length > 100 ? item.content.substring(0, 100) + '...' : item.content
-                    ) : "Deskripsi berita akan muncul di sini..."}
-                  </p>
-
-                  {/* Read More Button */}
-                  <a href={`/news/${item.id}`} style={{
-                    display: 'inline-block',
-                    color: '#004d26',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    borderBottom: '2px solid #004d26',
-                    paddingBottom: '2px'
-                  }}>
-                    {t.read_more}
-                  </a>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           {/* Load More Button */}
-          <div style={{ textAlign: 'center' }}>
-            <button
-              onClick={handleLoadMore}
-              style={{
-                backgroundColor: '#004d26',
-                color: 'white',
-                border: 'none',
-                padding: '15px 50px',
-                borderRadius: '30px',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
-                boxShadow: '0 5px 15px rgba(0,77,38,0.2)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#006633'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#004d26'}
-            >
-              {t.home_load_more}
-            </button>
-          </div>
+          {!loading && (
+            <div style={{ textAlign: 'center' }}>
+              <button
+                onClick={handleLoadMore}
+                style={{
+                  backgroundColor: '#004d26',
+                  color: 'white',
+                  border: 'none',
+                  padding: '15px 50px',
+                  borderRadius: '30px',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  boxShadow: '0 5px 15px rgba(0,77,38,0.2)',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#006633'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#004d26'}
+              >
+                {t.home_load_more}
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </div>
