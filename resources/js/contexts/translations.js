@@ -84,17 +84,17 @@ export const translations = {
         // Home / Nama / Bidang
         nama_title: "LEMBAGA PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT",
 
-        bidang_1_title: "BIDANG 1",
+        bidang_1_title: "BIDANG ",
         bidang_1_subtitle: "PENELITIAN & INOVASI",
-        bidang_2_title: "BIDANG 2",
+        bidang_2_title: "BIDANG ",
         bidang_2_subtitle: "PUBLIKASI, SENTRA HKI, PLAGIARISME, UNUSA PRESS",
-        bidang_3_title: "BIDANG 3",
+        bidang_3_title: "BIDANG ",
         bidang_3_subtitle: "PENGABDIAN KEPADA MASYARAKAT, KKN, KERJASAMA",
-        bidang_4_title: "BIDANG 4",
+        bidang_4_title: "BIDANG ",
         bidang_4_subtitle: "PENGEMBANGAN SISTEM INFORMASI & TEKNOLOGI",
-        bidang_5_title: "BIDANG 5",
+        bidang_5_title: "BIDANG ",
         bidang_5_subtitle: "INKUBATOR BISNIS & KEWIRAUSAHAAN",
-        bidang_6_title: "BIDANG 6",
+        bidang_6_title: "BIDANG ",
         bidang_6_subtitle: "PUSAT STUDI & LAYANAN MASYARAKAT",
 
         home_news_title: "BERITA",
