@@ -31,6 +31,7 @@ import About from '../shared/pages/About';
 import Contact from '../shared/pages/Contact';
 import AdminDashboard from '../admin/AdminDashboard';
 import NewsManagement from '../admin/NewsManagement';
+import Detail from '../news/detail';
 
 const AppRouter = () => {
     return (
@@ -67,6 +68,7 @@ const AppRouter = () => {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/admin/news" element={<NewsManagement />} />
+                    <Route path="/news/:id" element={<Detail />} />
                 </Route>
             </Routes>
         </BrowserRouter>
