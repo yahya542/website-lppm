@@ -31,7 +31,9 @@ import PermohonanSuratDetail from '../permohonan-surat/pages/PermohonanSuratDeta
 import About from '../shared/pages/About';
 import Contact from '../shared/pages/Contact';
 import AdminDashboard from '../admin/AdminDashboard';
-import NewsManagement from '../admin/NewsManagement';
+import NewsIndex from '../pages/admin/news/NewsIndex';
+import NewsCreate from '../pages/admin/news/NewsCreate';
+import NewsEdit from '../pages/admin/news/NewsEdit';
 import Detail from '../news/detail';
 
 const AppRouter = () => {
@@ -41,7 +43,9 @@ const AppRouter = () => {
                 {/* Admin Routes */}
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
-                    <Route path="news" element={<NewsManagement />} />
+                    <Route path="news" element={<NewsIndex />} />
+                    <Route path="news/create" element={<NewsCreate />} />
+                    <Route path="news/edit/:id" element={<NewsEdit />} />
                 </Route>
 
                 <Route path="/" element={<MainLayout />}>
