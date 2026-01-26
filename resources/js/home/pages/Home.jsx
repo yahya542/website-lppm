@@ -133,6 +133,7 @@ const NewsCardSkeleton = ({ type = "grid" }) => {
 
 const HomeNewsSliderCard = ({ item, goToNewsDetail, t, language }) => {
   const [imageError, setImageError] = useState(false);
+  const placeholderImage = "https://placehold.co/600x400/004d26/FFFFFF?text=No+Image";
 
   return (
     <div style={{
@@ -156,12 +157,11 @@ const HomeNewsSliderCard = ({ item, goToNewsDetail, t, language }) => {
             onError={() => setImageError(true)}
           />
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#999', width: '100%', height: '100%' }}>
-            <ImageOff size={32} style={{ marginBottom: '5px', opacity: 0.5 }} />
-            <span style={{ fontSize: '10px', fontWeight: 'bold' }}>
-              {language === 'id' ? 'No Image' : 'No Image'}
-            </span>
-          </div>
+          <img
+            src={placeholderImage}
+            alt="No Image Available"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         )}
       </div>
       <div style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
@@ -185,6 +185,7 @@ const HomeNewsSliderCard = ({ item, goToNewsDetail, t, language }) => {
 
 const HomeNewsGridCard = ({ item, goToNewsDetail, t, language }) => {
   const [imageError, setImageError] = useState(false);
+  const placeholderImage = "https://placehold.co/600x400/004d26/FFFFFF?text=No+Image";
 
   return (
     <div style={{
@@ -247,12 +248,11 @@ const HomeNewsGridCard = ({ item, goToNewsDetail, t, language }) => {
             onError={() => setImageError(true)}
           />
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#999' }}>
-            <ImageOff size={48} style={{ marginBottom: '8px', opacity: 0.5 }} />
-            <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-              {language === 'id' ? 'Gambar Tidak Tersedia' : 'Image Not Available'}
-            </span>
-          </div>
+          <img
+            src={placeholderImage}
+            alt="No Image Available"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         )}
       </div>
 

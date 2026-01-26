@@ -83,6 +83,7 @@ const NewsCardSkeleton = ({ type = "grid" }) => {
 
 const NewsCard = ({ item, language, t }) => {
   const [imageError, setImageError] = useState(false);
+  const placeholderImage = "https://placehold.co/600x400/004d26/FFFFFF?text=No+Image";
 
   return (
     <div style={{
@@ -144,18 +145,11 @@ const NewsCard = ({ item, language, t }) => {
             onError={() => setImageError(true)}
           />
         ) : (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#999'
-          }}>
-            <ImageOff size={48} style={{ marginBottom: '8px', opacity: 0.5 }} />
-            <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-              {language === 'id' ? 'Gambar Tidak Tersedia' : 'Image Not Available'}
-            </span>
-          </div>
+          <img
+            src={placeholderImage}
+            alt="No Image Available"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
         )}
       </div>
 
