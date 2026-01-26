@@ -26,14 +26,14 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                'message' => 'The provided credentials are incorrect.'
+                'message' => 'Email atau kata sandi yang diberikan salah.'
             ], 401);
         }
 
         // Cek apakah user adalah admin
         if ($user->role !== 'admin') {
             return response()->json([
-                'message' => 'Unauthorized access. Admins only.'
+                'message' => 'Akses ditolak. Hanya admin yang diizinkan.'
             ], 403);
         }
 
@@ -81,7 +81,7 @@ class AuthController extends Controller
         // $request->session()->regenerateToken();
 
         return response()->json([
-            'message' => 'Logged out successfully'
+                'message' => 'Berhasil keluar'
         ], 200);
     }
     

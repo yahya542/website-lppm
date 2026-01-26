@@ -48,7 +48,7 @@ class NewsController extends Controller
             return response()->json($news);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to fetch news',
+                'error' => 'Gagal memuat berita',
                 'message' => $e->getMessage()
             ], 500);
         }
@@ -74,12 +74,12 @@ class NewsController extends Controller
         } catch (\Exception $e) {
             if ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 return response()->json([
-                    'error' => 'News not found'
+                    'error' => 'Berita tidak ditemukan'
                 ], 404);
             }
             
             return response()->json([
-                'error' => 'Failed to fetch news',
+                'error' => 'Gagal memuat berita',
                 'message' => $e->getMessage()
             ], 500);
         }
@@ -101,7 +101,7 @@ class NewsController extends Controller
             return response()->json($news);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to fetch news by category',
+                'error' => 'Gagal memuat berita berdasarkan kategori',
                 'message' => $e->getMessage()
             ], 500);
         }
@@ -117,7 +117,7 @@ class NewsController extends Controller
             return response()->json($categories);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to fetch categories',
+                'error' => 'Gagal memuat kategori',
                 'message' => $e->getMessage()
             ], 500);
         }
@@ -138,7 +138,7 @@ class NewsController extends Controller
             return response()->json($news);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to fetch latest news',
+                'error' => 'Gagal memuat berita terbaru',
                 'message' => $e->getMessage()
             ], 500);
         }
@@ -160,7 +160,7 @@ class NewsController extends Controller
             return response()->json($news);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to fetch popular news',
+                'error' => 'Gagal memuat berita populer',
                 'message' => $e->getMessage()
             ], 500);
         }
