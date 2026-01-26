@@ -85,6 +85,7 @@ const NewsList = () => {
   const t = translations[language];
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [visibleNewsCount, setVisibleNewsCount] = useState(9);
 
   useEffect(() => {
@@ -104,7 +105,12 @@ const NewsList = () => {
   }, []);
 
   const handleLoadMore = () => {
-    setVisibleNewsCount(prev => prev + 9);
+    setLoadingMore(true);
+    // Simulate loading delay for better UX
+    setTimeout(() => {
+      setVisibleNewsCount(prev => prev + 9);
+      setLoadingMore(false);
+    }, 500);
   };
 
   return (
@@ -223,10 +229,15 @@ const NewsList = () => {
               </div>
             ))
           )}
+          {loadingMore && (
+            Array(9).fill(0).map((_, index) => (
+              <NewsCardSkeleton key={`loading-${index}`} type="grid" />
+            ))
+          )}
         </div>
 
         {/* Load More Button */}
-        {!loading && news.length > visibleNewsCount && (
+        {!loading && !loadingMore && news.length > visibleNewsCount && (
           <div style={{ textAlign: 'center' }}>
             <button
               onClick={handleLoadMore}
@@ -246,6 +257,13 @@ const NewsList = () => {
             >
               Muat Lebih Banyak
             </button>
+          </div>
+        )}
+        {loadingMore && (
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <div style={{ display: 'inline-block', padding: '12px 30px', borderRadius: '25px', backgroundColor: '#f0f0f0', color: '#666' }}>
+              Memuat...
+            </div>
           </div>
         )}
 
