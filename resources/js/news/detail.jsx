@@ -246,9 +246,27 @@ const Detail = () => {
                         <div style={{ marginTop: '50px', borderTop: '1px solid #eee', paddingTop: '30px' }}>
                             <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '15px' }}>Bagikan Berita</h4>
                             <div style={{ display: 'flex', gap: '10px' }}>
-                                <button className="btn btn-outline-success btn-sm" style={{ borderRadius: '20px' }}><i className="fab fa-whatsapp"></i> WhatsApp</button>
-                                <button className="btn btn-outline-primary btn-sm" style={{ borderRadius: '20px' }}><i className="fab fa-facebook"></i> Facebook</button>
-                                <button className="btn btn-outline-info btn-sm" style={{ borderRadius: '20px' }}><i className="fab fa-x-twitter"></i> X</button>
+                                <button
+                                    className="btn btn-outline-success btn-sm"
+                                    style={{ borderRadius: '20px' }}
+                                    onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(news.title + ' ' + window.location.href)}`, '_blank')}
+                                >
+                                    <i className="fab fa-whatsapp"></i> WhatsApp
+                                </button>
+                                <button
+                                    className="btn btn-outline-primary btn-sm"
+                                    style={{ borderRadius: '20px' }}
+                                    onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
+                                >
+                                    <i className="fab fa-facebook"></i> Facebook
+                                </button>
+                                <button
+                                    className="btn btn-outline-info btn-sm"
+                                    style={{ borderRadius: '20px' }}
+                                    onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(news.title)}`, '_blank')}
+                                >
+                                    <i className="fab fa-x-twitter"></i> X
+                                </button>
                             </div>
                         </div>
                     </div>
