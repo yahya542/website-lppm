@@ -26,12 +26,13 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Admin routes with authentication
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('news', NewsController::class);
-    Route::get('/', function () {
-        return redirect()->route('admin.news.index');
-    })->name('dashboard');
-});
+// Admin routes with authentication - COMMENTED OUT TO ALLOW REACT SPA TO HANDLE THIS
+// Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+//     Route::resource('news', NewsController::class);
+//     Route::get('/', function () {
+//         return redirect()->route('admin.news.index');
+//     })->name('dashboard');
+// });
 
 // Catch-all route for SPA (MUST BE LAST)
 Route::get('/{any}', function () {

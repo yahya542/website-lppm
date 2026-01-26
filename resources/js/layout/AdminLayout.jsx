@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import api from '../axios';
 
@@ -7,6 +8,7 @@ const AdminLayout = () => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -33,13 +35,17 @@ const AdminLayout = () => {
     }, [navigate]);
 
     const handleLogout = async () => {
+        setIsLoggingOut(true);
         try {
             await api.post('/api/admin/logout');
         } catch (err) {
             console.error('Logout error', err);
         } finally {
-            localStorage.removeItem('admin_token');
-            navigate('/');
+            // Short delay to show the animation (optional, but makes it feel smoother)
+            setTimeout(() => {
+                localStorage.removeItem('admin_token');
+                navigate('/');
+            }, 800);
         }
     };
 
@@ -137,29 +143,6 @@ const AdminLayout = () => {
                         })}
                     </ul>
                 </nav>
-
-                {/* Logout Button */}
-                <div style={{ padding: '20px', borderTop: '1px solid #4b545c' }}>
-                    <button
-                        onClick={handleLogout}
-                        style={{
-                            width: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: isSidebarOpen ? 'flex-start' : 'center',
-                            gap: '10px',
-                            background: 'none',
-                            border: 'none',
-                            color: '#e74c3c',
-                            cursor: 'pointer',
-                            padding: '10px 0',
-                            fontSize: '1rem'
-                        }}
-                    >
-                        <i className="fas fa-sign-out-alt" style={{ width: '25px', textAlign: 'center' }}></i>
-                        {isSidebarOpen && <span>Logout</span>}
-                    </button>
-                </div>
             </div>
 
             {/* Main Content */}
@@ -194,8 +177,7 @@ const AdminLayout = () => {
                         <div style={{ position: 'relative' }}>
                             <button
                                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                                onBlur={() => setTimeout(() => setIsUserMenuOpen(false), 200)} // Close on blur with delay for click
-                                style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer' }}
+                                style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'none', border: 'none', cursor: 'pointer', position: 'relative', zIndex: 1002 }}
                             >
                                 <div style={{ width: '35px', height: '35px', borderRadius: '50%', backgroundColor: '#007bff', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
                                     {user?.name?.[0]?.toUpperCase() || 'A'}
@@ -207,45 +189,53 @@ const AdminLayout = () => {
                             </button>
 
                             {isUserMenuOpen && (
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '100%',
-                                    right: 0,
-                                    width: '200px',
-                                    backgroundColor: 'white',
-                                    boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
-                                    borderRadius: '8px',
-                                    padding: '10px 0',
-                                    marginTop: '10px',
-                                    zIndex: 1000,
-                                    border: '1px solid #eee'
-                                }}>
-                                    <div style={{ padding: '0 20px 10px', borderBottom: '1px solid #eee', marginBottom: '5px' }}>
-                                        <div style={{ fontWeight: 'bold', color: '#333' }}>{user?.name}</div>
-                                        <div style={{ fontSize: '12px', color: '#6c757d' }}>{user?.email}</div>
-                                    </div>
+                                <>
+                                    {/* Invisible Backdrop to handle click outside */}
+                                    <div
+                                        style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1001, cursor: 'default' }}
+                                        onClick={() => setIsUserMenuOpen(false)}
+                                    ></div>
 
-                                    <button
-                                        onClick={handleLogout}
-                                        style={{
-                                            width: '100%',
-                                            textAlign: 'left',
-                                            padding: '10px 20px',
-                                            background: 'none',
-                                            border: 'none',
-                                            color: '#dc3545',
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '10px',
-                                            fontSize: '14px'
-                                        }}
-                                        onMouseEnter={(e) => e.target.style.backgroundColor = '#f8f9fa'}
-                                        onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                                    >
-                                        <i className="fas fa-sign-out-alt"></i> Logout
-                                    </button>
-                                </div>
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '100%',
+                                        right: 0,
+                                        width: '200px',
+                                        backgroundColor: 'white',
+                                        boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+                                        borderRadius: '8px',
+                                        padding: '10px 0',
+                                        marginTop: '10px',
+                                        zIndex: 1002,
+                                        border: '1px solid #eee'
+                                    }}>
+                                        <div style={{ padding: '0 20px 10px', borderBottom: '1px solid #eee', marginBottom: '5px' }}>
+                                            <div style={{ fontWeight: 'bold', color: '#333' }}>{user?.name}</div>
+                                            <div style={{ fontSize: '12px', color: '#6c757d' }}>{user?.email}</div>
+                                        </div>
+
+                                        <button
+                                            onClick={handleLogout}
+                                            style={{
+                                                width: '100%',
+                                                textAlign: 'left',
+                                                padding: '10px 20px',
+                                                background: 'none',
+                                                border: 'none',
+                                                color: '#dc3545',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '10px',
+                                                fontSize: '14px'
+                                            }}
+                                            onMouseEnter={(e) => e.target.style.backgroundColor = '#f8f9fa'}
+                                            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                                        >
+                                            <i className="fas fa-sign-out-alt"></i> Logout
+                                        </button>
+                                    </div>
+                                </>
                             )}
                         </div>
                     </div>
@@ -276,6 +266,43 @@ const AdminLayout = () => {
                     &copy; {new Date().getFullYear()} LPPM Admin Panel. All rights reserved.
                 </footer>
             </div>
+
+            {/* Logout Loading Overlay */}
+            <AnimatePresence>
+                {isLoggingOut && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                            backdropFilter: 'blur(4px)',
+                            zIndex: 9999,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <div className="spinner-border text-danger" role="status" style={{ width: '3rem', height: '3rem' }}>
+                            <span className="visually-hidden">Logging out...</span>
+                        </div>
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            style={{ marginTop: '20px', fontSize: '1.2rem', color: '#dc3545', fontWeight: '500' }}
+                        >
+                            Logging out...
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
