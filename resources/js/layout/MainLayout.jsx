@@ -14,6 +14,13 @@ const MainLayout = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
 
     useEffect(() => {
+        const token = localStorage.getItem('admin_token');
+        if (token) {
+            setIsAdminLoggedIn(true);
+        }
+    }, []);
+
+    useEffect(() => {
         const timer = setInterval(() => {
             setCurrentTime(new Date());
         }, 1000);
@@ -59,7 +66,8 @@ const MainLayout = () => {
             if (response.status === 200) {
                 localStorage.setItem('admin_token', response.data.token);
                 setIsAdminLoggedIn(true);
-                window.location.href = '/admin';
+                setIsLoginModalOpen(false); // Close modal
+                navigate('/admin');
             } else {
                 setLoginError(response.data.message || 'Login failed');
             }
