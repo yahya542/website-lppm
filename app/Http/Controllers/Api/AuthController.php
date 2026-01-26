@@ -75,9 +75,10 @@ class AuthController extends Controller
         }
 
         // Juga logout dari sesi web tradisional
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // Session logout not needed for API tokens
+        // Auth::logout();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
 
         return response()->json([
             'message' => 'Logged out successfully'

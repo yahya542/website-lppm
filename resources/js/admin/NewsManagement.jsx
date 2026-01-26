@@ -7,23 +7,52 @@ const NewsManagement = () => {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
+    const [pagination, setPagination] = useState({});
     const navigate = useNavigate();
 
+    // Defined outside useEffect to be accessible by handlers
+    const fetchNews = async (url = '/api/admin/news') => {
+        try {
+            setLoading(true);
+            const newsResponse = await api.get(url);
+
+            // Handle Laravel Pagination Response
+            if (newsResponse.data.data) {
+                setNews(newsResponse.data.data);
+                setPagination({
+                    current_page: newsResponse.data.current_page,
+                    last_page: newsResponse.data.last_page,
+                    next_page_url: newsResponse.data.next_page_url,
+                    prev_page_url: newsResponse.data.prev_page_url,
+                    from: newsResponse.data.from,
+                    to: newsResponse.data.to,
+                    total: newsResponse.data.total
+                });
+            } else {
+                setNews(newsResponse.data); // Fallback for non-paginated
+                setPagination({});
+            }
+            setLoading(false);
+        } catch (err) {
+            console.error('Error fetching news:', err);
+            setError(err.response?.data?.message || err.message || 'Failed to fetch data');
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
+        const initData = async () => {
             try {
                 // Check if user is authenticated
                 const userResponse = await api.get('/api/admin/user');
                 setUser(userResponse.data);
 
-                // Fetch news data
-                const newsResponse = await api.get('/api/admin/news');
-                setNews(newsResponse.data.data || newsResponse.data); // Handle both paginated and non-paginated responses
-                setLoading(false);
+                // Initial fetch
+                await fetchNews();
             } catch (err) {
                 console.error('Error fetching data:', err);
                 setError(err.response?.data?.message || err.message || 'Failed to fetch data');
-                
+
                 // Redirect to login if not authenticated
                 if (err.response?.status === 401) {
                     navigate('/');
@@ -31,16 +60,24 @@ const NewsManagement = () => {
             }
         };
 
-        fetchData();
+        initData();
     }, [navigate]);
+
+    const handlePageChange = (url) => {
+        if (url) {
+            // If the URL is full absolute URL from Laravel, we might need to preserve it or valid relative path
+            // axios baseURL is set, so if url starts with http, axios handles it.
+            // But we should ensure we don't duplicate api prefix if Laravel returns relative (unlikely)
+            fetchNews(url);
+        }
+    };
 
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this news article?')) {
             try {
                 await api.delete(`/api/admin/news/${id}`);
-                // Refresh the news list
-                const newsResponse = await api.get('/api/admin/news');
-                setNews(newsResponse.data.data || newsResponse.data);
+                // Refresh the news list keeping current page if possible or reset
+                fetchNews(`/api/admin/news?page=${pagination.current_page || 1}`);
             } catch (err) {
                 console.error('Error deleting news:', err);
                 alert(err.response?.data?.message || 'Failed to delete news');
@@ -81,70 +118,93 @@ const NewsManagement = () => {
                             <p>Manage news articles here</p>
                         </div>
                     </div>
-                    
+
                     <div className="mt-4">
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <h3>News Articles</h3>
-                            <button 
+                            <button
                                 className="btn btn-primary"
                                 onClick={() => {
-                                    // Add functionality to create new news
                                     alert('Add new news functionality would go here');
                                 }}
                             >
                                 Add New Article
                             </button>
                         </div>
-                        
+
                         {news.length > 0 ? (
-                            <div className="table-responsive">
-                                <table className="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Title</th>
-                                            <th>Excerpt</th>
-                                            <th>Category</th>
-                                            <th>Published</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {news.map((article) => (
-                                            <tr key={article.id}>
-                                                <td>{article.id}</td>
-                                                <td>{article.title}</td>
-                                                <td>{article.excerpt.substring(0, 100)}{article.excerpt.length > 100 ? '...' : ''}</td>
-                                                <td>{article.category?.name || 'Uncategorized'}</td>
-                                                <td>
-                                                    <span className={`badge ${article.is_published ? 'bg-success' : 'bg-warning'}`}>
-                                                        {article.is_published ? 'Published' : 'Draft'}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <div className="btn-group" role="group">
-                                                        <button 
-                                                            className="btn btn-sm btn-outline-primary"
-                                                            onClick={() => {
-                                                                // Edit functionality
-                                                                alert(`Edit news ID: ${article.id}`);
-                                                            }}
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                        <button 
-                                                            className="btn btn-sm btn-outline-danger"
-                                                            onClick={() => handleDelete(article.id)}
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    </div>
-                                                </td>
+                            <>
+                                <div className="table-responsive">
+                                    <table className="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Title</th>
+                                                <th>Excerpt</th>
+                                                <th>Category</th>
+                                                <th>Published</th>
+                                                <th>Actions</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            {news.map((article) => (
+                                                <tr key={article.id}>
+                                                    <td>{article.id}</td>
+                                                    <td>{article.title}</td>
+                                                    <td>{article.excerpt.substring(0, 100)}{article.excerpt.length > 100 ? '...' : ''}</td>
+                                                    <td>{article.category?.name || 'Uncategorized'}</td>
+                                                    <td>
+                                                        <span className={`badge ${article.is_published ? 'bg-success' : 'bg-warning'}`}>
+                                                            {article.is_published ? 'Published' : 'Draft'}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div className="btn-group" role="group">
+                                                            <button
+                                                                className="btn btn-sm btn-outline-primary"
+                                                                onClick={() => {
+                                                                    alert(`Edit news ID: ${article.id}`);
+                                                                }}
+                                                            >
+                                                                Edit
+                                                            </button>
+                                                            <button
+                                                                className="btn btn-sm btn-outline-danger"
+                                                                onClick={() => handleDelete(article.id)}
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/* Pagination Controls */}
+                                <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <div>
+                                        Showing {pagination.from} to {pagination.to} of {pagination.total} entries
+                                    </div>
+                                    <div>
+                                        <button
+                                            className="btn btn-outline-secondary me-2"
+                                            onClick={() => handlePageChange(pagination.prev_page_url)}
+                                            disabled={!pagination.prev_page_url}
+                                        >
+                                            <i className="fas fa-chevron-left me-1"></i> Previous
+                                        </button>
+                                        <button
+                                            className="btn btn-outline-secondary"
+                                            onClick={() => handlePageChange(pagination.next_page_url)}
+                                            disabled={!pagination.next_page_url}
+                                        >
+                                            Next <i className="fas fa-chevron-right ms-1"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </>
                         ) : (
                             <div className="alert alert-info">
                                 No news articles found.

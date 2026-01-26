@@ -80,8 +80,14 @@ const MainLayout = () => {
     };
 
     const handleLogout = async () => {
-        window.location.href = '/';
+        try {
+            await api.post('/api/admin/logout');
+        } catch (err) {
+            console.error('Logout error', err);
+        }
+        localStorage.removeItem('admin_token');
         setIsAdminLoggedIn(false);
+        navigate('/');
     };
 
     // Menu items configuration
@@ -574,7 +580,11 @@ const MainLayout = () => {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setIsMobileMenuOpen(false);
-                                        setIsLoginModalOpen(true);
+                                        if (isAdminLoggedIn) {
+                                            handleLogout();
+                                        } else {
+                                            setIsLoginModalOpen(true);
+                                        }
                                     }}
                                     style={{
                                         display: 'block',
@@ -587,7 +597,7 @@ const MainLayout = () => {
                                         fontWeight: 'bold'
                                     }}
                                 >
-                                    Login Admin
+                                    {isAdminLoggedIn ? "Logout Admin" : "Login Admin"}
                                 </a>
                             </li>
                         </ul>
