@@ -261,7 +261,7 @@ const Detail = () => {
                                     <i className="fab fa-facebook"></i> Facebook
                                 </button>
                                 <button
-                                    className="btn btn-outline-info btn-sm"
+                                    className="btn btn-outline-dark btn-sm"
                                     style={{ borderRadius: '20px' }}
                                     onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(news.title)}`, '_blank')}
                                 >
