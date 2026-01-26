@@ -14,6 +14,13 @@ const MainLayout = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
 
     useEffect(() => {
+        const token = localStorage.getItem('admin_token');
+        if (token) {
+            setIsAdminLoggedIn(true);
+        }
+    }, []);
+
+    useEffect(() => {
         const timer = setInterval(() => {
             setCurrentTime(new Date());
         }, 1000);
@@ -59,7 +66,8 @@ const MainLayout = () => {
             if (response.status === 200) {
                 localStorage.setItem('admin_token', response.data.token);
                 setIsAdminLoggedIn(true);
-                window.location.href = '/admin';
+                setIsLoginModalOpen(false); // Close modal
+                navigate('/admin');
             } else {
                 setLoginError(response.data.message || 'Login failed');
             }
@@ -72,8 +80,17 @@ const MainLayout = () => {
     };
 
     const handleLogout = async () => {
-        window.location.href = '/';
-        setIsAdminLoggedIn(false);
+        setIsLoading(true);
+        try {
+            await api.post('/api/admin/logout');
+        } catch (err) {
+            console.error('Logout error', err);
+        } finally {
+            localStorage.removeItem('admin_token');
+            setIsAdminLoggedIn(false);
+            setIsLoading(false);
+            navigate('/');
+        }
     };
 
     // Menu items configuration
@@ -566,7 +583,11 @@ const MainLayout = () => {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setIsMobileMenuOpen(false);
-                                        setIsLoginModalOpen(true);
+                                        if (isAdminLoggedIn) {
+                                            handleLogout();
+                                        } else {
+                                            setIsLoginModalOpen(true);
+                                        }
                                     }}
                                     style={{
                                         display: 'block',
@@ -579,7 +600,7 @@ const MainLayout = () => {
                                         fontWeight: 'bold'
                                     }}
                                 >
-                                    Login Admin
+                                    {isAdminLoggedIn ? "Logout Admin" : "Login Admin"}
                                 </a>
                             </li>
                         </ul>
@@ -832,7 +853,7 @@ const MainLayout = () => {
                             <h5 style={{ fontWeight: 'bold', marginBottom: '15px', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '10px' }}>Follow us on Social Media</h5>
                             <div style={{ display: 'flex', gap: '15px' }}>
                                 <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-facebook-f"></i></a>
-                                <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-twitter"></i></a>
+                                <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-x-twitter"></i></a>
                                 <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-instagram"></i></a>
                                 <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-youtube"></i></a>
                             </div>
@@ -860,6 +881,42 @@ const MainLayout = () => {
                     </div>
                 </div>
             </footer>
+
+            {/* Global Loading Overlay */}
+            <AnimatePresence>
+                {isLoading && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                            backdropFilter: 'blur(2px)',
+                            zIndex: 9999,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexDirection: 'column'
+                        }}
+                    >
+                        <div className="spinner-border text-success" role="status" style={{ width: '3rem', height: '3rem' }}>
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <motion.p
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            style={{ marginTop: '15px', color: '#004d26', fontWeight: 'bold' }}
+                        >
+                            {isAdminLoggedIn ? "Logging out..." : "Processing..."}
+                        </motion.p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div >
 
     );
