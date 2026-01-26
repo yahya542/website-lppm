@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from '../layout/MainLayout';
+import AdminLayout from '../layout/AdminLayout';
 import Home from '../home/pages/Home';
 import Nama from '../home/components/nama';
 import ProfilList from '../profil/pages/ProfilList';
@@ -66,9 +67,13 @@ const AppRouter = () => {
                     <Route path="/permohonan-surat/:id" element={<PermohonanSuratDetail />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/admin/news" element={<NewsManagement />} />
                     <Route path="/news/:slug" element={<Detail />} />
+                </Route>
+
+                {/* Admin Routes */}
+                <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="news" element={<NewsManagement />} />
                 </Route>
             </Routes>
         </BrowserRouter>
