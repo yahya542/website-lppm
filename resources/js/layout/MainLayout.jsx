@@ -80,14 +80,17 @@ const MainLayout = () => {
     };
 
     const handleLogout = async () => {
+        setIsLoading(true);
         try {
             await api.post('/api/admin/logout');
         } catch (err) {
             console.error('Logout error', err);
+        } finally {
+            localStorage.removeItem('admin_token');
+            setIsAdminLoggedIn(false);
+            setIsLoading(false);
+            navigate('/');
         }
-        localStorage.removeItem('admin_token');
-        setIsAdminLoggedIn(false);
-        navigate('/');
     };
 
     // Menu items configuration
@@ -878,6 +881,42 @@ const MainLayout = () => {
                     </div>
                 </div>
             </footer>
+
+            {/* Global Loading Overlay */}
+            <AnimatePresence>
+                {isLoading && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                            backdropFilter: 'blur(2px)',
+                            zIndex: 9999,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexDirection: 'column'
+                        }}
+                    >
+                        <div className="spinner-border text-success" role="status" style={{ width: '3rem', height: '3rem' }}>
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <motion.p
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            style={{ marginTop: '15px', color: '#004d26', fontWeight: 'bold' }}
+                        >
+                            {isAdminLoggedIn ? "Logging out..." : "Processing..."}
+                        </motion.p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div >
 
     );
