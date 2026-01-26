@@ -832,7 +832,7 @@ const MainLayout = () => {
                             <h5 style={{ fontWeight: 'bold', marginBottom: '15px', borderBottom: '1px solid rgba(255,255,255,0.3)', paddingBottom: '10px' }}>Follow us on Social Media</h5>
                             <div style={{ display: 'flex', gap: '15px' }}>
                                 <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-facebook-f"></i></a>
-                                <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-twitter"></i></a>
+                                <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-x-twitter"></i></a>
                                 <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-instagram"></i></a>
                                 <a href="#" style={{ color: 'white', fontSize: '20px' }}><i className="fab fa-youtube"></i></a>
                             </div>

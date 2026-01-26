@@ -168,7 +168,7 @@ const Detail = () => {
                             <div style={{ display: 'flex', gap: '10px' }}>
                                 <button className="btn btn-outline-success btn-sm" style={{ borderRadius: '20px' }}><i className="fab fa-whatsapp"></i> WhatsApp</button>
                                 <button className="btn btn-outline-primary btn-sm" style={{ borderRadius: '20px' }}><i className="fab fa-facebook"></i> Facebook</button>
-                                <button className="btn btn-outline-info btn-sm" style={{ borderRadius: '20px' }}><i className="fab fa-twitter"></i> Twitter</button>
+                                <button className="btn btn-outline-info btn-sm" style={{ borderRadius: '20px' }}><i className="fab fa-x-twitter"></i> X</button>
                             </div>
                         </div>
                     </div>

@@ -36,7 +36,7 @@ const Navbar = () => {
                             </a>
 
                             <a href="#">
-                                <span className="fab fa-twitter"></span>
+                                <span className="fab fa-x-twitter"></span>
                             </a>
 
                             <a href="#">
@@ -52,16 +52,16 @@ const Navbar = () => {
 
                 {/*  */}
                 <div className="wrap-logo container">
-                    {/* Logo desktop */}		
+                    {/* Logo desktop */}
                     <div className="logo">
                         <Link to="/"><img src="/images/icons/logo-01.png" alt="LOGO" /></Link>
-                    </div>	
+                    </div>
 
                     {/* Banner */}
                     <div className="banner-header">
                         <Link to="/"><img src="/images/banner-01.jpg" alt="IMG" /></Link>
                     </div>
-                </div>	
+                </div>
 
                 {/*  */}
                 <div className="wrap-main-nav">
@@ -90,13 +90,13 @@ const Navbar = () => {
                                 </li>
                             </ul>
                         </nav>
-                    </div>	
+                    </div>
                 </div>
             </div>
 
             {/* Header Mobile */}
             <div className="wrap-header-mobile">
-                {/* Logo moblie */}		
+                {/* Logo moblie */}
                 <div className="logo-mobile">
                     <Link to="/"><img src="/images/icons/logo-01.png" alt="IMG-LOGO" /></Link>
                 </div>
@@ -126,7 +126,7 @@ const Navbar = () => {
                         </a>
 
                         <a href="#">
-                            <span className="fab fa-twitter"></span>
+                            <span className="fab fa-x-twitter"></span>
                         </a>
 
                         <a href="#">
