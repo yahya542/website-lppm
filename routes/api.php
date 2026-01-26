@@ -55,7 +55,7 @@ Route::prefix('news')->controller(NewsController::class)->group(function () {
     Route::get('/latest', 'latest');          
     Route::get('/popular', 'popular');        
     Route::get('/category/{categoryId}', 'getByCategory');
-    Route::get('/{id}', 'show')->whereNumber('id');
+    Route::get('/{id}', 'show');
 });
 
 // Admin news routes - hanya bisa diakses oleh admin

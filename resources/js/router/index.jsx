@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainLayout from '../layout/MainLayout';
+import AdminLayout from '../layout/AdminLayout';
 import Home from '../home/pages/Home';
 import Nama from '../home/components/nama';
 import ProfilList from '../profil/pages/ProfilList';
@@ -30,13 +31,23 @@ import PermohonanSuratDetail from '../permohonan-surat/pages/PermohonanSuratDeta
 import About from '../shared/pages/About';
 import Contact from '../shared/pages/Contact';
 import AdminDashboard from '../admin/AdminDashboard';
-import NewsManagement from '../admin/NewsManagement';
+import NewsIndex from '../pages/admin/news/NewsIndex';
+import NewsCreate from '../pages/admin/news/NewsCreate';
+import NewsEdit from '../pages/admin/news/NewsEdit';
 import Detail from '../news/detail';
 
 const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
+                {/* Admin Routes */}
+                <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="news" element={<NewsIndex />} />
+                    <Route path="news/create" element={<NewsCreate />} />
+                    <Route path="news/edit/:id" element={<NewsEdit />} />
+                </Route>
+
                 <Route path="/" element={<MainLayout />}>
                     <Route index element={<Home />} />
                     <Route path="/home/nama" element={<Nama />} />
@@ -66,10 +77,10 @@ const AppRouter = () => {
                     <Route path="/permohonan-surat/:id" element={<PermohonanSuratDetail />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
-                    <Route path="/admin/news" element={<NewsManagement />} />
-                    <Route path="/news/:id" element={<Detail />} />
+                    <Route path="/news/:slug" element={<Detail />} />
                 </Route>
+
+
             </Routes>
         </BrowserRouter>
     );
