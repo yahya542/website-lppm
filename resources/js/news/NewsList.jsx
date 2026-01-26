@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import api from '../axios';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../contexts/translations';
+import { ImageOff } from 'lucide-react';
 
 // Loading Skeleton Component
 const NewsCardSkeleton = ({ type = "grid" }) => {
@@ -80,37 +81,161 @@ const NewsCardSkeleton = ({ type = "grid" }) => {
   );
 };
 
+const NewsCard = ({ item, language, t }) => {
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <div style={{
+      border: 'none',
+      borderRadius: '16px',
+      overflow: 'hidden',
+      backgroundColor: 'white',
+      boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+      display: 'flex',
+      flexDirection: 'column',
+      transition: 'transform 0.3s ease',
+      cursor: 'pointer'
+    }}
+      onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+      onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+    >
+      <div style={{ padding: '25px 25px 10px' }}>
+        {/* Category Tag */}
+        <span style={{
+          display: 'inline-block',
+          backgroundColor: item.category?.name ? '#004d26' : '#f9a825',
+          color: 'white',
+          padding: '6px 14px',
+          borderRadius: '20px',
+          fontSize: '11px',
+          fontWeight: 'bold',
+          marginBottom: '15px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px'
+        }}>
+          {item.category?.name || "BERITA LPPM"}
+        </span>
+
+        {/* Title */}
+        <h3 style={{
+          fontSize: '18px',
+          fontWeight: 'bold',
+          lineHeight: '1.4',
+          color: '#222',
+          marginBottom: '15px',
+          minHeight: '50px'
+        }}>
+          {item.title || "Judul Berita"}
+        </h3>
+
+        {/* Meta Info */}
+        <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#999', marginBottom: '20px', gap: '15px' }}>
+          <span><i className="far fa-clock" style={{ marginRight: '5px' }}></i> {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : "Date"}</span>
+        </div>
+      </div>
+
+      {/* Image */}
+      <div style={{ height: '220px', width: '100%', backgroundColor: '#f5f5f5', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {!imageError && item.featured_image ? (
+          <img
+            src={item.featured_image}
+            alt={item.title}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#999'
+          }}>
+            <ImageOff size={48} style={{ marginBottom: '8px', opacity: 0.5 }} />
+            <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
+              {language === 'id' ? 'Gambar Tidak Tersedia' : 'Image Not Available'}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Description */}
+      <div style={{ padding: '25px' }}>
+        <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: '20px' }}>
+          {item.content ? (
+            item.content.length > 100 ? item.content.substring(0, 100) + '...' : item.content
+          ) : "Deskripsi berita akan muncul di sini..."}
+        </p>
+
+        {/* Read More Button */}
+        <a href={`/news/${item.id}`} style={{
+          display: 'inline-block',
+          color: '#004d26',
+          textDecoration: 'none',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          borderBottom: '2px solid #004d26',
+          paddingBottom: '2px'
+        }}>
+          {t.read_more || "Baca Selengkapnya"}
+        </a>
+      </div>
+    </div>
+  );
+};
+
 const NewsList = () => {
   const { language } = useLanguage();
   const t = translations[language];
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [visibleNewsCount, setVisibleNewsCount] = useState(9);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchNews = async (page = 1) => {
       try {
-        const response = await api.get('/api/news');
+        const response = await api.get(`/api/news?page=${page}`);
         const newsData = Array.isArray(response.data) ? response.data : (response.data.data || []);
-        setNews(newsData);
+        const pagination = response.data;
+
+        if (page === 1) {
+          setNews(newsData);
+        } else {
+          setNews(prev => [...prev, ...newsData]);
+        }
+
+        setHasNextPage(pagination.next_page_url !== null);
+        setCurrentPage(page);
       } catch (err) {
         console.error('Error fetching news:', err);
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
     };
 
     fetchNews();
   }, []);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = async () => {
+    if (!hasNextPage || loadingMore) return;
+
     setLoadingMore(true);
-    // Simulate loading delay for better UX
-    setTimeout(() => {
-      setVisibleNewsCount(prev => prev + 9);
+    try {
+      const response = await api.get(`/api/news?page=${currentPage + 1}`);
+      const newsData = Array.isArray(response.data) ? response.data : (response.data.data || []);
+      const pagination = response.data;
+
+      setNews(prev => [...prev, ...newsData]);
+      setHasNextPage(pagination.next_page_url !== null);
+      setCurrentPage(prev => prev + 1);
+    } catch (err) {
+      console.error('Error loading more news:', err);
+    } finally {
       setLoadingMore(false);
-    }, 500);
+    }
   };
 
   return (
@@ -146,87 +271,8 @@ const NewsList = () => {
               <NewsCardSkeleton key={index} type="grid" />
             ))
           ) : (
-            news.slice(0, visibleNewsCount).map((item, index) => (
-              <div key={item.id || index} style={{
-                border: 'none',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                backgroundColor: 'white',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.3s ease',
-                cursor: 'pointer'
-              }}
-                onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-              >
-                <div style={{ padding: '25px 25px 10px' }}>
-                  {/* Category Tag */}
-                  <span style={{
-                    display: 'inline-block',
-                    backgroundColor: item.category?.name ? '#004d26' : '#f9a825',
-                    color: 'white',
-                    padding: '6px 14px',
-                    borderRadius: '20px',
-                    fontSize: '11px',
-                    fontWeight: 'bold',
-                    marginBottom: '15px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
-                    {item.category?.name || "BERITA LPPM"}
-                  </span>
-
-                  {/* Title */}
-                  <h3 style={{
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    lineHeight: '1.4',
-                    color: '#222',
-                    marginBottom: '15px',
-                    minHeight: '50px'
-                  }}>
-                    {item.title || "Judul Berita"}
-                  </h3>
-
-                  {/* Meta Info */}
-                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#999', marginBottom: '20px', gap: '15px' }}>
-                    <span><i className="far fa-clock" style={{ marginRight: '5px' }}></i> {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : "Date"}</span>
-                  </div>
-                </div>
-
-                {/* Image */}
-                <div style={{ height: '220px', width: '100%', backgroundColor: '#eee', position: 'relative' }}>
-                  {item.featured_image ? (
-                    <img src={item.featured_image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => e.target.src = "/images/poster/1.png"} />
-                  ) : (
-                    <img src="/images/poster/1.png" alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  )}
-                </div>
-
-                {/* Description */}
-                <div style={{ padding: '25px' }}>
-                  <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: '20px' }}>
-                    {item.content ? (
-                      item.content.length > 100 ? item.content.substring(0, 100) + '...' : item.content
-                    ) : "Deskripsi berita akan muncul di sini..."}
-                  </p>
-
-                  {/* Read More Button */}
-                  <a href={`/news/${item.id}`} style={{
-                    display: 'inline-block',
-                    color: '#004d26',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    borderBottom: '2px solid #004d26',
-                    paddingBottom: '2px'
-                  }}>
-                    {t.read_more || "Baca Selengkapnya"}
-                  </a>
-                </div>
-              </div>
+            news.map((item, index) => (
+              <NewsCard key={item.id || index} item={item} language={language} t={t} />
             ))
           )}
           {loadingMore && (
@@ -237,7 +283,7 @@ const NewsList = () => {
         </div>
 
         {/* Load More Button */}
-        {!loading && !loadingMore && news.length > visibleNewsCount && (
+        {!loading && !loadingMore && hasNextPage && (
           <div style={{ textAlign: 'center' }}>
             <button
               onClick={handleLoadMore}
