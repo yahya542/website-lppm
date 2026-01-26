@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import Nama from '../home/components/nama.jsx';
-import Tentang from '../home/components/tentang.jsx';
-import Bidang from '../home/components/bidang.jsx';
 import api from '../axios';
 
 const MainLayout = () => {
