@@ -115,6 +115,6 @@ return [
     |
     */
 
-    'password_timeout' => 10800,
+    'password_timeout' => env('PASSWORD_TIMEOUT', 60*60*24), // Increased to 24 hours (can be overridden in .env)
 
 ];

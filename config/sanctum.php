@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'guard' => ['sanctum'],
+    'guard' => ['web'],
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'expiration' => null,
+    'expiration' => null, // Set to null to disable automatic token expiration
 
     /*
     |--------------------------------------------------------------------------
