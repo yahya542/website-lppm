@@ -173,7 +173,7 @@ const HomeNewsSliderCard = ({ item, goToNewsDetail, t, language }) => {
           {item.title ? (item.title.length > 50 ? item.title.substring(0, 50) + '...' : item.title) : "Judul Berita"}
         </h4>
         <button
-          onClick={() => goToNewsDetail(item.id)}
+          onClick={() => goToNewsDetail(item)}
           style={{ fontSize: '13px', color: '#fec107', fontWeight: 'bold', textDecoration: 'none', alignSelf: 'flex-start', border: 'none', background: 'none', cursor: 'pointer' }}
         >
           {t.read_more} →
@@ -201,7 +201,7 @@ const HomeNewsGridCard = ({ item, goToNewsDetail, t, language }) => {
     }}
       onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
       onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-      onClick={() => goToNewsDetail(item.id)}
+      onClick={() => goToNewsDetail(item)}
     >
       <div style={{ padding: '25px 25px 10px' }}>
         {/* Category Tag */}
@@ -266,6 +266,7 @@ const HomeNewsGridCard = ({ item, goToNewsDetail, t, language }) => {
 
         {/* Read More Button */}
         <button
+          onClick={() => goToNewsDetail(item)}
           style={{
             display: 'inline-block',
             color: '#004d26',
@@ -297,8 +298,8 @@ const Home = () => {
   const navigate = useNavigate(); // Initialize navigate
 
   // Function to handle navigation to news detail
-  const goToNewsDetail = (newsId) => {
-    navigate(`/news/${newsId}`);
+  const goToNewsDetail = (newsItem) => {
+    navigate(`/news/${newsItem.slug || newsItem.id}`);
   };
 
   useEffect(() => {

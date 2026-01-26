@@ -56,15 +56,19 @@ class NewsController extends Controller
     
     #[Endpoint(title: 'Get Single News')]
     #[Get('/api/news/{id}')]
-    #[PathParameter('id', 'integer', description: 'News ID')]
+    #[PathParameter('id', 'string', description: 'News ID or Slug')]
     #[Response(200, ['id' => 1, 'title' => 'Sample News', 'content' => 'Sample content', 'featured_image' => '/storage/news/sample.jpg', 'category' => ['id' => 1, 'name' => 'Sample Category']])]
     #[Response(404, ['error' => 'News not found'])]
     public function show($id): JsonResponse
     {
         try {
-            $news = News::with('category')
-                ->where('is_published', true)
-                ->findOrFail($id);
+            $query = News::with('category')->where('is_published', true);
+            
+            if (is_numeric($id)) {
+                $news = $query->where('id', $id)->firstOrFail();
+            } else {
+                $news = $query->where('slug', $id)->firstOrFail();
+            }
             
             return response()->json($news);
         } catch (\Exception $e) {

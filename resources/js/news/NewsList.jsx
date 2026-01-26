@@ -162,7 +162,7 @@ const NewsCard = ({ item, language, t }) => {
         </p>
 
         {/* Read More Button */}
-        <a href={`/news/${item.id}`} style={{
+        <a href={`/news/${item.slug || item.id}`} style={{
           display: 'inline-block',
           color: '#004d26',
           textDecoration: 'none',

@@ -68,7 +68,7 @@ const AppRouter = () => {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/admin/news" element={<NewsManagement />} />
-                    <Route path="/news/:id" element={<Detail />} />
+                    <Route path="/news/:slug" element={<Detail />} />
                 </Route>
             </Routes>
         </BrowserRouter>
