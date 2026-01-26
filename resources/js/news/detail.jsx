@@ -35,9 +35,89 @@ const Detail = () => {
 
     if (loading) {
         return (
-            <div className="main-content" style={{ backgroundColor: '#f9f9f9', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className="spinner-border text-success" role="status">
-                    <span className="visually-hidden">Loading...</span>
+            <div className="main-content" style={{ backgroundColor: '#f9f9f9', paddingBottom: '60px' }}>
+                {/* HERO SKELETON */}
+                <div style={{
+                    background: 'linear-gradient(135deg, #004d26 0%, #008000 100%)',
+                    padding: '80px 20px 100px',
+                    textAlign: 'center',
+                    marginBottom: '-60px'
+                }}>
+                    <div className="container" style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        {/* Category Badge Skeleton */}
+                        <motion.div
+                            animate={{ opacity: [0.5, 0.8, 0.5] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                            style={{ width: '100px', height: '30px', backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: '20px', marginBottom: '20px' }}
+                        />
+
+                        {/* Title Skeleton */}
+                        <motion.div
+                            animate={{ opacity: [0.5, 0.8, 0.5] }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.1 }}
+                            style={{ width: '80%', height: '40px', backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: '8px', marginBottom: '15px' }}
+                        />
+                        <motion.div
+                            animate={{ opacity: [0.5, 0.8, 0.5] }}
+                            transition={{ duration: 1.5, repeat: Infinity, delay: 0.1 }}
+                            style={{ width: '60%', height: '40px', backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: '8px', marginBottom: '30px' }}
+                        />
+
+                        {/* Meta Skeleton */}
+                        <div style={{ display: 'flex', gap: '20px' }}>
+                            <motion.div
+                                animate={{ opacity: [0.5, 0.8, 0.5] }}
+                                transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+                                style={{ width: '120px', height: '20px', backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: '4px' }}
+                            />
+                            <motion.div
+                                animate={{ opacity: [0.5, 0.8, 0.5] }}
+                                transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+                                style={{ width: '120px', height: '20px', backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: '4px' }}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* CONTENT SKELETON */}
+                <div className="container" style={{ maxWidth: '900px', margin: '0 auto', padding: '0 20px' }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        borderRadius: '20px',
+                        boxShadow: '0 10px 40px rgba(0,0,0,0.08)',
+                        overflow: 'hidden',
+                        marginBottom: '40px'
+                    }}>
+                        {/* Image Skeleton */}
+                        <motion.div
+                            animate={{ opacity: [0.5, 1, 0.5] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                            style={{ width: '100%', height: '450px', backgroundColor: '#e0e0e0' }}
+                        />
+
+                        {/* Text Skeleton */}
+                        <div style={{ padding: '50px' }}>
+                            {[1, 2, 3, 4, 5].map((i) => (
+                                <div key={i} style={{ marginBottom: '20px' }}>
+                                    <motion.div
+                                        animate={{ opacity: [0.5, 1, 0.5] }}
+                                        transition={{ duration: 1.5, repeat: Infinity, delay: 0.1 * i }}
+                                        style={{ width: '100%', height: '16px', backgroundColor: '#f0f0f0', borderRadius: '4px', marginBottom: '10px' }}
+                                    />
+                                    <motion.div
+                                        animate={{ opacity: [0.5, 1, 0.5] }}
+                                        transition={{ duration: 1.5, repeat: Infinity, delay: 0.1 * i }}
+                                        style={{ width: '90%', height: '16px', backgroundColor: '#f0f0f0', borderRadius: '4px', marginBottom: '10px' }}
+                                    />
+                                    <motion.div
+                                        animate={{ opacity: [0.5, 1, 0.5] }}
+                                        transition={{ duration: 1.5, repeat: Infinity, delay: 0.1 * i }}
+                                        style={{ width: '95%', height: '16px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         );
