@@ -73,6 +73,26 @@ const NewsIndex = () => {
         }
     };
 
+    const handleToggleStatus = async (id, currentStatus) => {
+        try {
+            // Optimistic update
+            const updatedNews = news.map(item =>
+                item.id === id ? { ...item, is_published: !currentStatus } : item
+            );
+            setNews(updatedNews);
+
+            await api.put(`/api/admin/news/${id}`, {
+                is_published: !currentStatus ? 1 : 0
+            });
+
+        } catch (err) {
+            console.error('Failed to update status:', err);
+            // Revert on error
+            fetchNews(pagination.current_page);
+            alert('Gagal mengubah status publikasi.');
+        }
+    };
+
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this news article?')) {
             try {
@@ -336,15 +356,24 @@ const NewsIndex = () => {
                                                     </span>
                                                 </td>
                                                 <td className="px-4">
-                                                    {item.is_published ? (
-                                                        <span className="badge bg-success-subtle text-success px-3 py-2 rounded-pill border border-success-subtle">
-                                                            <i className="fas fa-check-circle me-1 small"></i> Published
-                                                        </span>
-                                                    ) : (
-                                                        <span className="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill border border-warning-subtle">
-                                                            <i className="fas fa-clock me-1 small"></i> Draft
-                                                        </span>
-                                                    )}
+                                                    <div className="form-check form-switch">
+                                                        <input
+                                                            className="form-check-input"
+                                                            type="checkbox"
+                                                            role="switch"
+                                                            id={`status-${item.id}`}
+                                                            checked={!!item.is_published}
+                                                            onChange={() => handleToggleStatus(item.id, item.is_published)}
+                                                            style={{ cursor: 'pointer' }}
+                                                        />
+                                                        <label className="form-check-label small user-select-none" htmlFor={`status-${item.id}`}>
+                                                            {item.is_published ? (
+                                                                <span className="text-success fw-bold">Published</span>
+                                                            ) : (
+                                                                <span className="text-muted">Draft</span>
+                                                            )}
+                                                        </label>
+                                                    </div>
                                                 </td>
                                                 <td className="px-4 small text-muted">
                                                     <div><i className="far fa-calendar-alt me-1 opacity-50"></i> {new Date(item.created_at).toLocaleDateString()}</div>
