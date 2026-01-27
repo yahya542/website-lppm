@@ -101,7 +101,14 @@ const NewsCardSkeleton = ({ type = "grid" }) => {
       flexDirection: 'column',
       height: '100%'
     }}>
-      {/* Top: Category, Title, Meta */}
+      {/* Top: Image */}
+      <motion.div
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+        style={{ height: '220px', width: '100%', backgroundColor: '#e0e0e0' }}
+      />
+
+      {/* Middle: Category, Title, Meta */}
       <div style={{ padding: '25px 25px 10px' }}>
         {/* Category */}
         <motion.div style={{ width: '80px', height: '24px', backgroundColor: '#e0e0e0', borderRadius: '20px', marginBottom: '15px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
@@ -111,13 +118,6 @@ const NewsCardSkeleton = ({ type = "grid" }) => {
         {/* Meta */}
         <motion.div style={{ width: '120px', height: '12px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '20px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }} />
       </div>
-
-      {/* Middle: Image */}
-      <motion.div
-        animate={{ opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-        style={{ height: '220px', width: '100%', backgroundColor: '#e0e0e0' }}
-      />
 
       {/* Bottom: Description */}
       <div style={{ padding: '25px', flexGrow: 1 }}>
@@ -203,6 +203,24 @@ const HomeNewsGridCard = ({ item, goToNewsDetail, t, language }) => {
       onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
       onClick={() => goToNewsDetail(item)}
     >
+      {/* Image */}
+      <div style={{ height: '220px', width: '100%', backgroundColor: '#f5f5f5', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {!imageError && item.featured_image ? (
+          <img
+            src={item.featured_image}
+            alt="News"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <img
+            src={placeholderImage}
+            alt="No Image Available"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        )}
+      </div>
+
       <div style={{ padding: '25px 25px 10px' }}>
         {/* Category Tag */}
         <span style={{
@@ -236,24 +254,6 @@ const HomeNewsGridCard = ({ item, goToNewsDetail, t, language }) => {
         <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#999', marginBottom: '20px', gap: '15px' }}>
           <span><i className="far fa-clock" style={{ marginRight: '5px' }}></i> {item.created_at ? new Date(item.created_at).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : "Date"}</span>
         </div>
-      </div>
-
-      {/* Image */}
-      <div style={{ height: '220px', width: '100%', backgroundColor: '#f5f5f5', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {!imageError && item.featured_image ? (
-          <img
-            src={item.featured_image}
-            alt="News"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <img
-            src={placeholderImage}
-            alt="No Image Available"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        )}
       </div>
 
       {/* Description */}

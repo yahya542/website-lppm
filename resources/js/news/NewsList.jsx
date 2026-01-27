@@ -53,7 +53,14 @@ const NewsCardSkeleton = ({ type = "grid" }) => {
       flexDirection: 'column',
       height: '100%'
     }}>
-      {/* Top: Category, Title, Meta */}
+      {/* Top: Image */}
+      <motion.div
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+        style={{ height: '220px', width: '100%', backgroundColor: '#e0e0e0' }}
+      />
+
+      {/* Middle: Category, Title, Meta */}
       <div style={{ padding: '25px 25px 10px' }}>
         {/* Category */}
         <motion.div style={{ width: '80px', height: '24px', backgroundColor: '#e0e0e0', borderRadius: '20px', marginBottom: '15px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }} />
@@ -64,15 +71,8 @@ const NewsCardSkeleton = ({ type = "grid" }) => {
         <motion.div style={{ width: '120px', height: '12px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '20px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }} />
       </div>
 
-      {/* Middle: Image */}
-      <motion.div
-        animate={{ opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-        style={{ height: '220px', width: '100%', backgroundColor: '#e0e0e0' }}
-      />
-
       {/* Bottom: Description */}
-      <div style={{ padding: '25px' }}>
+      <div style={{ padding: '0 25px 25px' }}>
         <motion.div style={{ width: '100%', height: '14px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '8px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} />
         <motion.div style={{ width: '80%', height: '14px', backgroundColor: '#e0e0e0', borderRadius: '4px', marginBottom: '20px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} />
         <motion.div style={{ width: '40%', height: '14px', backgroundColor: '#e0e0e0', borderRadius: '4px' }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
@@ -100,6 +100,24 @@ const NewsCard = ({ item, language, t }) => {
       onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
       onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
     >
+      {/* Image */}
+      <div style={{ height: '220px', width: '100%', backgroundColor: '#f5f5f5', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {!imageError && item.featured_image ? (
+          <img
+            src={item.featured_image}
+            alt={item.title}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <img
+            src={placeholderImage}
+            alt="No Image Available"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        )}
+      </div>
+
       <div style={{ padding: '25px 25px 10px' }}>
         {/* Category Tag */}
         <span style={{
@@ -135,26 +153,8 @@ const NewsCard = ({ item, language, t }) => {
         </div>
       </div>
 
-      {/* Image */}
-      <div style={{ height: '220px', width: '100%', backgroundColor: '#f5f5f5', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {!imageError && item.featured_image ? (
-          <img
-            src={item.featured_image}
-            alt={item.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <img
-            src={placeholderImage}
-            alt="No Image Available"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          />
-        )}
-      </div>
-
       {/* Description */}
-      <div style={{ padding: '25px' }}>
+      <div style={{ padding: '0 25px 25px' }}>
         <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#555', marginBottom: '20px' }}>
           {item.content ? (
             item.content.length > 100 ? item.content.substring(0, 100) + '...' : item.content
