@@ -61,6 +61,8 @@ Route::prefix('news')->controller(NewsController::class)->group(function () {
 // Admin news routes - hanya bisa diakses oleh admin
 Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::prefix('news')->controller(NewsController::class)->group(function () {
+        Route::get('/template', 'template');   // Download CSV template
+        Route::post('/import', 'import');     // Import CSV
         Route::get('/', 'adminIndex');        // Get all news for admin
         Route::post('/', 'adminStore');       // Create news
         Route::get('/{id}', 'adminShow');     // Get single news for admin

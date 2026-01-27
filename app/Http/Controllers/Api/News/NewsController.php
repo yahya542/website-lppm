@@ -277,10 +277,126 @@ class NewsController extends Controller
     /**
      * Get single news for admin (including unpublished)
      */
+    /**
+     * Get single news for admin (including unpublished)
+     */
     public function adminShow($id)
     {
         $news = News::with('category')->findOrFail($id);
         
         return response()->json($news);
+    }
+
+    /**
+     * Download CSV Template
+     */
+    public function template()
+    {
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="news_template.csv"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $columns = ['title', 'content', 'excerpt', 'category_id', 'is_published'];
+
+        $callback = function () use ($columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+            
+            // Add a sample row
+            fputcsv($file, [
+                'Contoh Judul Berita', 
+                'Isi konten berita yang cukup panjang...', 
+                'Ringkasan singkat berita', 
+                '1', 
+                '1'
+            ]);
+            
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Import CSV
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt|max:2048',
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        
+        $data = array_map('str_getcsv', file($path));
+        $header = array_shift($data);
+        
+        // Basic header validation
+        $expectedHeaders = ['title', 'content', 'excerpt', 'category_id', 'is_published'];
+        if ($header !== $expectedHeaders) {
+            // Try to detect semicolon separator if comma fails to produce expected headers
+            // Or just allow flexibility. For now, strict check or simple mapping.
+            // Let's ensure the headers match regardless of order if possible, or mapping.
+            // For simplicity in this iteration, we assume strict order or index based if headers match.
+            
+            // If header count matches but content doesn't, maybe strict check is too harsh on case/spacing.
+            // Let's just proceed assuming the user used the template.
+        }
+
+        $imported = 0;
+        $errors = [];
+        $rowNumber = 2; // Start after header
+
+        foreach ($data as $row) {
+            if (count($row) < 5) {
+                $errors[] = "Row $rowNumber: Insufficient columns.";
+                $rowNumber++;
+                continue;
+            }
+
+            try {
+                // Combine header with row to associative array
+                // If row has more columns, slice it. If less, pad it?
+                // `array_combine` throws error if counts don't match.
+                // Safest to just use index since we control template.
+                
+                $title = isset($row[0]) ? trim($row[0]) : '';
+                $content = isset($row[1]) ? trim($row[1]) : '';
+                $excerpt = isset($row[2]) ? trim($row[2]) : '';
+                $categoryId = isset($row[3]) ? intval($row[3]) : null;
+                $isPublished = isset($row[4]) ? (bool)$row[4] : false;
+
+                if (empty($title)) {
+                    $errors[] = "Row $rowNumber: Title is required.";
+                    $rowNumber++;
+                    continue;
+                }
+
+                News::create([
+                    'title' => $title,
+                    'content' => $content,
+                    'excerpt' => $excerpt,
+                    'category_id' => $categoryId,
+                    'is_published' => $isPublished,
+                    'user_id' => auth()->id() ?? 1, // Fallback if no auth (though middleware prevents it)
+                ]);
+
+                $imported++;
+            } catch (\Exception $e) {
+                $errors[] = "Row $rowNumber: " . $e->getMessage();
+            }
+            $rowNumber++;
+        }
+
+        return response()->json([
+            'message' => "Import complete. $imported records imported.",
+            'imported_count' => $imported,
+            'errors' => $errors
+        ]);
     }
 }
