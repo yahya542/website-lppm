@@ -15,6 +15,10 @@ const NewsIndex = () => {
         per_page: 10
     });
 
+    // Category Filter State
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+
     // Import Modal State
     const [showImportModal, setShowImportModal] = useState(false);
     const [importFile, setImportFile] = useState(null);
@@ -22,13 +26,31 @@ const NewsIndex = () => {
     const [importStatus, setImportStatus] = useState(null);
 
     useEffect(() => {
+        fetchCategories();
         fetchNews(1);
     }, []);
+
+    useEffect(() => {
+        fetchNews(1);
+    }, [selectedCategory]);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await api.get('/api/categories');
+            setCategories(response.data);
+        } catch (err) {
+            console.error('Error fetching categories:', err);
+        }
+    };
 
     const fetchNews = async (page = 1) => {
         setLoading(true);
         try {
-            const response = await api.get(`/api/admin/news?page=${page}&search=${searchTerm}`);
+            let url = `/api/admin/news?page=${page}&search=${searchTerm}`;
+            if (selectedCategory) {
+                url += `&category=${selectedCategory}`;
+            }
+            const response = await api.get(url);
             if (response.data.data) {
                 setNews(response.data.data);
                 setPagination({
@@ -286,15 +308,28 @@ const NewsIndex = () => {
                         <i className="fas fa-list me-2"></i>
                         <span className="fw-medium">All Articles ({pagination.total})</span>
                     </div>
-                    <div className="position-relative" style={{ maxWidth: '300px', width: '100%' }}>
-                        <i className="fas fa-search position-absolute text-muted" style={{ top: '50%', left: '15px', transform: 'translateY(-50%)' }}></i>
-                        <input
-                            type="text"
-                            className="form-control ps-5 bg-light border-0 rounded-pill"
-                            placeholder="Search articles..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                    <div className="d-flex gap-2 align-items-center flex-grow-1 justify-content-end">
+                        <select
+                            className="form-select bg-light border-0 rounded-pill"
+                            style={{ maxWidth: '200px' }}
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                        >
+                            <option value="">All Categories</option>
+                            {categories.map(cat => (
+                                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                            ))}
+                        </select>
+                        <div className="position-relative" style={{ maxWidth: '300px', width: '100%' }}>
+                            <i className="fas fa-search position-absolute text-muted" style={{ top: '50%', left: '15px', transform: 'translateY(-50%)' }}></i>
+                            <input
+                                type="text"
+                                className="form-control ps-5 bg-light border-0 rounded-pill"
+                                placeholder="Search articles..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
                     </div>
                 </div>
 
