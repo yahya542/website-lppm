@@ -345,166 +345,168 @@ const NewsIndex = () => {
                 </div>
             )}
 
-            {/* Content Card */}
-            <div className="card border-0 shadow-lg rounded-4 overflow-hidden">
-                <div className="card-header bg-white border-bottom-0 py-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
-                    <div className="d-flex align-items-center text-muted">
-                        <i className="fas fa-list me-2"></i>
-                        <span className="fw-medium">All Articles ({pagination.total})</span>
-                    </div>
-                    <div className="d-flex gap-2 align-items-center flex-grow-1 justify-content-end">
-                        <select
-                            className="form-select bg-light border-0 rounded-pill"
-                            style={{ maxWidth: '200px' }}
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                        >
-                            <option value="">All Categories</option>
-                            {categories.map(cat => (
-                                <option key={cat.id} value={cat.id}>{cat.name}</option>
-                            ))}
-                        </select>
-                        <div className="position-relative" style={{ maxWidth: '300px', width: '100%' }}>
-                            <i className="fas fa-search position-absolute text-muted" style={{ top: '50%', left: '15px', transform: 'translateY(-50%)' }}></i>
-                            <input
-                                type="text"
-                                className="form-control ps-5 bg-light border-0 rounded-pill"
-                                placeholder="Search articles..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-                    </div>
+            {/* Filters and Actions */}
+            <div className="bg-white rounded-4 shadow-sm p-3 mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <div className="d-flex align-items-center text-muted ps-2">
+                    <i className="fas fa-list me-2"></i>
+                    <span className="fw-medium">Total Articles: {pagination.total}</span>
                 </div>
 
-                <div className="card-body p-0">
-                    {loading ? (
-                        <div className="d-flex justify-content-center py-5">
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
+                <div className="d-flex gap-2 align-items-center flex-grow-1 justify-content-end w-100 w-md-auto">
+                    <select
+                        className="form-select bg-light border-0 rounded-pill"
+                        style={{ maxWidth: '200px' }}
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                        <option value="">All Categories</option>
+                        {categories.map(cat => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))}
+                    </select>
+                    <div className="position-relative" style={{ maxWidth: '300px', width: '100%' }}>
+                        <i className="fas fa-search position-absolute text-muted" style={{ top: '50%', left: '15px', transform: 'translateY(-50%)' }}></i>
+                        <input
+                            type="text"
+                            className="form-control ps-5 bg-light border-0 rounded-pill"
+                            placeholder="Search articles..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* Table Content */}
+            <div className="bg-white rounded-4 shadow-sm overflow-hidden">
+                {loading ? (
+                    <div className="d-flex justify-content-center py-5">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
                         </div>
-                    ) : (
-                        <div className="table-responsive">
-                            <table className="table table-hover align-middle mb-0">
-                                <thead className="bg-light text-uppercase small fw-bold text-muted">
-                                    <tr>
-                                        <th className="px-4 py-3 border-0" style={{ width: '5%' }}>#</th>
-                                        <th className="px-4 py-3 border-0" style={{ width: '12%' }}>Image</th>
-                                        <th className="px-4 py-3 border-0" style={{ width: '35%' }}>Title</th>
-                                        <th className="px-4 py-3 border-0" style={{ width: '15%' }}>Category</th>
-                                        <th className="px-4 py-3 border-0" style={{ width: '10%' }}>Status</th>
-                                        <th className="px-4 py-3 border-0" style={{ width: '13%' }}>Date</th>
-                                        <th className="px-4 py-3 border-0 text-end" style={{ width: '10%' }}>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {news.length > 0 ? (
-                                        news.map((item, index) => (
-                                            <tr key={item.id}>
-                                                <td className="px-4 text-muted fw-bold small">
-                                                    {(pagination.current_page - 1) * pagination.per_page + index + 1}
-                                                </td>
-                                                <td className="px-4">
-                                                    <div className="shadow-sm border rounded-3 overflow-hidden position-relative" style={{ width: '70px', height: '45px', backgroundColor: '#f8f9fa' }}>
-                                                        {item.image || item.featured_image ? (
-                                                            <img
-                                                                src={item.image || item.featured_image}
-                                                                alt={item.title}
-                                                                className="w-100 h-100 object-fit-cover"
-                                                                onError={(e) => { e.target.src = 'https://placehold.co/70x45?text=Img'; }}
-                                                            />
-                                                        ) : (
-                                                            <div className="d-flex align-items-center justify-content-center h-100 text-muted small">
-                                                                <i className="fas fa-image fa-lg opacity-25"></i>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </td>
-                                                <td className="px-4">
-                                                    <div className="fw-bold text-dark text-truncate" style={{ maxWidth: '350px', fontSize: '1rem' }}>
-                                                        {item.title}
-                                                    </div>
-                                                    <small className="text-muted d-block text-truncate mt-1" style={{ maxWidth: '350px' }}>
-                                                        {item.excerpt}
-                                                    </small>
-                                                </td>
-                                                <td className="px-4">
-                                                    <span className="badge bg-light text-secondary border fw-normal px-2 py-1 rounded-pill">
-                                                        {item.category ? item.category.name : 'Uncategorized'}
-                                                    </span>
-                                                </td>
-                                                <td className="px-4">
-                                                    <div className="form-check form-switch">
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            role="switch"
-                                                            id={`status-${item.id}`}
-                                                            checked={!!item.is_published}
-                                                            onChange={() => handleToggleStatus(item.id, item.is_published)}
-                                                            style={{ cursor: 'pointer' }}
+                    </div>
+                ) : (
+                    <div className="table-responsive">
+                        <table className="table table-hover align-middle mb-0">
+                            <thead className="bg-light text-uppercase small fw-bold text-muted">
+                                <tr>
+                                    <th className="px-4 py-3 border-0" style={{ width: '5%' }}>#</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '12%' }}>Image</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '35%' }}>Title</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '15%' }}>Category</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '10%' }}>Status</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '13%' }}>Date</th>
+                                    <th className="px-4 py-3 border-0 text-end" style={{ width: '10%' }}>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {news.length > 0 ? (
+                                    news.map((item, index) => (
+                                        <tr key={item.id}>
+                                            <td className="px-4 text-muted fw-bold small">
+                                                {(pagination.current_page - 1) * pagination.per_page + index + 1}
+                                            </td>
+                                            <td className="px-4">
+                                                <div className="shadow-sm border rounded-3 overflow-hidden position-relative" style={{ width: '70px', height: '45px', backgroundColor: '#f8f9fa' }}>
+                                                    {item.image || item.featured_image ? (
+                                                        <img
+                                                            src={item.image || item.featured_image}
+                                                            alt={item.title}
+                                                            className="w-100 h-100 object-fit-cover"
+                                                            onError={(e) => { e.target.src = 'https://placehold.co/70x45?text=Img'; }}
                                                         />
-                                                        <label className="form-check-label small user-select-none" htmlFor={`status-${item.id}`}>
-                                                            {item.is_published ? (
-                                                                <span className="text-success fw-bold">Published</span>
-                                                            ) : (
-                                                                <span className="text-muted">Draft</span>
-                                                            )}
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td className="px-4 small text-muted">
-                                                    <div><i className="far fa-calendar-alt me-1 opacity-50"></i> {new Date(item.created_at).toLocaleDateString()}</div>
-                                                    <div className="text-xs opacity-50 mt-1">{new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                                                </td>
-                                                <td className="px-4 text-end">
-                                                    <div className="d-inline-flex gap-2">
-                                                        <Link
-                                                            to={`/admin/news/edit/${item.id}`}
-                                                            className="btn btn-sm btn-outline-primary border-0 rounded-circle d-flex align-items-center justify-content-center"
-                                                            style={{ width: '32px', height: '32px', backgroundColor: 'rgba(13, 110, 253, 0.1)' }}
-                                                            title="Edit"
-                                                        >
-                                                            <i className="fas fa-edit"></i>
-                                                        </Link>
-                                                        <button
-                                                            onClick={() => handleDelete(item.id)}
-                                                            className="btn btn-sm btn-outline-danger border-0 rounded-circle d-flex align-items-center justify-content-center"
-                                                            style={{ width: '32px', height: '32px', backgroundColor: 'rgba(220, 53, 69, 0.1)' }}
-                                                            title="Delete"
-                                                        >
-                                                            <i className="fas fa-trash-alt"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="7" className="text-center py-5">
-                                                <div className="py-5">
-                                                    <div className="mb-3 text-muted opacity-25">
-                                                        <i className="far fa-newspaper fa-4x"></i>
-                                                    </div>
-                                                    <h5 className="text-muted fw-normal">No articles found</h5>
-                                                    <p className="text-small text-muted mb-4">Get started by creating your first news article.</p>
-                                                    <Link to="/admin/news/create" className="btn btn-primary rounded-pill px-4">
-                                                        <i className="fas fa-plus me-2"></i> Create Article
+                                                    ) : (
+                                                        <div className="d-flex align-items-center justify-content-center h-100 text-muted small">
+                                                            <i className="fas fa-image fa-lg opacity-25"></i>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className="px-4">
+                                                <div className="fw-bold text-dark text-truncate" style={{ maxWidth: '350px', fontSize: '1rem' }}>
+                                                    {item.title}
+                                                </div>
+                                                <small className="text-muted d-block text-truncate mt-1" style={{ maxWidth: '350px' }}>
+                                                    {item.excerpt}
+                                                </small>
+                                            </td>
+                                            <td className="px-4">
+                                                <span className="badge bg-light text-secondary border fw-normal px-2 py-1 rounded-pill">
+                                                    {item.category ? item.category.name : 'Uncategorized'}
+                                                </span>
+                                            </td>
+                                            <td className="px-4">
+                                                <div className="form-check form-switch">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        role="switch"
+                                                        id={`status-${item.id}`}
+                                                        checked={!!item.is_published}
+                                                        onChange={() => handleToggleStatus(item.id, item.is_published)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    />
+                                                    <label className="form-check-label small user-select-none" htmlFor={`status-${item.id}`}>
+                                                        {item.is_published ? (
+                                                            <span className="text-success fw-bold">Published</span>
+                                                        ) : (
+                                                            <span className="text-muted">Draft</span>
+                                                        )}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td className="px-4 small text-muted">
+                                                <div><i className="far fa-calendar-alt me-1 opacity-50"></i> {new Date(item.created_at).toLocaleDateString()}</div>
+                                                <div className="text-xs opacity-50 mt-1">{new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                            </td>
+                                            <td className="px-4 text-end">
+                                                <div className="d-inline-flex gap-2">
+                                                    <Link
+                                                        to={`/admin/news/edit/${item.id}`}
+                                                        className="btn btn-sm btn-outline-primary border-0 rounded-circle d-flex align-items-center justify-content-center"
+                                                        style={{ width: '32px', height: '32px', backgroundColor: 'rgba(13, 110, 253, 0.1)' }}
+                                                        title="Edit"
+                                                    >
+                                                        <i className="fas fa-edit"></i>
                                                     </Link>
+                                                    <button
+                                                        onClick={() => handleDelete(item.id)}
+                                                        className="btn btn-sm btn-outline-danger border-0 rounded-circle d-flex align-items-center justify-content-center"
+                                                        style={{ width: '32px', height: '32px', backgroundColor: 'rgba(220, 53, 69, 0.1)' }}
+                                                        title="Delete"
+                                                    >
+                                                        <i className="fas fa-trash-alt"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-                </div>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7" className="text-center py-5">
+                                            <div className="py-5">
+                                                <div className="mb-3 text-muted opacity-25">
+                                                    <i className="far fa-newspaper fa-4x"></i>
+                                                </div>
+                                                <h5 className="text-muted fw-normal">No articles found</h5>
+                                                <p className="text-small text-muted mb-4">Get started by creating your first news article.</p>
+                                                <Link to="/admin/news/create" className="btn btn-primary rounded-pill px-4">
+                                                    <i className="fas fa-plus me-2"></i> Create Article
+                                                </Link>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
 
-                {/* Pagination Footer */}
-                {pagination.total > 0 && (
-                    <div className="card-footer bg-white border-top-0 py-3 d-flex justify-content-between align-items-center flex-wrap">
+            {/* Pagination Footer */}
+            {
+                pagination.total > 0 && (
+                    <div className="bg-white rounded-4 shadow-sm p-3 d-flex justify-content-between align-items-center flex-wrap mt-4">
                         <div className="text-muted small">
                             Showing {(pagination.current_page - 1) * pagination.per_page + 1} to {Math.min(pagination.current_page * pagination.per_page, pagination.total)} of {pagination.total} entries
                         </div>
@@ -514,7 +516,7 @@ const NewsIndex = () => {
                                 <li className={`page-item ${pagination.current_page === 1 ? 'disabled' : ''}`}>
                                     <button
                                         className="page-link border-0 text-dark rounded-circle mx-1 d-flex align-items-center justify-content-center"
-                                        style={{ width: '36px', height: '36px', backgroundColor: '#f8f9fa' }}
+                                        style={{ width: '36px', height: '36px', backgroundColor: '#e9ecef' }}
                                         onClick={() => handlePageChange(pagination.current_page - 1)}
                                         disabled={pagination.current_page === 1}
                                     >
@@ -533,7 +535,7 @@ const NewsIndex = () => {
                                         return (
                                             <li key={pageNum} className="page-item">
                                                 <button
-                                                    className={`page-link border-0 rounded-circle mx-1 d-flex align-items-center justify-content-center fw-bold ${pagination.current_page === pageNum ? 'bg-primary text-white shadow-sm' : 'text-dark bg-light'}`}
+                                                    className={`page-link border-0 rounded-circle mx-1 d-flex align-items-center justify-content-center fw-bold ${pagination.current_page === pageNum ? 'bg-primary text-white shadow-sm' : 'text-dark bg-transparent'}`}
                                                     style={{ width: '36px', height: '36px' }}
                                                     onClick={() => handlePageChange(pageNum)}
                                                 >
@@ -553,7 +555,7 @@ const NewsIndex = () => {
                                 <li className={`page-item ${pagination.current_page === pagination.last_page ? 'disabled' : ''}`}>
                                     <button
                                         className="page-link border-0 text-dark rounded-circle mx-1 d-flex align-items-center justify-content-center"
-                                        style={{ width: '36px', height: '36px', backgroundColor: '#f8f9fa' }}
+                                        style={{ width: '36px', height: '36px', backgroundColor: '#e9ecef' }}
                                         onClick={() => handlePageChange(pagination.current_page + 1)}
                                         disabled={pagination.current_page === pagination.last_page}
                                     >
@@ -563,9 +565,10 @@ const NewsIndex = () => {
                             </ul>
                         </nav>
                     </div>
-                )}
-            </div>
-        </motion.div>
+                )
+            }
+
+        </motion.div >
     );
 };
 
