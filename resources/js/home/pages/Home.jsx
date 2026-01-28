@@ -379,7 +379,7 @@ const Home = () => {
       <Bidang />
 
       {/* 2.5. WELCOME MESSAGE - White Background */}
-      <section style={{ backgroundColor: 'white', padding: '60px 0' }}>
+      <section style={{ backgroundColor: 'white', padding: '40px 0' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '40px', alignItems: 'center' }}>
 
@@ -417,7 +417,7 @@ const Home = () => {
       </section>
 
       {/* 3. NEWS SECTION (Slider) - Light Gray Background */}
-      <section style={{ backgroundColor: '#f8f9fa', padding: '50px 0' }}>
+      <section style={{ backgroundColor: '#f8f9fa', padding: '40px 0' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ borderBottom: '2px solid #fec107', paddingBottom: '10px', marginBottom: '20px', width: 'fit-content' }}>
             <h3 style={{ margin: 0, color: '#fec107', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>{t.home_news_title}</h3>
@@ -468,7 +468,7 @@ const Home = () => {
       </section>
 
       {/* 4. PERFORMANCE ACHIEVEMENTS - Light Green Tint */}
-      <section style={{ padding: '60px 0', backgroundColor: '#f1f8e9' }}> {/* Material Green 50 */}
+      <section style={{ padding: '40px 0', backgroundColor: '#f1f8e9' }}> {/* Material Green 50 */}
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
           <SectionTitle title={t.home_performance_title} />
           <div style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: 'white', padding: '30px', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
@@ -481,7 +481,7 @@ const Home = () => {
       </section>
 
       {/* 5. ACHIEVEMENTS - White Background */}
-      <section style={{ padding: '60px 0', backgroundColor: 'white' }}>
+      <section style={{ padding: '40px 0', backgroundColor: 'white' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
           <SectionTitle title={t.home_achievements_title} />
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
@@ -492,7 +492,7 @@ const Home = () => {
       </section>
 
       {/* 6. INFORMATION BANNER - Dark Green (Already good, just slight padding adjust) */}
-      <section style={{ backgroundColor: '#004d26', padding: '80px 20px', textAlign: 'center', color: 'white', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ backgroundColor: '#004d26', padding: '50px 20px', textAlign: 'center', color: 'white', position: 'relative', overflow: 'hidden' }}>
         {/* Abstract pattern overlay could go here */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 2 }}>
           <div style={{ width: '100px', height: '100px', backgroundColor: 'white', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '25px', boxShadow: '0 0 20px rgba(255,255,255,0.2)' }}>
@@ -504,7 +504,7 @@ const Home = () => {
       </section>
 
       {/* 6.5. AGENDA KEGIATAN - Light Background */}
-      <section style={{ padding: '80px 0', backgroundColor: '#fafafa' }}>
+      <section style={{ padding: '50px 0', backgroundColor: '#fafafa' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '50px' }}>
             <h2 style={{ color: '#004d26', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '1.8rem', fontWeight: 'bold' }}>Agenda Kegiatan Terdekat</h2>
@@ -576,7 +576,7 @@ const Home = () => {
       </section>
 
       {/* 7. VIDEO SECTION - White Background */}
-      <section style={{ padding: '80px 0', backgroundColor: 'white' }}>
+      <section style={{ padding: '50px 0', backgroundColor: 'white' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <h2 style={{ color: '#333', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '1.5rem' }}>Video Terbaru</h2>
@@ -602,7 +602,7 @@ const Home = () => {
       </section>
 
       {/* 8. COUNTER - Soft Gradient Background */}
-      <section style={{ padding: '60px 0', background: 'linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%)' }}>
+      <section style={{ padding: '40px 0', background: 'linear-gradient(180deg, #ffffff 0%, #f4f4f4 100%)' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ maxWidth: '700px', margin: '0 auto', backgroundColor: 'white', padding: '40px', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)', textAlign: 'center' }}>
             <h3 style={{ fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '20px', color: '#555', letterSpacing: '1px' }}>{t.home_visitors_title}</h3>
@@ -651,7 +651,7 @@ const Home = () => {
       </section>
 
       {/* 9. BOTTOM NEWS GRID - Pale Background for separation */}
-      <section style={{ padding: '60px 0', backgroundColor: '#fafafa' }}>
+      <section style={{ padding: '40px 0', backgroundColor: '#fafafa' }}>
         <div className="container" style={{ padding: '0 20px', maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '40px', textAlign: 'center' }}>
             <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#333' }}>Berita Lainnya</h2>

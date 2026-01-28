@@ -87,7 +87,7 @@ const Bidang = () => {
 
 
     return (
-        <section className="bidang-section" style={{ padding: '20px 0 60px', position: 'relative' }}>
+        <section className="bidang-section" style={{ padding: '20px 0 40px', position: 'relative' }}>
             <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', padding: isMobile ? '0 10px' : '0 50px' }}>
 
                 {/* Left Arrow - Hide on Mobile to save space (user can swipe) */}
