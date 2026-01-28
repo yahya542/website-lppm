@@ -132,7 +132,7 @@ const NewsIndex = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this news article?')) {
+        if (window.confirm('Apakah Anda yakin ingin menghapus berita ini?')) {
             try {
                 await api.delete(`/api/admin/news/${id}`);
                 fetchNews(pagination.current_page);
@@ -250,8 +250,8 @@ const NewsIndex = () => {
             {/* Header Section */}
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
                 <div>
-                    <h2 className="h3 fw-bold text-gray-800 mb-1">News Management</h2>
-                    <p className="text-muted mb-0">Create, edit, and manage your news articles</p>
+                    <h2 className="h3 fw-bold text-gray-800 mb-1">Manajemen Berita</h2>
+                    <p className="text-muted mb-0">Buat, edit, dan kelola artikel berita</p>
                 </div>
                 <div className="d-flex gap-2">
                     <button
@@ -261,7 +261,7 @@ const NewsIndex = () => {
                         <i className="fas fa-file-csv me-2"></i> Import CSV
                     </button>
                     <Link to="/admin/news/create" className="btn btn-primary btn-lg shadow-sm px-4 rounded-pill">
-                        <i className="fas fa-plus me-2"></i> New Article
+                        <i className="fas fa-plus me-2"></i> Berita Baru
                     </Link>
                 </div>
             </div>
@@ -303,7 +303,7 @@ const NewsIndex = () => {
 
                         <form onSubmit={handleImportSubmit}>
                             <div className="mb-4">
-                                <label className="form-label fw-bold small text-uppercase text-muted">Upload File</label>
+                                <label className="form-label fw-bold small text-uppercase text-muted">Unggah File</label>
                                 <input
                                     type="file"
                                     className="form-control"
@@ -334,7 +334,7 @@ const NewsIndex = () => {
                                     disabled={!importFile || importLoading}
                                 >
                                     {importLoading ? (
-                                        <span><span className="spinner-border spinner-border-sm me-2"></span>Processing...</span>
+                                        <span><span className="spinner-border spinner-border-sm me-2"></span>Memproses...</span>
                                     ) : (
                                         <span>Import Data</span>
                                     )}
@@ -349,7 +349,7 @@ const NewsIndex = () => {
             <div className="bg-white rounded-4 shadow-sm p-3 mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                 <div className="d-flex align-items-center text-muted ps-2">
                     <i className="fas fa-list me-2"></i>
-                    <span className="fw-medium">Total Articles: {pagination.total}</span>
+                    <span className="fw-medium">Total Berita: {pagination.total}</span>
                 </div>
 
                 <div className="d-flex gap-2 align-items-center flex-grow-1 justify-content-end w-100 w-md-auto">
@@ -359,7 +359,7 @@ const NewsIndex = () => {
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
                     >
-                        <option value="">All Categories</option>
+                        <option value="">Semua Kategori</option>
                         {categories.map(cat => (
                             <option key={cat.id} value={cat.id}>{cat.name}</option>
                         ))}
@@ -369,7 +369,7 @@ const NewsIndex = () => {
                         <input
                             type="text"
                             className="form-control ps-5 bg-light border-0 rounded-pill"
-                            placeholder="Search articles..."
+                            placeholder="Cari berita..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -391,12 +391,12 @@ const NewsIndex = () => {
                             <thead className="bg-light text-uppercase small fw-bold text-muted">
                                 <tr>
                                     <th className="px-4 py-3 border-0" style={{ width: '5%' }}>#</th>
-                                    <th className="px-4 py-3 border-0" style={{ width: '12%' }}>Image</th>
-                                    <th className="px-4 py-3 border-0" style={{ width: '35%' }}>Title</th>
-                                    <th className="px-4 py-3 border-0" style={{ width: '15%' }}>Category</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '12%' }}>Gambar</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '35%' }}>Judul</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '15%' }}>Kategori</th>
                                     <th className="px-4 py-3 border-0" style={{ width: '10%' }}>Status</th>
-                                    <th className="px-4 py-3 border-0" style={{ width: '13%' }}>Date</th>
-                                    <th className="px-4 py-3 border-0 text-end" style={{ width: '10%' }}>Actions</th>
+                                    <th className="px-4 py-3 border-0" style={{ width: '13%' }}>Tanggal</th>
+                                    <th className="px-4 py-3 border-0 text-end" style={{ width: '10%' }}>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -432,7 +432,7 @@ const NewsIndex = () => {
                                             </td>
                                             <td className="px-4">
                                                 <span className="badge bg-light text-secondary border fw-normal px-2 py-1 rounded-pill">
-                                                    {item.category ? item.category.name : 'Uncategorized'}
+                                                    {item.category ? item.category.name : 'Tanpa Kategori'}
                                                 </span>
                                             </td>
                                             <td className="px-4">
@@ -448,7 +448,7 @@ const NewsIndex = () => {
                                                     />
                                                     <label className="form-check-label small user-select-none" htmlFor={`status-${item.id}`}>
                                                         {item.is_published ? (
-                                                            <span className="text-success fw-bold">Published</span>
+                                                            <span className="text-success fw-bold">Diterbitkan</span>
                                                         ) : (
                                                             <span className="text-muted">Draft</span>
                                                         )}
@@ -473,7 +473,7 @@ const NewsIndex = () => {
                                                         onClick={() => handleDelete(item.id)}
                                                         className="btn btn-sm btn-outline-danger border-0 rounded-circle d-flex align-items-center justify-content-center"
                                                         style={{ width: '32px', height: '32px', backgroundColor: 'rgba(220, 53, 69, 0.1)' }}
-                                                        title="Delete"
+                                                        title="Hapus"
                                                     >
                                                         <i className="fas fa-trash-alt"></i>
                                                     </button>
@@ -488,10 +488,10 @@ const NewsIndex = () => {
                                                 <div className="mb-3 text-muted opacity-25">
                                                     <i className="far fa-newspaper fa-4x"></i>
                                                 </div>
-                                                <h5 className="text-muted fw-normal">No articles found</h5>
-                                                <p className="text-small text-muted mb-4">Get started by creating your first news article.</p>
+                                                <h5 className="text-muted fw-normal">Tidak ada berita ditemukan</h5>
+                                                <p className="text-small text-muted mb-4">Mulai dengan membuat artikel berita pertama Anda.</p>
                                                 <Link to="/admin/news/create" className="btn btn-primary rounded-pill px-4">
-                                                    <i className="fas fa-plus me-2"></i> Create Article
+                                                    <i className="fas fa-plus me-2"></i> Buat Berita
                                                 </Link>
                                             </div>
                                         </td>
@@ -508,7 +508,7 @@ const NewsIndex = () => {
                 pagination.total > 0 && (
                     <div className="bg-white rounded-4 shadow-sm p-3 d-flex justify-content-between align-items-center flex-wrap mt-4">
                         <div className="text-muted small">
-                            Showing {(pagination.current_page - 1) * pagination.per_page + 1} to {Math.min(pagination.current_page * pagination.per_page, pagination.total)} of {pagination.total} entries
+                            Menampilkan {(pagination.current_page - 1) * pagination.per_page + 1} sampai {Math.min(pagination.current_page * pagination.per_page, pagination.total)} dari {pagination.total} data
                         </div>
 
                         <nav aria-label="Page navigation">

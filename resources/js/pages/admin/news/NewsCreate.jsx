@@ -121,11 +121,11 @@ const NewsCreate = () => {
         >
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 className="h3 fw-bold text-gray-800 mb-1">Create Article</h2>
-                    <p className="text-muted mb-0">Add a new news article to the system</p>
+                    <h2 className="h3 fw-bold text-gray-800 mb-1">Buat Berita Baru</h2>
+                    <p className="text-muted mb-0">Tambahkan berita baru ke dalam sistem</p>
                 </div>
                 <Link to="/admin/news" className="btn btn-light bg-white shadow-sm border rounded-pill px-4">
-                    <i className="fas fa-arrow-left me-2"></i> Back to List
+                    <i className="fas fa-arrow-left me-2"></i> Kembali
                 </Link>
             </div>
 
@@ -135,7 +135,7 @@ const NewsCreate = () => {
                     <div className="col-lg-8">
                         <div className="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
                             <div className="card-header bg-white py-3 px-4 border-bottom">
-                                <h6 className="m-0 fw-bold text-primary"><i className="fas fa-pen-nib me-2"></i> Article Content</h6>
+                                <h6 className="m-0 fw-bold text-primary"><i className="fas fa-pen-nib me-2"></i> Konten Berita</h6>
                             </div>
                             <div className="card-body p-4">
                                 {errors.general && (
@@ -145,7 +145,7 @@ const NewsCreate = () => {
                                 )}
 
                                 <div className="mb-4">
-                                    <label htmlFor="title" className="form-label fw-bold text-dark mb-2">Title</label>
+                                    <label htmlFor="title" className="form-label fw-bold text-dark mb-2">Judul</label>
                                     <input
                                         type="text"
                                         className={`form-control form-control-lg bg-light border-0 ${errors.title ? 'is-invalid' : ''}`}
@@ -153,7 +153,7 @@ const NewsCreate = () => {
                                         name="title"
                                         value={formData.title}
                                         onChange={handleChange}
-                                        placeholder="Enter a descriptive title"
+                                        placeholder="Masukkan judul berita"
                                         style={{ fontSize: '1.25rem' }}
                                         required
                                     />
@@ -161,8 +161,8 @@ const NewsCreate = () => {
                                 </div>
 
                                 <div className="mb-4">
-                                    <label htmlFor="excerpt" className="form-label fw-bold text-dark mb-2">Excerpt</label>
-                                    <p className="text-muted small mb-2">A short summary displayed in the news list.</p>
+                                    <label htmlFor="excerpt" className="form-label fw-bold text-dark mb-2">Ringkasan (Excerpt)</label>
+                                    <p className="text-muted small mb-2">Ringkasan singkat yang akan ditampilkan di daftar berita.</p>
                                     <textarea
                                         className={`form-control bg-light border-0 ${errors.excerpt ? 'is-invalid' : ''}`}
                                         id="excerpt"
@@ -170,7 +170,7 @@ const NewsCreate = () => {
                                         rows="3"
                                         value={formData.excerpt}
                                         onChange={handleChange}
-                                        placeholder="Write a brief summary..."
+                                        placeholder="Tulis ringkasan singkat..."
                                         style={{ resize: 'none' }}
                                         required
                                     ></textarea>
@@ -178,7 +178,7 @@ const NewsCreate = () => {
                                 </div>
 
                                 <div className="mb-3">
-                                    <label htmlFor="content" className="form-label fw-bold text-dark mb-2">Content</label>
+                                    <label htmlFor="content" className="form-label fw-bold text-dark mb-2">Isi Berita</label>
                                     <textarea
                                         className={`form-control bg-light border-0 ${errors.content ? 'is-invalid' : ''}`}
                                         id="content"
@@ -186,7 +186,7 @@ const NewsCreate = () => {
                                         rows="12"
                                         value={formData.content}
                                         onChange={handleChange}
-                                        placeholder="Write the full article content here..."
+                                        placeholder="Tulis isi berita lengkap di sini..."
                                         required
                                     ></textarea>
                                     {errors.content && <div className="invalid-feedback">{errors.content[0]}</div>}
@@ -200,11 +200,11 @@ const NewsCreate = () => {
                         {/* Publishing Card */}
                         <div className="card border-0 shadow-lg rounded-4 mb-4">
                             <div className="card-header bg-white py-3 px-4 border-bottom">
-                                <h6 className="m-0 fw-bold text-primary"><i className="fas fa-globe me-2"></i> Publishing</h6>
+                                <h6 className="m-0 fw-bold text-primary"><i className="fas fa-globe me-2"></i> Publikasi</h6>
                             </div>
                             <div className="card-body p-4">
                                 <div className="mb-4">
-                                    <label htmlFor="category_id" className="form-label fw-bold text-dark">Category</label>
+                                    <label htmlFor="category_id" className="form-label fw-bold text-dark">Kategori</label>
                                     <select
                                         className={`form-select bg-light border-0 ${errors.category_id ? 'is-invalid' : ''}`}
                                         id="category_id"
@@ -212,7 +212,7 @@ const NewsCreate = () => {
                                         value={formData.category_id}
                                         onChange={handleChange}
                                     >
-                                        <option value="">Select Category</option>
+                                        <option value="">Pilih Kategori</option>
                                         {categories.map(cat => (
                                             <option key={cat.id} value={cat.id}>{cat.name}</option>
                                         ))}
@@ -223,7 +223,7 @@ const NewsCreate = () => {
                                 <div className="d-flex justify-content-between align-items-center p-3 bg-light rounded-3 border">
                                     <label className="fw-medium mb-0 cursor-pointer" htmlFor="is_published">
                                         {formData.is_published ? (
-                                            <span className="text-success fw-bold"><i className="fas fa-check-circle me-1"></i> Published</span>
+                                            <span className="text-success fw-bold"><i className="fas fa-check-circle me-1"></i> Diterbitkan</span>
                                         ) : (
                                             <span className="text-muted"><i className="fas fa-file me-1"></i> Draft</span>
                                         )}
@@ -246,7 +246,7 @@ const NewsCreate = () => {
                         {/* Featured Image Card */}
                         <div className="card border-0 shadow-lg rounded-4 mb-4">
                             <div className="card-header bg-white py-3 px-4 border-bottom">
-                                <h6 className="m-0 fw-bold text-primary"><i className="far fa-image me-2"></i> Featured Image</h6>
+                                <h6 className="m-0 fw-bold text-primary"><i className="far fa-image me-2"></i> Gambar Utama</h6>
                             </div>
                             <div className="card-body p-4">
                                 <div className="mb-3 text-center">
@@ -265,12 +265,12 @@ const NewsCreate = () => {
                                         ) : (
                                             <div className="text-secondary opacity-50 text-center">
                                                 <i className="fas fa-cloud-upload-alt fa-3x mb-2"></i>
-                                                <p className="small m-0">Click to upload image</p>
+                                                <p className="small m-0">Klik untuk unggah gambar</p>
                                             </div>
                                         )}
                                         {imagePreview && (
                                             <div className="position-absolute bottom-0 start-0 max-w-100 p-2 bg-dark bg-opacity-50 text-white w-100 small text-center">
-                                                Click to change
+                                                Klik untuk ganti
                                             </div>
                                         )}
                                     </div>
@@ -298,11 +298,11 @@ const NewsCreate = () => {
                                 {loading ? (
                                     <>
                                         <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                        Saving...
+                                        Menyimpan...
                                     </>
                                 ) : (
                                     <>
-                                        <i className="fas fa-save me-2"></i> Save Article
+                                        <i className="fas fa-save me-2"></i> Simpan Berita
                                     </>
                                 )}
                             </button>
