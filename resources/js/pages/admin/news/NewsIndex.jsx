@@ -95,23 +95,39 @@ const NewsIndex = () => {
         }
     };
 
-    const handleToggleStatus = async (id, currentStatus) => {
-        try {
-            // Optimistic update
-            const updatedNews = news.map(item =>
-                item.id === id ? { ...item, is_published: !currentStatus } : item
-            );
-            setNews(updatedNews);
+    const [notification, setNotification] = useState(null);
 
+    const handleToggleStatus = async (id, currentStatus) => {
+        const newStatus = !currentStatus;
+        // Optimistic update
+        const updatedNews = news.map(item =>
+            item.id === id ? { ...item, is_published: newStatus } : item
+        );
+        setNews(updatedNews);
+
+        try {
             await api.put(`/api/admin/news/${id}`, {
-                is_published: !currentStatus ? 1 : 0
+                is_published: newStatus ? 1 : 0
             });
+
+            // Show success notification
+            setNotification({
+                type: 'success',
+                message: `Berita berhasil ${newStatus ? 'diterbitkan' : 'disembunyikan'}`
+            });
+
+            // Clear notification after 3 seconds
+            setTimeout(() => setNotification(null), 3000);
 
         } catch (err) {
             console.error('Failed to update status:', err);
             // Revert on error
             fetchNews(pagination.current_page);
-            alert('Gagal mengubah status publikasi.');
+            setNotification({
+                type: 'error',
+                message: 'Gagal mengubah status publikasi.'
+            });
+            setTimeout(() => setNotification(null), 3000);
         }
     };
 
@@ -120,9 +136,18 @@ const NewsIndex = () => {
             try {
                 await api.delete(`/api/admin/news/${id}`);
                 fetchNews(pagination.current_page);
+                setNotification({
+                    type: 'success',
+                    message: 'Berita berhasil dihapus'
+                });
+                setTimeout(() => setNotification(null), 3000);
             } catch (err) {
                 console.error('Error deleting news:', err);
-                alert('Failed to delete news.');
+                setNotification({
+                    type: 'error',
+                    message: 'Gagal menghapus berita.'
+                });
+                setTimeout(() => setNotification(null), 3000);
             }
         }
     };
@@ -203,6 +228,25 @@ const NewsIndex = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
+            {/* Notification Toast */}
+            {notification && (
+                <motion.div
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    className={`alert alert-${notification.type === 'success' ? 'success' : 'danger'} position-fixed top-0 end-0 m-4 shadow-lg`}
+                    style={{ zIndex: 9999, minWidth: '300px' }}
+                >
+                    <div className="d-flex align-items-center justify-content-between">
+                        <div>
+                            <i className={`fas fa-${notification.type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2`}></i>
+                            {notification.message}
+                        </div>
+                        <button type="button" className="btn-close" onClick={() => setNotification(null)}></button>
+                    </div>
+                </motion.div>
+            )}
+
             {/* Header Section */}
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
                 <div>

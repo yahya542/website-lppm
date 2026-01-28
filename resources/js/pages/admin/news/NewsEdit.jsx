@@ -242,19 +242,25 @@ const NewsEdit = () => {
                                     {errors.category_id && <div className="invalid-feedback">{errors.category_id[0]}</div>}
                                 </div>
 
-                                <div className="form-check form-switch p-3 bg-light rounded-3 border d-flex justify-content-between align-items-center ps-5">
-                                    <label className="form-check-label fw-medium cursor-pointer" htmlFor="is_published">
-                                        {formData.is_published ? 'Published' : 'Draft'}
+                                <div className="d-flex justify-content-between align-items-center p-3 bg-light rounded-3 border">
+                                    <label className="fw-medium mb-0 cursor-pointer" htmlFor="is_published">
+                                        {formData.is_published ? (
+                                            <span className="text-success fw-bold"><i className="fas fa-check-circle me-1"></i> Published</span>
+                                        ) : (
+                                            <span className="text-muted"><i className="fas fa-file me-1"></i> Draft</span>
+                                        )}
                                     </label>
-                                    <input
-                                        className="form-check-input ms-2"
-                                        type="checkbox"
-                                        id="is_published"
-                                        name="is_published"
-                                        checked={formData.is_published}
-                                        onChange={handleChange}
-                                        style={{ width: '3em', height: '1.5em', cursor: 'pointer' }}
-                                    />
+                                    <div className="form-check form-switch m-0">
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            id="is_published"
+                                            name="is_published"
+                                            checked={formData.is_published}
+                                            onChange={handleChange}
+                                            style={{ width: '3em', height: '1.5em', cursor: 'pointer', float: 'none', marginLeft: 0 }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
