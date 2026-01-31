@@ -104,8 +104,8 @@ const NewsCreate = () => {
 
     if (pageLoading) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '300px' }}>
-                <div className="spinner-border text-primary" role="status">
+            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
+                <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}>
                     <span className="visually-hidden">Loading...</span>
                 </div>
             </div>
@@ -117,161 +117,199 @@ const NewsCreate = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            className="pb-4"
         >
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 className="h4 text-gray-800 mb-0">Create News Article</h2>
-                <Link to="/admin/news" className="btn btn-secondary">
-                    <i className="fas fa-arrow-left me-2"></i> Back to List
+                <div>
+                    <h2 className="h3 fw-bold text-gray-800 mb-1">Buat Berita Baru</h2>
+                    <p className="text-muted mb-0">Tambahkan berita baru ke dalam sistem</p>
+                </div>
+                <Link to="/admin/news" className="btn btn-light bg-white shadow-sm border rounded-pill px-4">
+                    <i className="fas fa-arrow-left me-2"></i> Kembali
                 </Link>
             </div>
 
-            <div className="card shadow-sm border-0">
-                <div className="card-body p-4">
-                    {errors.general && (
-                        <div className="alert alert-danger mb-4">
-                            {errors.general}
-                        </div>
-                    )}
+            <form onSubmit={handleSubmit}>
+                <div className="row g-4">
+                    {/* Main Content Column */}
+                    <div className="col-lg-8">
+                        <div className="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
+                            <div className="card-header bg-white py-3 px-4 border-bottom">
+                                <h6 className="m-0 fw-bold text-primary"><i className="fas fa-pen-nib me-2"></i> Konten Berita</h6>
+                            </div>
+                            <div className="card-body p-4">
+                                {errors.general && (
+                                    <div className="alert alert-danger mb-4 rounded-3 shadow-sm border-0">
+                                        <i className="fas fa-exclamation-circle me-2"></i> {errors.general}
+                                    </div>
+                                )}
 
-                    <form onSubmit={handleSubmit}>
-                        <div className="row">
-                            <div className="col-md-8">
-                                <div className="mb-3">
-                                    <label htmlFor="title" className="form-label fw-bold">Title</label>
+                                <div className="mb-4">
+                                    <label htmlFor="title" className="form-label fw-bold text-dark mb-2">Judul</label>
                                     <input
                                         type="text"
-                                        className={`form-control ${errors.title ? 'is-invalid' : ''}`}
+                                        className={`form-control form-control-lg bg-light border-0 ${errors.title ? 'is-invalid' : ''}`}
                                         id="title"
                                         name="title"
                                         value={formData.title}
                                         onChange={handleChange}
-                                        placeholder="Enter news title"
+                                        placeholder="Masukkan judul berita"
+                                        style={{ fontSize: '1.25rem' }}
                                         required
                                     />
                                     {errors.title && <div className="invalid-feedback">{errors.title[0]}</div>}
                                 </div>
 
-                                <div className="mb-3">
-                                    <label htmlFor="excerpt" className="form-label fw-bold">Excerpt</label>
+                                <div className="mb-4">
+                                    <label htmlFor="excerpt" className="form-label fw-bold text-dark mb-2">Ringkasan (Excerpt)</label>
+                                    <p className="text-muted small mb-2">Ringkasan singkat yang akan ditampilkan di daftar berita.</p>
                                     <textarea
-                                        className={`form-control ${errors.excerpt ? 'is-invalid' : ''}`}
+                                        className={`form-control bg-light border-0 ${errors.excerpt ? 'is-invalid' : ''}`}
                                         id="excerpt"
                                         name="excerpt"
                                         rows="3"
                                         value={formData.excerpt}
                                         onChange={handleChange}
-                                        placeholder="Short summary of the news..."
+                                        placeholder="Tulis ringkasan singkat..."
+                                        style={{ resize: 'none' }}
                                         required
                                     ></textarea>
-                                    <div className="form-text">A short summary displayed in the news list.</div>
                                     {errors.excerpt && <div className="invalid-feedback">{errors.excerpt[0]}</div>}
                                 </div>
 
                                 <div className="mb-3">
-                                    <label htmlFor="content" className="form-label fw-bold">Content</label>
+                                    <label htmlFor="content" className="form-label fw-bold text-dark mb-2">Isi Berita</label>
                                     <textarea
-                                        className={`form-control ${errors.content ? 'is-invalid' : ''}`}
+                                        className={`form-control bg-light border-0 ${errors.content ? 'is-invalid' : ''}`}
                                         id="content"
                                         name="content"
-                                        rows="10"
+                                        rows="12"
                                         value={formData.content}
                                         onChange={handleChange}
-                                        placeholder="Full content of the news article..."
+                                        placeholder="Tulis isi berita lengkap di sini..."
                                         required
                                     ></textarea>
                                     {errors.content && <div className="invalid-feedback">{errors.content[0]}</div>}
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                            <div className="col-md-4">
-                                <div className="card bg-light border-0 mb-3">
-                                    <div className="card-body">
-                                        <h6 className="card-title fw-bold mb-3">Publishing</h6>
-
-                                        <div className="mb-3">
-                                            <label htmlFor="category_id" className="form-label">Category</label>
-                                            <select
-                                                className={`form-select ${errors.category_id ? 'is-invalid' : ''}`}
-                                                id="category_id"
-                                                name="category_id"
-                                                value={formData.category_id}
-                                                onChange={handleChange}
-                                            >
-                                                <option value="">Select Category</option>
-                                                {categories.map(cat => (
-                                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                                ))}
-                                            </select>
-                                            {errors.category_id && <div className="invalid-feedback">{errors.category_id[0]}</div>}
-                                        </div>
-
-                                        <div className="form-check form-switch mb-3">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                id="is_published"
-                                                name="is_published"
-                                                checked={formData.is_published}
-                                                onChange={handleChange}
-                                            />
-                                            <label className="form-check-label" htmlFor="is_published">
-                                                Publish Immediately
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="card bg-light border-0">
-                                    <div className="card-body">
-                                        <h6 className="card-title fw-bold mb-3">Featured Image</h6>
-
-                                        <div className="mb-3 text-center">
-                                            {imagePreview ? (
-                                                <div className="mb-2" style={{ maxHeight: '200px', overflow: 'hidden', borderRadius: '4px' }}>
-                                                    <img src={imagePreview} alt="Preview" className="img-fluid" />
-                                                </div>
-                                            ) : (
-                                                <div className="mb-2 d-flex align-items-center justify-content-center bg-white border rounded" style={{ height: '150px' }}>
-                                                    <span className="text-muted">No Image Selected</span>
-                                                </div>
-                                            )}
-
-                                            <input
-                                                type="file"
-                                                className={`form-control ${errors.image ? 'is-invalid' : ''}`}
-                                                id="image"
-                                                name="image"
-                                                accept="image/*"
-                                                onChange={handleImageChange}
-                                            />
-                                            {errors.image && <div className="invalid-feedback text-start">{errors.image[0]}</div>}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="d-grid gap-2 mt-4">
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary"
-                                        disabled={loading}
+                    {/* Sidebar Column */}
+                    <div className="col-lg-4">
+                        {/* Publishing Card */}
+                        <div className="card border-0 shadow-lg rounded-4 mb-4">
+                            <div className="card-header bg-white py-3 px-4 border-bottom">
+                                <h6 className="m-0 fw-bold text-primary"><i className="fas fa-globe me-2"></i> Publikasi</h6>
+                            </div>
+                            <div className="card-body p-4">
+                                <div className="mb-4">
+                                    <label htmlFor="category_id" className="form-label fw-bold text-dark">Kategori</label>
+                                    <select
+                                        className={`form-select bg-light border-0 ${errors.category_id ? 'is-invalid' : ''}`}
+                                        id="category_id"
+                                        name="category_id"
+                                        value={formData.category_id}
+                                        onChange={handleChange}
                                     >
-                                        {loading ? (
-                                            <>
-                                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                                Saving...
-                                            </>
+                                        <option value="">Pilih Kategori</option>
+                                        {categories.map(cat => (
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        ))}
+                                    </select>
+                                    {errors.category_id && <div className="invalid-feedback">{errors.category_id[0]}</div>}
+                                </div>
+
+                                <div className="d-flex justify-content-between align-items-center p-3 bg-light rounded-3 border">
+                                    <label className="fw-medium mb-0 cursor-pointer" htmlFor="is_published">
+                                        {formData.is_published ? (
+                                            <span className="text-success fw-bold"><i className="fas fa-check-circle me-1"></i> Diterbitkan</span>
                                         ) : (
-                                            <>
-                                                <i className="fas fa-save me-2"></i> Save Article
-                                            </>
+                                            <span className="text-muted"><i className="fas fa-file me-1"></i> Draft</span>
                                         )}
-                                    </button>
+                                    </label>
+                                    <div className="form-check form-switch m-0">
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            id="is_published"
+                                            name="is_published"
+                                            checked={formData.is_published}
+                                            onChange={handleChange}
+                                            style={{ width: '3em', height: '1.5em', cursor: 'pointer', float: 'none', marginLeft: 0 }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+
+                        {/* Featured Image Card */}
+                        <div className="card border-0 shadow-lg rounded-4 mb-4">
+                            <div className="card-header bg-white py-3 px-4 border-bottom">
+                                <h6 className="m-0 fw-bold text-primary"><i className="far fa-image me-2"></i> Gambar Utama</h6>
+                            </div>
+                            <div className="card-body p-4">
+                                <div className="mb-3 text-center">
+                                    <div
+                                        className="rounded-3 overflow-hidden mb-3 bg-light d-flex align-items-center justify-content-center border"
+                                        style={{ height: '200px', cursor: 'pointer', position: 'relative' }}
+                                        onClick={() => document.getElementById('image').click()}
+                                    >
+                                        {imagePreview ? (
+                                            <img
+                                                src={imagePreview}
+                                                alt="Preview"
+                                                className="w-100 h-100 object-fit-cover"
+                                                onError={(e) => { e.target.src = 'https://via.placeholder.com/300x200?text=Error+Loading+Image'; }}
+                                            />
+                                        ) : (
+                                            <div className="text-secondary opacity-50 text-center">
+                                                <i className="fas fa-cloud-upload-alt fa-3x mb-2"></i>
+                                                <p className="small m-0">Klik untuk unggah gambar</p>
+                                            </div>
+                                        )}
+                                        {imagePreview && (
+                                            <div className="position-absolute bottom-0 start-0 max-w-100 p-2 bg-dark bg-opacity-50 text-white w-100 small text-center">
+                                                Klik untuk ganti
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <input
+                                        type="file"
+                                        className={`form-control d-none ${errors.image ? 'is-invalid' : ''}`}
+                                        id="image"
+                                        name="image"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                    />
+                                    {errors.image && <div className="text-danger small mt-1">{errors.image[0]}</div>}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="d-grid gap-3">
+                            <button
+                                type="submit"
+                                className="btn btn-primary btn-lg shadow-sm rounded-pill fw-bold"
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        Menyimpan...
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="fas fa-save me-2"></i> Simpan Berita
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </motion.div>
     );
 };
